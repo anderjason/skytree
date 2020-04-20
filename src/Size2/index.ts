@@ -6,6 +6,10 @@ export class Size2 {
     return new Size2(width, height);
   }
 
+  static ofZero(): Size2 {
+    return new Size2(0, 0);
+  }
+
   protected constructor(width: number, height: number) {
     this._width = width;
     this._height = height;

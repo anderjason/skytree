@@ -9,6 +9,10 @@ export class MutablePoint3 extends Point3 {
     return new MutablePoint3(point.x, point.y, point.z);
   }
 
+  static ofZero(): MutablePoint3 {
+    return new MutablePoint3(0, 0, 0);
+  }
+
   private constructor(x: number, y: number, z: number) {
     super(x, y, z);
   }

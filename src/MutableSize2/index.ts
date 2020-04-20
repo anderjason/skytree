@@ -9,6 +9,10 @@ export class MutableSize2 extends Size2 {
     return new MutableSize2(size.width, size.height);
   }
 
+  static ofZero(): MutableSize2 {
+    return new MutableSize2(0, 0);
+  }
+
   private constructor(width: number, height: number) {
     super(width, height);
   }

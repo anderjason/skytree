@@ -13,6 +13,10 @@ export class MutableSize3 extends Size3 {
     return new MutableSize3(size.width, size.height, size.depth);
   }
 
+  static ofZero(): MutableSize3 {
+    return new MutableSize3(0, 0, 0);
+  }
+
   private constructor(width: number, height: number, depth: number) {
     super(width, height, depth);
   }

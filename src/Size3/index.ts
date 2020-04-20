@@ -11,6 +11,10 @@ export class Size3 {
     return new Size3(width, height, depth);
   }
 
+  static ofZero(): Size3 {
+    return new Size3(0, 0, 0);
+  }
+
   protected constructor(width: number, height: number, depth: number) {
     this._width = width;
     this._height = height;

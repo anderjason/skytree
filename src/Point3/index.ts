@@ -7,6 +7,10 @@ export class Point3 {
     return new Point3(x, y, z);
   }
 
+  static ofZero(): Point3 {
+    return new Point3(0, 0, 0);
+  }
+
   protected constructor(x: number, y: number, z: number) {
     this._x = x;
     this._y = y;
