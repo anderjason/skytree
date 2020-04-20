@@ -1,0 +1,25 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Point2_1 = require("../Point2");
+class MutablePoint2 extends Point2_1.Point2 {
+    static ofXY(x, y) {
+        return new MutablePoint2(x, y);
+    }
+    static ofPoint2(point) {
+        return new MutablePoint2(point.x, point.y);
+    }
+    constructor(x, y) {
+        super(x, y);
+    }
+    set x(value) {
+        this._x = value;
+    }
+    set y(value) {
+        this._y = value;
+    }
+    toClone() {
+        return new MutablePoint2(this._x, this._y);
+    }
+}
+exports.MutablePoint2 = MutablePoint2;
+//# sourceMappingURL=index.js.map

@@ -1,0 +1,175 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+require("mocha");
+const assert = require("assert");
+const _1 = require(".");
+const Handle_1 = require("../Handle");
+describe("ManagedObject", () => {
+    it("has a unique id per instance", () => {
+        class MySubclass extends _1.ManagedObject {
+            initManagedObject() { }
+        }
+        const instance1 = new MySubclass();
+        const instance2 = new MySubclass();
+        assert(instance1.id != null);
+        assert(instance1.id.length === 8);
+        assert(instance2.id != null);
+        assert(instance2.id.length === 8);
+        assert(instance1.id !== instance2.id);
+    });
+    it("invokes initManagedObject when init is called", () => {
+        let didInit = false;
+        class MySubclass extends _1.ManagedObject {
+            initManagedObject() {
+                didInit = true;
+            }
+        }
+        const instance = new MySubclass();
+        instance.init();
+        assert(didInit === true);
+        assert(instance.isInitialized === true);
+    });
+    it("only invokes initManagedObject once", () => {
+        let initCount = 0;
+        class MySubclass extends _1.ManagedObject {
+            initManagedObject() {
+                initCount += 1;
+            }
+        }
+        const instance = new MySubclass();
+        instance.init();
+        instance.init();
+        instance.init();
+        assert(initCount === 1);
+    });
+    it("returns a handle from init", () => {
+        class MySubclass extends _1.ManagedObject {
+            initManagedObject() { }
+        }
+        const instance = new MySubclass();
+        const handle = instance.init();
+        assert(handle != null);
+        assert(handle.isReleased === false);
+    });
+    it("returns the same handle if init is called multiple times", () => {
+        class MySubclass extends _1.ManagedObject {
+            initManagedObject() { }
+        }
+        const instance = new MySubclass();
+        const handle1 = instance.init();
+        const handle2 = instance.init();
+        const handle3 = instance.init();
+        assert(handle1 != null);
+        assert(handle1 === handle2);
+        assert(handle1 === handle3);
+    });
+    it("is reset when the handle is released", () => {
+        let releaseCount = 0;
+        class MySubclass extends _1.ManagedObject {
+            initManagedObject() {
+                this.addHandle(Handle_1.Handle.ofFunction(() => {
+                    releaseCount += 1;
+                }));
+            }
+        }
+        const instance = new MySubclass();
+        const handle1 = instance.init();
+        assert(instance.isInitialized === true);
+        assert(releaseCount === 0);
+        handle1.release();
+        handle1.release();
+        assert(releaseCount === 1); // second release has no effect
+        assert(instance.isInitialized === false);
+        const handle2 = instance.init(); // init again
+        assert(instance.isInitialized === true);
+        assert(handle2 != null);
+        assert(handle1 !== handle2); // different handle from the first init
+        handle2.release();
+        assert(releaseCount === 2);
+        assert(instance.isInitialized === false);
+    });
+    it("has a list of child objects", () => {
+        class MySubclass extends _1.ManagedObject {
+            initManagedObject() { }
+        }
+        const parentInstance = new MySubclass();
+        parentInstance.init();
+        assert(parentInstance.children != null);
+        assert(parentInstance.children.length === 0);
+    });
+    it("initializes objects when added as children", () => {
+        class MySubclass extends _1.ManagedObject {
+            initManagedObject() { }
+        }
+        const parentInstance = new MySubclass();
+        parentInstance.init();
+        const childInstance = new MySubclass();
+        assert(childInstance.isInitialized === false);
+        parentInstance.addChild(childInstance);
+        assert(childInstance.isInitialized === true);
+    });
+    it("sets parent of objects when added as children", () => {
+        class MySubclass extends _1.ManagedObject {
+            initManagedObject() { }
+        }
+        const parentInstance = new MySubclass();
+        parentInstance.init();
+        const childInstance = new MySubclass();
+        assert(childInstance.parent == null);
+        parentInstance.addChild(childInstance);
+        assert(childInstance.parent === parentInstance);
+    });
+    it("unsets parent of objects when removed as children", () => {
+        class MySubclass extends _1.ManagedObject {
+            initManagedObject() { }
+        }
+        const parentInstance = new MySubclass();
+        parentInstance.init();
+        const childInstance = new MySubclass();
+        parentInstance.addChild(childInstance);
+        parentInstance.removeChild(childInstance);
+        assert(childInstance.parent == null);
+    });
+    it("removes objects from other parents when added as children", () => {
+        class MySubclass extends _1.ManagedObject {
+            initManagedObject() { }
+        }
+        const parentInstance1 = new MySubclass();
+        const parentInstance2 = new MySubclass();
+        parentInstance1.init();
+        parentInstance2.init();
+        const childInstance = new MySubclass();
+        parentInstance1.addChild(childInstance);
+        assert(childInstance.parent === parentInstance1);
+        assert(parentInstance1.children.includes(childInstance));
+        assert(!parentInstance2.children.includes(childInstance));
+        parentInstance2.addChild(childInstance);
+        assert(childInstance.parent === parentInstance2);
+        assert(parentInstance2.children.includes(childInstance)); // added
+        assert(!parentInstance1.children.includes(childInstance)); // removed
+    });
+    it("uninits child objects when uninit is called", () => {
+        class MySubclass extends _1.ManagedObject {
+            initManagedObject() { }
+        }
+        const parentInstance1 = new MySubclass();
+        parentInstance1.init();
+        const childInstance = new MySubclass();
+        parentInstance1.addChild(childInstance);
+        assert(childInstance.isInitialized === true);
+        parentInstance1.uninit();
+        assert(childInstance.isInitialized === false);
+    });
+    it("inits child objects when init is called", () => {
+        class MySubclass extends _1.ManagedObject {
+            initManagedObject() { }
+        }
+        const parentInstance1 = new MySubclass();
+        const childInstance = new MySubclass();
+        parentInstance1.addChild(childInstance);
+        assert(childInstance.isInitialized === false); // parent is not initialized yet
+        parentInstance1.init();
+        assert(childInstance.isInitialized === true);
+    });
+});
+//# sourceMappingURL=index.spec.js.map
