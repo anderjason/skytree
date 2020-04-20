@@ -8,20 +8,46 @@ class Point2 {
     static ofXY(x, y) {
         return new Point2(x, y);
     }
+    static ofZero() {
+        return new Point2(0, 0);
+    }
     get x() {
         return this._x;
     }
     get y() {
         return this._y;
     }
-    toClone() {
-        return new Point2(this._x, this._y);
-    }
     isEqual(other) {
         if (other == null) {
             return false;
         }
         return other._x == this._x && other._y == this._y;
+    }
+    toClone() {
+        return new Point2(this._x, this._y);
+    }
+    toAngleGivenPoint(other) {
+        const diff = this.toDeltaGivenPoint(other);
+        return Math.atan2(diff.y, diff.x);
+    }
+    toDeltaGivenPoint(other) {
+        return new Point2(this.x - other.x, this.y - other.y);
+    }
+    toDistanceGivenPoint(other) {
+        const diff = this.toDeltaGivenPoint(other);
+        return Math.sqrt(Math.pow(diff.x, 2) + Math.pow(diff.y, 2));
+    }
+    toMidpointGivenPoint(other) {
+        const x = this.x + (other.x - this.x) / 2;
+        const y = this.y + (other.y - this.y) / 2;
+        return new Point2(x, y);
+    }
+    withAngleAndDistance(angle, distance) {
+        // Rotate the angle based on the browser coordinate system ([0,0] in the top left)
+        const angleRotated = angle + Math.PI / 2;
+        const x = this.x + Math.sin(angleRotated) * distance;
+        const y = this.y - Math.cos(angleRotated) * distance;
+        return new Point2(x, y);
     }
 }
 exports.Point2 = Point2;

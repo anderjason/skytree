@@ -9,6 +9,9 @@ class Point3 {
     static ofXYZ(x, y, z) {
         return new Point3(x, y, z);
     }
+    static ofZero() {
+        return new Point3(0, 0, 0);
+    }
     get x() {
         return this._x;
     }

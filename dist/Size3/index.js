@@ -9,6 +9,9 @@ class Size3 {
     static ofWidthHeightDepth(width, height, depth) {
         return new Size3(width, height, depth);
     }
+    static ofZero() {
+        return new Size3(0, 0, 0);
+    }
     get width() {
         return this._width;
     }

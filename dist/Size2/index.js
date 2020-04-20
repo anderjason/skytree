@@ -8,6 +8,9 @@ class Size2 {
     static ofWidthHeight(width, height) {
         return new Size2(width, height);
     }
+    static ofZero() {
+        return new Size2(0, 0);
+    }
     get width() {
         return this._width;
     }

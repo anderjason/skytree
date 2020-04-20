@@ -8,6 +8,9 @@ class MutableSize2 extends Size2_1.Size2 {
     static ofSize2(size) {
         return new MutableSize2(size.width, size.height);
     }
+    static ofZero() {
+        return new MutableSize2(0, 0);
+    }
     constructor(width, height) {
         super(width, height);
     }

@@ -8,6 +8,9 @@ class MutablePoint2 extends Point2_1.Point2 {
     static ofPoint2(point) {
         return new MutablePoint2(point.x, point.y);
     }
+    static ofZero() {
+        return new MutablePoint2(0, 0);
+    }
     constructor(x, y) {
         super(x, y);
     }

@@ -8,6 +8,9 @@ class MutableSize3 extends Size3_1.Size3 {
     static ofSize3(size) {
         return new MutableSize3(size.width, size.height, size.depth);
     }
+    static ofZero() {
+        return new MutableSize3(0, 0, 0);
+    }
     constructor(width, height, depth) {
         super(width, height, depth);
     }

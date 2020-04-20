@@ -8,6 +8,9 @@ class MutablePoint3 extends Point3_1.Point3 {
     static ofPoint3(point) {
         return new MutablePoint3(point.x, point.y, point.z);
     }
+    static ofZero() {
+        return new MutablePoint3(0, 0, 0);
+    }
     constructor(x, y, z) {
         super(x, y, z);
     }
