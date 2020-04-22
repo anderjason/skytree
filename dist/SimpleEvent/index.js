@@ -18,7 +18,7 @@ class SimpleEvent {
             this._handlers = [];
         }
         this._handlers.push(handler);
-        if (this._lastEvent != null && includeLast) {
+        if (includeLast) {
             handler(this._lastEvent);
         }
         return Handle_1.Handle.ofFunction(() => this.unsubscribe(handler));

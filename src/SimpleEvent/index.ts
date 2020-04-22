@@ -29,7 +29,7 @@ export class SimpleEvent<T = void> {
 
     this._handlers.push(handler);
 
-    if (this._lastEvent != null && includeLast) {
+    if (includeLast) {
       handler(this._lastEvent);
     }
 
