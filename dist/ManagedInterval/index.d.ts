@@ -1,4 +1,5 @@
-import { Duration, ManagedObject } from "..";
+import { Duration } from "../Duration";
+import { ManagedObject } from "../ManagedObject";
 export declare class ManagedInterval extends ManagedObject {
     static ofFunction(callback: Function, duration: Duration): ManagedInterval;
     private _interval;

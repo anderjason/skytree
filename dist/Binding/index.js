@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const __1 = require("..");
-class Binding extends __1.ManagedObject {
+const ManagedObject_1 = require("../ManagedObject");
+class Binding extends ManagedObject_1.ManagedObject {
     constructor(input, output, converter) {
         super();
         this.input = input;

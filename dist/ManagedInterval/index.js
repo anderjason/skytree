@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const __1 = require("..");
-class ManagedInterval extends __1.ManagedObject {
+const ManagedObject_1 = require("../ManagedObject");
+const Handle_1 = require("../Handle");
+class ManagedInterval extends ManagedObject_1.ManagedObject {
     constructor(callback, duration) {
         super();
         this._callback = callback;
@@ -19,7 +20,7 @@ class ManagedInterval extends __1.ManagedObject {
                 console.warn(err);
             }
         }, this._duration.toMilliseconds());
-        this.addHandle(__1.Handle.ofFunction(() => {
+        this.addHandle(Handle_1.Handle.ofFunction(() => {
             if (this._interval != null) {
                 clearInterval(this._interval);
                 this._interval = undefined;

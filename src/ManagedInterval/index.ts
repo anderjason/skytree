@@ -1,4 +1,6 @@
-import { Duration, ManagedObject, Handle } from "..";
+import { Duration } from "../Duration";
+import { ManagedObject } from "../ManagedObject";
+import { Handle } from "../Handle";
 
 export class ManagedInterval extends ManagedObject {
   static ofFunction(callback: Function, duration: Duration): ManagedInterval {

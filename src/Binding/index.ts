@@ -1,4 +1,5 @@
-import { ManagedObject, Observable } from "..";
+import { ManagedObject } from "../ManagedObject";
+import { Observable } from "../Observable";
 
 export class Binding<TI, TO> extends ManagedObject {
   readonly input: Observable<TI>;
