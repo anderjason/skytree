@@ -37,7 +37,7 @@ export class Size3 {
     return new Size3(this._width, this._height, this._depth);
   }
 
-  equals(other: Size3): boolean {
+  isEqual(other: Size3): boolean {
     if (other == null) {
       return false;
     }

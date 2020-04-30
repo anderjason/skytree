@@ -51,4 +51,12 @@ export class Box2 {
       point.y <= this.bottom
     );
   }
+
+  isEqual(other: Box2): boolean {
+    if (other == null) {
+      return false;
+    }
+
+    return other.center.isEqual(this.center) && other.size.isEqual(this.size);
+  }
 }

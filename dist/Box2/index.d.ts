@@ -11,4 +11,5 @@ export declare class Box2 {
     get right(): number;
     get bottom(): number;
     containsPoint(point: Point2): boolean;
+    isEqual(other: Box2): boolean;
 }

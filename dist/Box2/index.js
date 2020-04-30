@@ -37,6 +37,12 @@ class Box2 {
             point.y >= this.top &&
             point.y <= this.bottom);
     }
+    isEqual(other) {
+        if (other == null) {
+            return false;
+        }
+        return other.center.isEqual(this.center) && other.size.isEqual(this.size);
+    }
 }
 exports.Box2 = Box2;
 //# sourceMappingURL=index.js.map

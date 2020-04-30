@@ -13,4 +13,5 @@ export declare class Box3 {
     get front(): number;
     get back(): number;
     containsPoint(point: Point3): boolean;
+    isEqual(other: Box3): boolean;
 }

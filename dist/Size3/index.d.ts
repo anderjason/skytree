@@ -9,5 +9,5 @@ export declare class Size3 {
     get height(): number;
     get depth(): number;
     toClone(): Size3;
-    equals(other: Size3): boolean;
+    isEqual(other: Size3): boolean;
 }

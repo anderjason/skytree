@@ -71,4 +71,12 @@ export class Box3 {
       point.z >= this.back
     );
   }
+
+  isEqual(other: Box3): boolean {
+    if (other == null) {
+      return false;
+    }
+
+    return other.center.isEqual(this.center) && other.size.isEqual(this.size);
+  }
 }

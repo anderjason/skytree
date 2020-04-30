@@ -24,7 +24,7 @@ class Size3 {
     toClone() {
         return new Size3(this._width, this._height, this._depth);
     }
-    equals(other) {
+    isEqual(other) {
         if (other == null) {
             return false;
         }

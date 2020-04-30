@@ -47,6 +47,12 @@ class Box3 {
             point.z <= this.front &&
             point.z >= this.back);
     }
+    isEqual(other) {
+        if (other == null) {
+            return false;
+        }
+        return other.center.isEqual(this.center) && other.size.isEqual(this.size);
+    }
 }
 exports.Box3 = Box3;
 //# sourceMappingURL=index.js.map
