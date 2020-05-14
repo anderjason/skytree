@@ -26,6 +26,7 @@ import { SimpleEvent } from "./SimpleEvent";
 import { Size2 } from "./Size2";
 import { Size3 } from "./Size3";
 import { StringUtil } from "./StringUtil";
+import { ManagedTimeout } from "./ManagedTimeout";
 
 export {
   ArrayUtil,
@@ -38,6 +39,7 @@ export {
   Instant,
   ManagedInterval,
   ManagedObject,
+  ManagedTimeout,
   MutablePoint2,
   MutablePoint3,
   MutableSize2,

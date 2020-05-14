@@ -56,4 +56,6 @@ const Size3_1 = require("./Size3");
 exports.Size3 = Size3_1.Size3;
 const StringUtil_1 = require("./StringUtil");
 exports.StringUtil = StringUtil_1.StringUtil;
+const ManagedTimeout_1 = require("./ManagedTimeout");
+exports.ManagedTimeout = ManagedTimeout_1.ManagedTimeout;
 //# sourceMappingURL=index.js.map

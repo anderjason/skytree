@@ -26,4 +26,5 @@ import { SimpleEvent } from "./SimpleEvent";
 import { Size2 } from "./Size2";
 import { Size3 } from "./Size3";
 import { StringUtil } from "./StringUtil";
-export { ArrayUtil, Binding, Box2, Box3, Color, Duration, Handle, Instant, ManagedInterval, ManagedObject, MutablePoint2, MutablePoint3, MutableSize2, MutableSize3, NumberUtil, ObjectUtil, Observable, Palette, Percent, Point2, Point3, PromiseUtil, RateLimitedFunction, Ratio, SimpleEvent, Size2, Size3, StringUtil, };
+import { ManagedTimeout } from "./ManagedTimeout";
+export { ArrayUtil, Binding, Box2, Box3, Color, Duration, Handle, Instant, ManagedInterval, ManagedObject, ManagedTimeout, MutablePoint2, MutablePoint3, MutableSize2, MutableSize3, NumberUtil, ObjectUtil, Observable, Palette, Percent, Point2, Point3, PromiseUtil, RateLimitedFunction, Ratio, SimpleEvent, Size2, Size3, StringUtil, };
