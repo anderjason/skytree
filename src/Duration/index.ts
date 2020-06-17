@@ -3,27 +3,27 @@ import { Instant } from "../Instant";
 export class Duration {
   private _milliseconds: number;
 
-  static ofMilliseconds(milliseconds: number): Duration {
+  static givenMilliseconds(milliseconds: number): Duration {
     return new Duration(milliseconds);
   }
 
-  static ofSeconds(seconds: number): Duration {
-    return Duration.ofMilliseconds(seconds * 1000);
+  static givenSeconds(seconds: number): Duration {
+    return Duration.givenMilliseconds(seconds * 1000);
   }
 
-  static ofMinutes(minutes: number): Duration {
-    return Duration.ofSeconds(minutes * 60);
+  static givenMinutes(minutes: number): Duration {
+    return Duration.givenSeconds(minutes * 60);
   }
 
-  static ofHours(hours: number): Duration {
-    return Duration.ofMinutes(hours * 60);
+  static givenHours(hours: number): Duration {
+    return Duration.givenMinutes(hours * 60);
   }
 
-  static ofDays(days: number): Duration {
-    return Duration.ofHours(days * 24);
+  static givenDays(days: number): Duration {
+    return Duration.givenHours(days * 24);
   }
 
-  static ofTimeBetweenInstants(start: Instant, end: Instant): Duration {
+  static givenInstantRange(start: Instant, end: Instant): Duration {
     return new Duration(
       end.toEpochMilliseconds() - start.toEpochMilliseconds()
     );

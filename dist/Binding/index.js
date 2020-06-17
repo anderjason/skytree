@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Binding = void 0;
 const ManagedObject_1 = require("../ManagedObject");
 class Binding extends ManagedObject_1.ManagedObject {
     constructor(input, output, converter) {
@@ -8,7 +9,7 @@ class Binding extends ManagedObject_1.ManagedObject {
         this.output = output;
         this._converter = converter;
     }
-    static ofObservables(input, output, converter) {
+    static givenObservables(input, output, converter) {
         return new Binding(input, output, converter);
     }
     initManagedObject() {

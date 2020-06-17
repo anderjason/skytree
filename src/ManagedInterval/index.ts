@@ -3,7 +3,10 @@ import { ManagedObject } from "../ManagedObject";
 import { Handle } from "../Handle";
 
 export class ManagedInterval extends ManagedObject {
-  static ofFunction(callback: Function, duration: Duration): ManagedInterval {
+  static givenCallback(
+    callback: Function,
+    duration: Duration
+  ): ManagedInterval {
     return new ManagedInterval(callback, duration);
   }
 
@@ -28,7 +31,7 @@ export class ManagedInterval extends ManagedObject {
     }, this._duration.toMilliseconds());
 
     this.addHandle(
-      Handle.ofFunction(() => {
+      Handle.givenReleaseFunction(() => {
         if (this._interval != null) {
           clearInterval(this._interval);
           this._interval = undefined;

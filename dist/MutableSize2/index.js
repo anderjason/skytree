@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MutableSize2 = void 0;
 const Size2_1 = require("../Size2");
 class MutableSize2 extends Size2_1.Size2 {
-    static ofWidthHeight(width, height) {
+    static givenWidthHeight(width, height) {
         return new MutableSize2(width, height);
     }
-    static ofSize2(size) {
+    static givenSize2(size) {
         return new MutableSize2(size.width, size.height);
     }
     static ofZero() {

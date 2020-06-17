@@ -5,60 +5,60 @@ import { Instant } from "../Instant";
 
 describe("Duration", () => {
   it("can be created from milliseconds", () => {
-    const duration = Duration.ofMilliseconds(100);
+    const duration = Duration.givenMilliseconds(100);
     assert(duration.toMilliseconds() === 100);
   });
 
   it("can be created from seconds", () => {
-    const duration = Duration.ofSeconds(10);
+    const duration = Duration.givenSeconds(10);
     assert(duration.toMilliseconds() === 10000);
   });
 
   it("can be created from minutes", () => {
-    const duration = Duration.ofMinutes(1);
+    const duration = Duration.givenMinutes(1);
     assert(duration.toSeconds() === 60);
   });
 
   it("can be created from hours", () => {
-    const duration = Duration.ofHours(1);
+    const duration = Duration.givenHours(1);
     assert(duration.toMinutes() === 60);
   });
 
   it("can be created from days", () => {
-    const duration = Duration.ofDays(1);
+    const duration = Duration.givenDays(1);
     assert(duration.toHours() === 24);
   });
 
   it("can be created from the time between two instants", () => {
-    const start = Instant.ofEpochMilliseconds(1586569320000);
-    const end = Instant.ofEpochMilliseconds(1586569500000);
+    const start = Instant.givenEpochMilliseconds(1586569320000);
+    const end = Instant.givenEpochMilliseconds(1586569500000);
 
-    const duration = Duration.ofTimeBetweenInstants(start, end);
+    const duration = Duration.givenInstantRange(start, end);
     assert(duration.toMinutes() === 3);
   });
 
   it("can be converted to milliseconds", () => {
-    const duration = Duration.ofSeconds(0.5);
+    const duration = Duration.givenSeconds(0.5);
     assert(duration.toMilliseconds() === 500);
   });
 
   it("can be converted to seconds", () => {
-    const duration = Duration.ofMilliseconds(500);
+    const duration = Duration.givenMilliseconds(500);
     assert(duration.toSeconds() === 0.5);
   });
 
   it("can be converted to minutes", () => {
-    const duration = Duration.ofSeconds(30);
+    const duration = Duration.givenSeconds(30);
     assert(duration.toMinutes() === 0.5);
   });
 
   it("can be converted to hours", () => {
-    const duration = Duration.ofMinutes(30);
+    const duration = Duration.givenMinutes(30);
     assert(duration.toHours() === 0.5);
   });
 
   it("can be converted to days", () => {
-    const duration = Duration.ofMilliseconds(500);
+    const duration = Duration.givenMilliseconds(500);
     assert(duration.toSeconds() === 0.5);
   });
 
@@ -67,11 +67,11 @@ describe("Duration", () => {
 
     const delayMs = 50;
 
-    await Duration.ofMilliseconds(delayMs).toDelay();
+    await Duration.givenMilliseconds(delayMs).toDelay();
 
     const end = Instant.ofNow();
 
-    const elapsed = Duration.ofTimeBetweenInstants(start, end);
+    const elapsed = Duration.givenInstantRange(start, end);
     const deltaFromExpectedMs = Math.abs(delayMs - elapsed.toMilliseconds());
 
     assert(deltaFromExpectedMs < 5);

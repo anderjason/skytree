@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Color = void 0;
 const hsbGivenRgbFloat_1 = require("./_internal/hsbGivenRgbFloat");
 const hslGivenRgbFloat_1 = require("./_internal/hslGivenRgbFloat");
 const labGivenHcl_1 = require("./_internal/labGivenHcl");
@@ -25,27 +26,27 @@ class Color {
         this._labColor = labColor;
         this._alpha = alpha;
     }
-    static ofHslFloat(hslColor, alpha = Ratio_1.Ratio.ofDecimal(1)) {
-        return Color.ofRgbFloat(rgbFloatGivenHsl_1.rgbFloatGivenHsl(hslColor), alpha);
+    static givenHslFloat(hslColor, alpha = Ratio_1.Ratio.givenDecimal(1)) {
+        return Color.givenRgbFloat(rgbFloatGivenHsl_1.rgbFloatGivenHsl(hslColor), alpha);
     }
-    static ofHex(hexColor) {
-        return Color.ofRgbFloat(rgbFloatGivenHex_1.rgbFloatGivenHex(hexColor));
+    static givenHex(hexColor) {
+        return Color.givenRgbFloat(rgbFloatGivenHex_1.rgbFloatGivenHex(hexColor));
     }
-    static ofHclFloat(hclColor, alpha = Ratio_1.Ratio.ofDecimal(1)) {
+    static givenHclFloat(hclColor, alpha = Ratio_1.Ratio.givenDecimal(1)) {
         return new Color(labGivenHcl_1.labGivenHcl(hclColor), alpha);
     }
-    static ofRgbFloat(rgbColor, alpha = Ratio_1.Ratio.ofDecimal(1)) {
+    static givenRgbFloat(rgbColor, alpha = Ratio_1.Ratio.givenDecimal(1)) {
         const labColor = labGivenXyz_1.labGivenXyz(xyzGivenRgbFloat_1.xyzGivenRgbFloat(rgbColor));
         return new Color(labColor, alpha);
     }
-    static ofRgb255(r, g, b, a) {
-        return Color.ofRgbFloat({
-            r: Ratio_1.Ratio.ofDecimal(numberWithRangeMap_1.numberWithRangeMap(r, 0, 255, 0, 1)),
-            g: Ratio_1.Ratio.ofDecimal(numberWithRangeMap_1.numberWithRangeMap(g, 0, 255, 0, 1)),
-            b: Ratio_1.Ratio.ofDecimal(numberWithRangeMap_1.numberWithRangeMap(b, 0, 255, 0, 1)),
+    static givenRgb255(r, g, b, a) {
+        return Color.givenRgbFloat({
+            r: Ratio_1.Ratio.givenDecimal(numberWithRangeMap_1.numberWithRangeMap(r, 0, 255, 0, 1)),
+            g: Ratio_1.Ratio.givenDecimal(numberWithRangeMap_1.numberWithRangeMap(g, 0, 255, 0, 1)),
+            b: Ratio_1.Ratio.givenDecimal(numberWithRangeMap_1.numberWithRangeMap(b, 0, 255, 0, 1)),
         }, a);
     }
-    static ofNumber(intColor, alpha = 1) {
+    static givenColorNumber(intColor, alpha = 1) {
         let alphaString;
         if (alpha === 1) {
             alphaString = "";
@@ -56,7 +57,7 @@ class Color {
                 .padStart(2, "0");
         }
         const hex = `#${intColor.toString(16).padStart(6, "0")}${alphaString}`;
-        return Color.ofHex(hex);
+        return Color.givenHex(hex);
     }
     isEqual(otherColor) {
         if (otherColor == null) {
@@ -95,7 +96,7 @@ class Color {
         if (absoluteHue < 0) {
             absoluteHue += 1;
         }
-        return this.withHue(Ratio_1.Ratio.ofDecimal(absoluteHue));
+        return this.withHue(Ratio_1.Ratio.givenDecimal(absoluteHue));
     }
     withSaturation(absoluteSaturation) {
         let { l, h } = hclGivenLab_1.hclGivenLab(this._labColor);
@@ -105,7 +106,7 @@ class Color {
         const hcl = hclGivenLab_1.hclGivenLab(this._labColor);
         let c = hcl.c.toDecimal();
         c = numberWithHardLimit_1.numberWithHardLimit(c + relativeSaturation.toDecimal(), 0, 1);
-        return this.withSaturation(Ratio_1.Ratio.ofDecimal(c));
+        return this.withSaturation(Ratio_1.Ratio.givenDecimal(c));
     }
     withAlpha(absoluteAlpha) {
         return new Color(this._labColor, absoluteAlpha);
@@ -156,7 +157,7 @@ class Color {
     toHighContrastColor() {
         return highContrastColorGivenColor_1.highContrastColorGivenColor(this);
     }
-    toNumber() {
+    toColorNumber() {
         return parseInt(this.toHexString().slice(1, 7), 16);
     }
 }

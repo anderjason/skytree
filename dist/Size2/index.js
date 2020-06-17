@@ -1,15 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Size2 = void 0;
 class Size2 {
     constructor(width, height) {
         this._width = width;
         this._height = height;
     }
-    static ofWidthHeight(width, height) {
+    static givenWidthHeight(width, height) {
         return new Size2(width, height);
     }
     static ofZero() {
         return new Size2(0, 0);
+    }
+    static isEqual(newValue, oldValue) {
+        if (newValue == null || oldValue == null) {
+            return false;
+        }
+        return newValue.isEqual(oldValue);
     }
     get width() {
         return this._width;

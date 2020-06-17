@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.hslGivenRgbFloat = void 0;
 const Ratio_1 = require("../../Ratio");
 function hslGivenRgbFloat(rgbColor) {
     const r = rgbColor.r.toDecimal();
@@ -45,9 +46,9 @@ function hslGivenRgbFloat(rgbColor) {
         }
     }
     return {
-        h: Ratio_1.Ratio.ofDecimal(h),
-        s: Ratio_1.Ratio.ofDecimal(s),
-        l: Ratio_1.Ratio.ofDecimal(l),
+        h: Ratio_1.Ratio.givenDecimal(h),
+        s: Ratio_1.Ratio.givenDecimal(s),
+        l: Ratio_1.Ratio.givenDecimal(l),
     };
 }
 exports.hslGivenRgbFloat = hslGivenRgbFloat;

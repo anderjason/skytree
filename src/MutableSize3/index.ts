@@ -1,7 +1,7 @@
 import { Size3 } from "../Size3";
 
 export class MutableSize3 extends Size3 {
-  static ofWidthHeightDepth(
+  static givenWidthHeightDepth(
     width: number,
     height: number,
     depth: number
@@ -9,7 +9,7 @@ export class MutableSize3 extends Size3 {
     return new MutableSize3(width, height, depth);
   }
 
-  static ofSize3(size: Size3): MutableSize3 {
+  static givenSize3(size: Size3): MutableSize3 {
     return new MutableSize3(size.width, size.height, size.depth);
   }
 

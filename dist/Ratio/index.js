@@ -1,32 +1,33 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Ratio = void 0;
 const Percent_1 = require("../Percent");
 class Ratio {
     constructor(decimalValue) {
         this._value = decimalValue;
     }
-    static ofDecimal(decimalValue) {
+    static givenDecimal(decimalValue) {
         return new Ratio(decimalValue);
     }
-    static ofFraction(numerator, denominator) {
+    static givenFraction(numerator, denominator) {
         if (denominator == 0) {
             throw new Error("Denominator must not be 0");
         }
         return new Ratio(numerator / denominator);
     }
-    static ofValueAndRange(value, min, max) {
+    static givenValueAndRange(value, min, max) {
         if (min > max) {
             throw new Error("Min must be less than max");
         }
         if (value < min) {
-            return Ratio.ofDecimal(0);
+            return Ratio.givenDecimal(0);
         }
         if (value > max) {
-            return Ratio.ofDecimal(1);
+            return Ratio.givenDecimal(1);
         }
-        return Ratio.ofFraction(value - min, max - min);
+        return Ratio.givenFraction(value - min, max - min);
     }
-    static ofPercent(percent) {
+    static givenPercent(percent) {
         const n = percent.toNumber();
         return new Ratio(n / 100);
     }
@@ -34,7 +35,7 @@ class Ratio {
         return this._value;
     }
     toPercent() {
-        return Percent_1.Percent.ofRatio(this);
+        return Percent_1.Percent.givenRatio(this);
     }
     toString() {
         return this._value.toString();
@@ -43,13 +44,13 @@ class Ratio {
         return this.withAddedDecimal(addRatio.toDecimal());
     }
     withAddedDecimal(decimal) {
-        return Ratio.ofDecimal(this._value + decimal);
+        return Ratio.givenDecimal(this._value + decimal);
     }
     withMultipliedRatio(multiplyRatio) {
         return this.withMultipliedDecimal(multiplyRatio.toDecimal());
     }
     withMultipliedDecimal(decimal) {
-        return Ratio.ofDecimal(this._value * decimal);
+        return Ratio.givenDecimal(this._value * decimal);
     }
 }
 exports.Ratio = Ratio;

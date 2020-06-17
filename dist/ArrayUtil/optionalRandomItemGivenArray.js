@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.optionalRandomItemGivenArray = void 0;
 function optionalRandomItemGivenArray(input) {
     if (input == null) {
         return undefined;

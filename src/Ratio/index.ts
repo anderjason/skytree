@@ -3,11 +3,11 @@ import { Percent } from "../Percent";
 export class Ratio {
   private _value: number;
 
-  static ofDecimal(decimalValue: number): Ratio {
+  static givenDecimal(decimalValue: number): Ratio {
     return new Ratio(decimalValue);
   }
 
-  static ofFraction(numerator: number, denominator: number): Ratio {
+  static givenFraction(numerator: number, denominator: number): Ratio {
     if (denominator == 0) {
       throw new Error("Denominator must not be 0");
     }
@@ -15,23 +15,23 @@ export class Ratio {
     return new Ratio(numerator / denominator);
   }
 
-  static ofValueAndRange(value: number, min: number, max: number): Ratio {
+  static givenValueAndRange(value: number, min: number, max: number): Ratio {
     if (min > max) {
       throw new Error("Min must be less than max");
     }
 
     if (value < min) {
-      return Ratio.ofDecimal(0);
+      return Ratio.givenDecimal(0);
     }
 
     if (value > max) {
-      return Ratio.ofDecimal(1);
+      return Ratio.givenDecimal(1);
     }
 
-    return Ratio.ofFraction(value - min, max - min);
+    return Ratio.givenFraction(value - min, max - min);
   }
 
-  static ofPercent(percent: Percent): Ratio {
+  static givenPercent(percent: Percent): Ratio {
     const n = percent.toNumber();
 
     return new Ratio(n / 100);
@@ -46,7 +46,7 @@ export class Ratio {
   }
 
   toPercent(): Percent {
-    return Percent.ofRatio(this);
+    return Percent.givenRatio(this);
   }
 
   toString(): string {
@@ -58,7 +58,7 @@ export class Ratio {
   }
 
   withAddedDecimal(decimal: number): Ratio {
-    return Ratio.ofDecimal(this._value + decimal);
+    return Ratio.givenDecimal(this._value + decimal);
   }
 
   withMultipliedRatio(multiplyRatio: Ratio): Ratio {
@@ -66,6 +66,6 @@ export class Ratio {
   }
 
   withMultipliedDecimal(decimal: number): Ratio {
-    return Ratio.ofDecimal(this._value * decimal);
+    return Ratio.givenDecimal(this._value * decimal);
   }
 }

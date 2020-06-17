@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.hsbStringGivenHsb = void 0;
 function hsbStringGivenHsb(hsbColor) {
     const h = Math.round(hsbColor.h * 359);
     const s = Math.round(hsbColor.s * 100);

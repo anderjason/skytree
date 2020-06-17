@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.rgbStringGivenRgbFloat = void 0;
 function rgbStringGivenRgbFloat(rgbColor, alpha) {
     const r = Math.round(rgbColor.r.toDecimal() * 255);
     const g = Math.round(rgbColor.g.toDecimal() * 255);

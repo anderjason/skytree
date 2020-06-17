@@ -33,12 +33,12 @@ export declare class Color {
     private _labColor;
     private _alpha;
     private _hexString;
-    static ofHslFloat(hslColor: HslColor, alpha?: Ratio): Color;
-    static ofHex(hexColor: string): Color;
-    static ofHclFloat(hclColor: HclColor, alpha?: Ratio): Color;
-    static ofRgbFloat(rgbColor: RgbFloatColor, alpha?: Ratio): Color;
-    static ofRgb255(r: number, g: number, b: number, a?: Ratio): Color;
-    static ofNumber(intColor: number, alpha?: number): Color;
+    static givenHslFloat(hslColor: HslColor, alpha?: Ratio): Color;
+    static givenHex(hexColor: string): Color;
+    static givenHclFloat(hclColor: HclColor, alpha?: Ratio): Color;
+    static givenRgbFloat(rgbColor: RgbFloatColor, alpha?: Ratio): Color;
+    static givenRgb255(r: number, g: number, b: number, a?: Ratio): Color;
+    static givenColorNumber(intColor: number, alpha?: number): Color;
     private constructor();
     isEqual(otherColor: Color): boolean;
     withLightness(absoluteLightness: number): Color;
@@ -61,5 +61,5 @@ export declare class Color {
     toHsbString(): string;
     toHclColor(): HclColor;
     toHighContrastColor(): Color;
-    toNumber(): number;
+    toColorNumber(): number;
 }

@@ -13,7 +13,7 @@ describe("SimpleEvent", () => {
   });
 
   it("can take an initial value", () => {
-    const event = SimpleEvent.ofLastValue(5);
+    const event = SimpleEvent.givenLastValue(5);
 
     let result: number;
 
@@ -41,7 +41,11 @@ describe("SimpleEvent", () => {
     assert(eventCount === 1);
 
     event.emit(10);
+
+    // @ts-ignore
     assert(result === 10);
+
+    // @ts-ignore
     assert(eventCount === 2);
 
     handle.release();
@@ -59,11 +63,15 @@ describe("SimpleEvent", () => {
     assert(eventCount === 0);
 
     event.emit(5);
+
+    // @ts-ignore
     assert(eventCount === 1);
 
     handle.release();
 
     event.emit(10);
+
+    // @ts-ignore
     assert(eventCount === 1); // no change
   });
 

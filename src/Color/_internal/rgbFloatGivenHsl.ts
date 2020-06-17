@@ -50,8 +50,8 @@ export function rgbFloatGivenHsl(hslColor: HslColor): RgbFloatColor {
   var1 = 2 * l - var2;
 
   return {
-    r: Ratio.ofDecimal(getRgbComponent(var1, var2, h + 1 / 3)),
-    g: Ratio.ofDecimal(getRgbComponent(var1, var2, h)),
-    b: Ratio.ofDecimal(getRgbComponent(var1, var2, h - 1 / 3)),
+    r: Ratio.givenDecimal(getRgbComponent(var1, var2, h + 1 / 3)),
+    g: Ratio.givenDecimal(getRgbComponent(var1, var2, h)),
+    b: Ratio.givenDecimal(getRgbComponent(var1, var2, h - 1 / 3)),
   };
 }

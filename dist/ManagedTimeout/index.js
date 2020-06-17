@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ManagedTimeout = void 0;
 const ManagedObject_1 = require("../ManagedObject");
 const Handle_1 = require("../Handle");
 class ManagedTimeout extends ManagedObject_1.ManagedObject {
@@ -9,7 +10,7 @@ class ManagedTimeout extends ManagedObject_1.ManagedObject {
         this._callback = callback;
         this._duration = duration;
     }
-    static ofFunction(callback, duration) {
+    static givenCallback(callback, duration) {
         return new ManagedTimeout(callback, duration);
     }
     get didFire() {
@@ -25,7 +26,7 @@ class ManagedTimeout extends ManagedObject_1.ManagedObject {
                 console.warn(err);
             }
         }, this._duration.toMilliseconds());
-        this.addHandle(Handle_1.Handle.ofFunction(() => {
+        this.addHandle(Handle_1.Handle.givenReleaseFunction(() => {
             if (this._timeout != null) {
                 clearTimeout(this._timeout);
                 this._timeout = undefined;

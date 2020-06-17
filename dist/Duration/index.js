@@ -1,25 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Duration = void 0;
 class Duration {
     constructor(milliseconds) {
         this._milliseconds = milliseconds;
     }
-    static ofMilliseconds(milliseconds) {
+    static givenMilliseconds(milliseconds) {
         return new Duration(milliseconds);
     }
-    static ofSeconds(seconds) {
-        return Duration.ofMilliseconds(seconds * 1000);
+    static givenSeconds(seconds) {
+        return Duration.givenMilliseconds(seconds * 1000);
     }
-    static ofMinutes(minutes) {
-        return Duration.ofSeconds(minutes * 60);
+    static givenMinutes(minutes) {
+        return Duration.givenSeconds(minutes * 60);
     }
-    static ofHours(hours) {
-        return Duration.ofMinutes(hours * 60);
+    static givenHours(hours) {
+        return Duration.givenMinutes(hours * 60);
     }
-    static ofDays(days) {
-        return Duration.ofHours(days * 24);
+    static givenDays(days) {
+        return Duration.givenHours(days * 24);
     }
-    static ofTimeBetweenInstants(start, end) {
+    static givenInstantRange(start, end) {
         return new Duration(end.toEpochMilliseconds() - start.toEpochMilliseconds());
     }
     toMilliseconds() {

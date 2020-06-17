@@ -3,15 +3,15 @@ import { Ratio } from "../Ratio";
 export class Percent {
   private _value: number;
 
-  static ofNumber(value: number): Percent {
+  static givenNumber(value: number): Percent {
     return new Percent(value);
   }
 
-  static ofRatio(ratio: Ratio): Percent {
+  static givenRatio(ratio: Ratio): Percent {
     return new Percent(ratio.toDecimal() * 100);
   }
 
-  static ofString(value: string): Percent {
+  static givenString(value: string): Percent {
     return new Percent(parseFloat(value));
   }
 
@@ -24,7 +24,7 @@ export class Percent {
   }
 
   toRatio(): Ratio {
-    return Ratio.ofPercent(this);
+    return Ratio.givenPercent(this);
   }
 
   toNumber(): number {

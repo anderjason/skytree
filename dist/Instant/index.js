@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Instant = void 0;
 class Instant {
     constructor(epochMilliseconds) {
         this._epochMilliseconds = epochMilliseconds;
@@ -7,7 +8,7 @@ class Instant {
     static ofNow() {
         return new Instant(new Date().getTime());
     }
-    static ofEpochMilliseconds(epochMilliseconds) {
+    static givenEpochMilliseconds(epochMilliseconds) {
         if (typeof epochMilliseconds === "string") {
             return new Instant(parseInt(epochMilliseconds));
         }

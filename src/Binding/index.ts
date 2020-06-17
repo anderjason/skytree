@@ -7,7 +7,7 @@ export class Binding<TI, TO> extends ManagedObject {
 
   private _converter: (value: TI) => TO;
 
-  static ofObservables<TI, TO>(
+  static givenObservables<TI, TO>(
     input: Observable<TI>,
     output: Observable<TO>,
     converter: (value: TI) => TO

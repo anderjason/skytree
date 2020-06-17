@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.stringOfRandomCharacters = void 0;
 const defaultCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 function stringOfRandomCharacters(length, chars = defaultCharacters) {
     const result = [];

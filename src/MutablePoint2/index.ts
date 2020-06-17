@@ -1,11 +1,11 @@
 import { Point2 } from "../Point2";
 
 export class MutablePoint2 extends Point2 {
-  static ofXY(x: number, y: number): MutablePoint2 {
+  static givenXY(x: number, y: number): MutablePoint2 {
     return new MutablePoint2(x, y);
   }
 
-  static ofPoint2(point: Point2): MutablePoint2 {
+  static givenPoint2(point: Point2): MutablePoint2 {
     return new MutablePoint2(point.x, point.y);
   }
 

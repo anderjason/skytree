@@ -60,44 +60,44 @@ export class Color {
   private _alpha: Ratio;
   private _hexString: string | undefined;
 
-  static ofHslFloat(
+  static givenHslFloat(
     hslColor: HslColor,
-    alpha: Ratio = Ratio.ofDecimal(1)
+    alpha: Ratio = Ratio.givenDecimal(1)
   ): Color {
-    return Color.ofRgbFloat(rgbFloatGivenHsl(hslColor), alpha);
+    return Color.givenRgbFloat(rgbFloatGivenHsl(hslColor), alpha);
   }
 
-  static ofHex(hexColor: string): Color {
-    return Color.ofRgbFloat(rgbFloatGivenHex(hexColor));
+  static givenHex(hexColor: string): Color {
+    return Color.givenRgbFloat(rgbFloatGivenHex(hexColor));
   }
 
-  static ofHclFloat(
+  static givenHclFloat(
     hclColor: HclColor,
-    alpha: Ratio = Ratio.ofDecimal(1)
+    alpha: Ratio = Ratio.givenDecimal(1)
   ): Color {
     return new Color(labGivenHcl(hclColor), alpha);
   }
 
-  static ofRgbFloat(
+  static givenRgbFloat(
     rgbColor: RgbFloatColor,
-    alpha: Ratio = Ratio.ofDecimal(1)
+    alpha: Ratio = Ratio.givenDecimal(1)
   ): Color {
     const labColor = labGivenXyz(xyzGivenRgbFloat(rgbColor));
     return new Color(labColor, alpha);
   }
 
-  static ofRgb255(r: number, g: number, b: number, a?: Ratio): Color {
-    return Color.ofRgbFloat(
+  static givenRgb255(r: number, g: number, b: number, a?: Ratio): Color {
+    return Color.givenRgbFloat(
       {
-        r: Ratio.ofDecimal(numberWithRangeMap(r, 0, 255, 0, 1)),
-        g: Ratio.ofDecimal(numberWithRangeMap(g, 0, 255, 0, 1)),
-        b: Ratio.ofDecimal(numberWithRangeMap(b, 0, 255, 0, 1)),
+        r: Ratio.givenDecimal(numberWithRangeMap(r, 0, 255, 0, 1)),
+        g: Ratio.givenDecimal(numberWithRangeMap(g, 0, 255, 0, 1)),
+        b: Ratio.givenDecimal(numberWithRangeMap(b, 0, 255, 0, 1)),
       },
       a
     );
   }
 
-  static ofNumber(intColor: number, alpha: number = 1): Color {
+  static givenColorNumber(intColor: number, alpha: number = 1): Color {
     let alphaString;
 
     if (alpha === 1) {
@@ -111,7 +111,7 @@ export class Color {
     }
 
     const hex = `#${intColor.toString(16).padStart(6, "0")}${alphaString}`;
-    return Color.ofHex(hex);
+    return Color.givenHex(hex);
   }
 
   private constructor(labColor: LabColor, alpha: Ratio) {
@@ -179,7 +179,7 @@ export class Color {
       absoluteHue += 1;
     }
 
-    return this.withHue(Ratio.ofDecimal(absoluteHue));
+    return this.withHue(Ratio.givenDecimal(absoluteHue));
   }
 
   withSaturation(absoluteSaturation: Ratio): Color {
@@ -194,7 +194,7 @@ export class Color {
 
     c = numberWithHardLimit(c + relativeSaturation.toDecimal(), 0, 1);
 
-    return this.withSaturation(Ratio.ofDecimal(c));
+    return this.withSaturation(Ratio.givenDecimal(c));
   }
 
   withAlpha(absoluteAlpha: Ratio): Color {
@@ -261,7 +261,7 @@ export class Color {
     return highContrastColorGivenColor(this);
   }
 
-  toNumber(): number {
+  toColorNumber(): number {
     return parseInt(this.toHexString().slice(1, 7), 16);
   }
 }

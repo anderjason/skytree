@@ -4,6 +4,7 @@ export declare class Size3 {
     protected _depth: number;
     static ofWidthHeightDepth(width: number, height: number, depth: number): Size3;
     static ofZero(): Size3;
+    static isEqual(newValue: Size3, oldValue: Size3): boolean;
     protected constructor(width: number, height: number, depth: number);
     get width(): number;
     get height(): number;

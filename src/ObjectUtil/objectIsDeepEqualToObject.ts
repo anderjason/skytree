@@ -1,4 +1,4 @@
-export function objectIsDeepEqual(actual: any, expected: any): boolean {
+export function objectIsDeepEqualToObject(actual: any, expected: any): boolean {
   if (actual === expected) {
     return true;
   } else if (actual instanceof Date && expected instanceof Date) {
@@ -55,7 +55,7 @@ function objEquiv(a: any, b: any) {
     }
     a = Array.prototype.slice.call(a);
     b = Array.prototype.slice.call(b);
-    return objectIsDeepEqual(a, b);
+    return objectIsDeepEqualToObject(a, b);
   }
 
   if (isBuffer(a)) {
@@ -100,7 +100,7 @@ function objEquiv(a: any, b: any) {
 
   for (i = ka.length - 1; i >= 0; i--) {
     key = ka[i];
-    if (!objectIsDeepEqual(a[key], b[key])) {
+    if (!objectIsDeepEqualToObject(a[key], b[key])) {
       return false;
     }
   }

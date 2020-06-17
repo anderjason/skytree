@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.rgbFloatGivenHsl = void 0;
 const Ratio_1 = require("../../Ratio");
 function getRgbComponent(v1, v2, vH) {
     if (vH < 0) {
@@ -40,9 +41,9 @@ function rgbFloatGivenHsl(hslColor) {
     }
     var1 = 2 * l - var2;
     return {
-        r: Ratio_1.Ratio.ofDecimal(getRgbComponent(var1, var2, h + 1 / 3)),
-        g: Ratio_1.Ratio.ofDecimal(getRgbComponent(var1, var2, h)),
-        b: Ratio_1.Ratio.ofDecimal(getRgbComponent(var1, var2, h - 1 / 3)),
+        r: Ratio_1.Ratio.givenDecimal(getRgbComponent(var1, var2, h + 1 / 3)),
+        g: Ratio_1.Ratio.givenDecimal(getRgbComponent(var1, var2, h)),
+        b: Ratio_1.Ratio.givenDecimal(getRgbComponent(var1, var2, h - 1 / 3)),
     };
 }
 exports.rgbFloatGivenHsl = rgbFloatGivenHsl;

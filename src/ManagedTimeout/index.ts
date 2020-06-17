@@ -3,7 +3,7 @@ import { Duration } from "../Duration";
 import { Handle } from "../Handle";
 
 export class ManagedTimeout extends ManagedObject {
-  static ofFunction(callback: Function, duration: Duration): ManagedTimeout {
+  static givenCallback(callback: Function, duration: Duration): ManagedTimeout {
     return new ManagedTimeout(callback, duration);
   }
 
@@ -34,7 +34,7 @@ export class ManagedTimeout extends ManagedObject {
     }, this._duration.toMilliseconds());
 
     this.addHandle(
-      Handle.ofFunction(() => {
+      Handle.givenReleaseFunction(() => {
         if (this._timeout != null) {
           clearTimeout(this._timeout);
           this._timeout = undefined;

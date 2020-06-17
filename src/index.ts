@@ -3,11 +3,14 @@ import { Binding } from "./Binding";
 import { Box2 } from "./Box2";
 import { Box3 } from "./Box3";
 import { Color } from "./Color";
+import { ColorGradient } from "./ColorGradient";
+import { DataSize } from "./DataSize";
 import { Duration } from "./Duration";
 import { Handle } from "./Handle";
 import { Instant } from "./Instant";
 import { ManagedInterval } from "./ManagedInterval";
 import { ManagedObject } from "./ManagedObject";
+import { ManagedTimeout } from "./ManagedTimeout";
 import { MutablePoint2 } from "./MutablePoint2";
 import { MutablePoint3 } from "./MutablePoint3";
 import { MutableSize2 } from "./MutableSize2";
@@ -22,11 +25,11 @@ import { Point3 } from "./Point3";
 import { PromiseUtil } from "./PromiseUtil";
 import { RateLimitedFunction } from "./RateLimitedFunction";
 import { Ratio } from "./Ratio";
+import { SetUtil } from "./SetUtil";
 import { SimpleEvent } from "./SimpleEvent";
 import { Size2 } from "./Size2";
 import { Size3 } from "./Size3";
 import { StringUtil } from "./StringUtil";
-import { ManagedTimeout } from "./ManagedTimeout";
 
 export {
   ArrayUtil,
@@ -34,6 +37,8 @@ export {
   Box2,
   Box3,
   Color,
+  ColorGradient,
+  DataSize,
   Duration,
   Handle,
   Instant,
@@ -54,6 +59,7 @@ export {
   PromiseUtil,
   RateLimitedFunction,
   Ratio,
+  SetUtil,
   SimpleEvent,
   Size2,
   Size3,

@@ -1,8 +1,9 @@
 export declare class Size2 {
     protected _width: number;
     protected _height: number;
-    static ofWidthHeight(width: number, height: number): Size2;
+    static givenWidthHeight(width: number, height: number): Size2;
     static ofZero(): Size2;
+    static isEqual(newValue: Size2, oldValue: Size2): boolean;
     protected constructor(width: number, height: number);
     get width(): number;
     get height(): number;

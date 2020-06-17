@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.distanceGivenColors = void 0;
 function distanceGivenColors(colorA, colorB) {
     const labA = colorA.toLabColor();
     const labB = colorB.toLabColor();

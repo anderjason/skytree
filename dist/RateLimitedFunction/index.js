@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RateLimitedFunction = void 0;
 class RateLimitedFunction {
     constructor(definition) {
         this._count = 0;
@@ -71,7 +72,7 @@ class RateLimitedFunction {
         this._isRunning = false;
         this._wasInvokedWhileRunning = false;
     }
-    static ofDefinition(definition) {
+    static givenDefinition(definition) {
         return new RateLimitedFunction(definition);
     }
 }

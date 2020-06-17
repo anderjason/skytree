@@ -25,8 +25,8 @@ export function rgbFloatGivenHex(hexColor: string): RgbFloatColor {
   const b = u & 0xff;
 
   return {
-    r: Ratio.ofDecimal(r / 255),
-    g: Ratio.ofDecimal(g / 255),
-    b: Ratio.ofDecimal(b / 255),
+    r: Ratio.givenDecimal(r / 255),
+    g: Ratio.givenDecimal(g / 255),
+    b: Ratio.givenDecimal(b / 255),
   };
 }

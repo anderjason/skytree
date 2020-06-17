@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Size3 = void 0;
 class Size3 {
     constructor(width, height, depth) {
         this._width = width;
@@ -11,6 +12,12 @@ class Size3 {
     }
     static ofZero() {
         return new Size3(0, 0, 0);
+    }
+    static isEqual(newValue, oldValue) {
+        if (newValue == null || oldValue == null) {
+            return false;
+        }
+        return newValue.isEqual(oldValue);
     }
     get width() {
         return this._width;

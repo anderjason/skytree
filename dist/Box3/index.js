@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Box3 = void 0;
 const Size3_1 = require("../Size3");
 const Point3_1 = require("../Point3");
 class Box3 {
@@ -7,10 +8,10 @@ class Box3 {
         this.center = center;
         this.size = size;
     }
-    static ofCenterSize(center, size) {
+    static givenCenterSize(center, size) {
         return new Box3(center, size);
     }
-    static ofCorners(pointA, pointB) {
+    static givenCorners(pointA, pointB) {
         const minX = Math.min(pointA.x, pointB.x);
         const minY = Math.min(pointA.y, pointB.y);
         const minZ = Math.min(pointA.z, pointB.z);
@@ -18,8 +19,14 @@ class Box3 {
         const maxY = Math.max(pointA.y, pointB.y);
         const maxZ = Math.max(pointA.z, pointB.z);
         const size = Size3_1.Size3.ofWidthHeightDepth(maxX - minX, maxY - minY, maxZ - minZ);
-        const center = Point3_1.Point3.ofXYZ(minX + size.width / 2, minY + size.height / 2, minZ + size.depth / 2);
-        return this.ofCenterSize(center, size);
+        const center = Point3_1.Point3.givenXYZ(minX + size.width / 2, minY + size.height / 2, minZ + size.depth / 2);
+        return this.givenCenterSize(center, size);
+    }
+    static isEqual(newValue, oldValue) {
+        if (newValue == null || oldValue == null) {
+            return false;
+        }
+        return newValue.isEqual(oldValue);
     }
     get top() {
         return this.center.y - this.size.height / 2;

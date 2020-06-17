@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.xyzGivenRgbFloat = void 0;
 function xyzGivenRgbFloat(rgbFloatColor) {
     let r = rgbFloatColor.r.toDecimal();
     let g = rgbFloatColor.g.toDecimal();

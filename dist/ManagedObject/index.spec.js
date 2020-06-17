@@ -67,7 +67,7 @@ describe("ManagedObject", () => {
         let releaseCount = 0;
         class MySubclass extends _1.ManagedObject {
             initManagedObject() {
-                this.addHandle(Handle_1.Handle.ofFunction(() => {
+                this.addHandle(Handle_1.Handle.givenReleaseFunction(() => {
                     releaseCount += 1;
                 }));
             }
@@ -78,14 +78,18 @@ describe("ManagedObject", () => {
         assert(releaseCount === 0);
         handle1.release();
         handle1.release();
+        // @ts-ignore
         assert(releaseCount === 1); // second release has no effect
+        // @ts-ignore
         assert(instance.isInitialized === false);
         const handle2 = instance.init(); // init again
         assert(instance.isInitialized === true);
         assert(handle2 != null);
         assert(handle1 !== handle2); // different handle from the first init
         handle2.release();
+        // @ts-ignore
         assert(releaseCount === 2);
+        // @ts-ignore
         assert(instance.isInitialized === false);
     });
     it("has a list of child objects", () => {
@@ -106,6 +110,7 @@ describe("ManagedObject", () => {
         const childInstance = new MySubclass();
         assert(childInstance.isInitialized === false);
         parentInstance.addChild(childInstance);
+        // @ts-ignore
         assert(childInstance.isInitialized === true);
     });
     it("sets parent of objects when added as children", () => {
@@ -158,6 +163,7 @@ describe("ManagedObject", () => {
         parentInstance1.addChild(childInstance);
         assert(childInstance.isInitialized === true);
         parentInstance1.uninit();
+        // @ts-ignore
         assert(childInstance.isInitialized === false);
     });
     it("inits child objects when init is called", () => {
@@ -169,6 +175,7 @@ describe("ManagedObject", () => {
         parentInstance1.addChild(childInstance);
         assert(childInstance.isInitialized === false); // parent is not initialized yet
         parentInstance1.init();
+        // @ts-ignore
         assert(childInstance.isInitialized === true);
     });
 });

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.hsbGivenRgbFloat = void 0;
 function hsbGivenRgbFloat(rgbFloatColor) {
     const r = rgbFloatColor.r.toDecimal();
     const g = rgbFloatColor.g.toDecimal();

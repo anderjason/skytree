@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MutablePoint3 = void 0;
 const Point3_1 = require("../Point3");
 class MutablePoint3 extends Point3_1.Point3 {
-    static ofXYZ(x, y, z) {
+    static givenXYZ(x, y, z) {
         return new MutablePoint3(x, y, z);
     }
-    static ofPoint3(point) {
+    static givenPoint3(point) {
         return new MutablePoint3(point.x, point.y, point.z);
     }
     static ofZero() {

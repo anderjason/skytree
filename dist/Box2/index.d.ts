@@ -3,8 +3,10 @@ import { Size2 } from "../Size2";
 export declare class Box2 {
     readonly center: Point2;
     readonly size: Size2;
-    static ofCenterSize(center: Point2, size: Size2): Box2;
-    static ofCorners(pointA: Point2, pointB: Point2): Box2;
+    static givenCenterSize(center: Point2, size: Size2): Box2;
+    static givenOppositeCorners(pointA: Point2, pointB: Point2): Box2;
+    static givenTopLeftSize(topLeft: Point2, size: Size2): Box2;
+    static isEqual(newValue: Box2, oldValue: Box2): boolean;
     private constructor();
     get top(): number;
     get left(): number;

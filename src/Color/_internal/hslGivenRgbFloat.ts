@@ -47,8 +47,8 @@ export function hslGivenRgbFloat(rgbColor: RgbFloatColor): HslColor {
   }
 
   return {
-    h: Ratio.ofDecimal(h),
-    s: Ratio.ofDecimal(s),
-    l: Ratio.ofDecimal(l),
+    h: Ratio.givenDecimal(h),
+    s: Ratio.givenDecimal(s),
+    l: Ratio.givenDecimal(l),
   };
 }

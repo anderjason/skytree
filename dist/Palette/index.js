@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Palette = void 0;
 const ArrayUtil_1 = require("../ArrayUtil");
 class Palette {
     constructor(colors) {
@@ -14,7 +15,7 @@ class Palette {
         };
         this._colors = colors;
     }
-    static ofColors(colors) {
+    static givenColors(colors) {
         return new Palette(colors);
     }
     get colors() {

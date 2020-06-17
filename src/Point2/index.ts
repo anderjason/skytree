@@ -2,12 +2,20 @@ export class Point2 {
   protected _x: number;
   protected _y: number;
 
-  static ofXY(x: number, y: number): Point2 {
+  static givenXY(x: number, y: number): Point2 {
     return new Point2(x, y);
   }
 
   static ofZero(): Point2 {
     return new Point2(0, 0);
+  }
+
+  static isEqual(newValue: Point2, oldValue: Point2): boolean {
+    if (newValue == null || oldValue == null) {
+      return false;
+    }
+
+    return newValue.isEqual(oldValue);
   }
 
   protected constructor(x: number, y: number) {

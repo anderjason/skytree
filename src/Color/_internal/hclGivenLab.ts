@@ -13,8 +13,8 @@ export function hclGivenLab(labColor: LabColor): HclColor {
   }
 
   return {
-    h: Ratio.ofDecimal(h / 360),
-    c: Ratio.ofDecimal(c / 140),
-    l: Ratio.ofDecimal(l / 100),
+    h: Ratio.givenDecimal(h / 360),
+    c: Ratio.givenDecimal(c / 140),
+    l: Ratio.givenDecimal(l / 100),
   };
 }

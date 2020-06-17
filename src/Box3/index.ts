@@ -5,11 +5,11 @@ export class Box3 {
   readonly center: Point3;
   readonly size: Size3;
 
-  static ofCenterSize(center: Point3, size: Size3): Box3 {
+  static givenCenterSize(center: Point3, size: Size3): Box3 {
     return new Box3(center, size);
   }
 
-  static ofCorners(pointA: Point3, pointB: Point3): Box3 {
+  static givenCorners(pointA: Point3, pointB: Point3): Box3 {
     const minX = Math.min(pointA.x, pointB.x);
     const minY = Math.min(pointA.y, pointB.y);
     const minZ = Math.min(pointA.z, pointB.z);
@@ -23,13 +23,21 @@ export class Box3 {
       maxY - minY,
       maxZ - minZ
     );
-    const center = Point3.ofXYZ(
+    const center = Point3.givenXYZ(
       minX + size.width / 2,
       minY + size.height / 2,
       minZ + size.depth / 2
     );
 
-    return this.ofCenterSize(center, size);
+    return this.givenCenterSize(center, size);
+  }
+
+  static isEqual(newValue: Box3, oldValue: Box3): boolean {
+    if (newValue == null || oldValue == null) {
+      return false;
+    }
+
+    return newValue.isEqual(oldValue);
   }
 
   private constructor(center: Point3, size: Size3) {

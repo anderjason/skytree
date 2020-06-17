@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.hexGivenRgb = void 0;
 function hexGivenRgb(rgbColor, alpha) {
     const hexR = Math.round(rgbColor.r.toDecimal() * 255)
         .toString(16)

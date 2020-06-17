@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Observable = void 0;
 const SimpleEvent_1 = require("../SimpleEvent");
 class Observable {
     constructor(value, filter) {
@@ -9,8 +10,13 @@ class Observable {
             fn(this.value);
             this.didChange.emit(this.value);
         };
-        this._filter = filter;
-        this.setValue(value);
+        this._discardFilter = filter;
+        if (value != null) {
+            this.setValue(value);
+        }
+    }
+    static isStrictEqual(newValue, oldValue) {
+        return newValue === oldValue;
     }
     static isObservable(input) {
         if (input == null) {
@@ -21,31 +27,30 @@ class Observable {
         }
         return input._isObservable === true;
     }
-    static ofValue(value, filter) {
-        return new Observable(value, filter);
+    static givenValue(value, discardFilter) {
+        return new Observable(value, discardFilter);
+    }
+    static ofEmpty(discardFilter) {
+        return new Observable(undefined, discardFilter);
     }
     get value() {
         return this._value;
     }
-    setValue(value) {
-        let allowUpdate;
-        if (this._filter != null) {
+    setValue(newValue) {
+        let discard = false;
+        if (this._discardFilter != null) {
             try {
-                allowUpdate = this._filter(value);
+                discard = this._discardFilter(newValue, this._value);
             }
             catch (err) {
                 console.warn(err);
-                allowUpdate = false;
             }
         }
-        else {
-            allowUpdate = true;
-        }
-        if (!allowUpdate) {
+        if (discard) {
             return;
         }
-        this._value = value;
-        this.didChange.emit(value);
+        this._value = newValue;
+        this.didChange.emit(newValue);
     }
 }
 exports.Observable = Observable;

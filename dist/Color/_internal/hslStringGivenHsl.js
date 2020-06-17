@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.hslStringGivenHsl = void 0;
 function hslStringGivenHsl(hslColor) {
     const h = Math.round(hslColor.h.toDecimal() * 359);
     const s = Math.round(hslColor.s.toDecimal() * 100);

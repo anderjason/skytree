@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ManagedObject = void 0;
 const Handle_1 = require("../Handle");
 const stringOfRandomCharacters_1 = require("../StringUtil/stringOfRandomCharacters");
 class ManagedObject {
@@ -8,7 +9,7 @@ class ManagedObject {
         this._children = new Set();
         this.init = () => {
             if (!this.isInitialized) {
-                this._thisHandle = Handle_1.Handle.ofFunction(this.uninit);
+                this._thisHandle = Handle_1.Handle.givenReleaseFunction(this.uninit);
                 this._children.forEach((child) => {
                     child.init();
                 });

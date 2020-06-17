@@ -4,7 +4,7 @@ import { ArrayUtil } from "../ArrayUtil";
 export class Palette {
   private _colors: Color[];
 
-  static ofColors(colors: Color[]): Palette {
+  static givenColors(colors: Color[]): Palette {
     return new Palette(colors);
   }
 

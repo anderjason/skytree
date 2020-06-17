@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function objectIsDeepEqual(actual, expected) {
+exports.objectIsDeepEqualToObject = void 0;
+function objectIsDeepEqualToObject(actual, expected) {
     if (actual === expected) {
         return true;
     }
@@ -16,7 +17,7 @@ function objectIsDeepEqual(actual, expected) {
         return objEquiv(actual, expected);
     }
 }
-exports.objectIsDeepEqual = objectIsDeepEqual;
+exports.objectIsDeepEqualToObject = objectIsDeepEqualToObject;
 function isArguments(object) {
     return Object.prototype.toString.call(object) == "[object Arguments]";
 }
@@ -49,7 +50,7 @@ function objEquiv(a, b) {
         }
         a = Array.prototype.slice.call(a);
         b = Array.prototype.slice.call(b);
-        return objectIsDeepEqual(a, b);
+        return objectIsDeepEqualToObject(a, b);
     }
     if (isBuffer(a)) {
         if (!isBuffer(b)) {
@@ -85,10 +86,10 @@ function objEquiv(a, b) {
     }
     for (i = ka.length - 1; i >= 0; i--) {
         key = ka[i];
-        if (!objectIsDeepEqual(a[key], b[key])) {
+        if (!objectIsDeepEqualToObject(a[key], b[key])) {
             return false;
         }
     }
     return typeof a === typeof b;
 }
-//# sourceMappingURL=objectIsDeepEqual.js.map
+//# sourceMappingURL=objectIsDeepEqualToObject.js.map

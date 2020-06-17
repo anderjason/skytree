@@ -15,7 +15,7 @@ export declare class RateLimitedFunction<T> {
     private _trailing;
     private _isRunning;
     private _wasInvokedWhileRunning;
-    static ofDefinition<T>(definition: RateLimitedFunctionDefinition<T>): RateLimitedFunction<T>;
+    static givenDefinition<T>(definition: RateLimitedFunctionDefinition<T>): RateLimitedFunction<T>;
     private constructor();
     invoke: (args?: T) => void;
     clear: () => void;

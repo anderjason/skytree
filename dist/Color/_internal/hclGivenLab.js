@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.hclGivenLab = void 0;
 const Ratio_1 = require("../../Ratio");
 const RAD2DEG = 180 / Math.PI;
 function hclGivenLab(labColor) {
@@ -10,9 +11,9 @@ function hclGivenLab(labColor) {
         h = Number.NaN;
     }
     return {
-        h: Ratio_1.Ratio.ofDecimal(h / 360),
-        c: Ratio_1.Ratio.ofDecimal(c / 140),
-        l: Ratio_1.Ratio.ofDecimal(l / 100),
+        h: Ratio_1.Ratio.givenDecimal(h / 360),
+        c: Ratio_1.Ratio.givenDecimal(c / 140),
+        l: Ratio_1.Ratio.givenDecimal(l / 100),
     };
 }
 exports.hclGivenLab = hclGivenLab;

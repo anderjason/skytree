@@ -1,17 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SimpleEvent = void 0;
 const Handle_1 = require("../Handle");
 const arrayWithoutItem_1 = require("../ArrayUtil/arrayWithoutItem");
 class SimpleEvent {
-    constructor(lastEvent) {
+    constructor(lastValue) {
         this._handlers = undefined;
-        this._lastEvent = lastEvent;
+        this._lastValue = lastValue;
     }
     static ofEmpty() {
         return new SimpleEvent();
     }
-    static ofLastValue(lastEvent) {
-        return new SimpleEvent(lastEvent);
+    static givenLastValue(lastValue) {
+        return new SimpleEvent(lastValue);
     }
     subscribe(handler, includeLast = false) {
         if (this._handlers == null) {
@@ -19,17 +20,17 @@ class SimpleEvent {
         }
         this._handlers.push(handler);
         if (includeLast) {
-            handler(this._lastEvent);
+            handler(this._lastValue);
         }
-        return Handle_1.Handle.ofFunction(() => this.unsubscribe(handler));
+        return Handle_1.Handle.givenReleaseFunction(() => this.unsubscribe(handler));
     }
     emit(event) {
         if (this._handlers != null) {
             this._handlers.forEach((handler) => {
-                handler(event, this._lastEvent);
+                handler(event, this._lastValue);
             });
         }
-        this._lastEvent = event;
+        this._lastValue = event;
     }
     unsubscribe(handler) {
         if (this._handlers == null) {

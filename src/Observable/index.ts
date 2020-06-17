@@ -1,9 +1,14 @@
 import { SimpleEvent } from "../SimpleEvent";
 
-export type ObservableFilter<T> = (input: T) => boolean;
+export type ObservableFilter<T> = (newValue: T, oldValue: T) => boolean;
 
 export class Observable<T = number> {
   readonly didChange = SimpleEvent.ofEmpty<T>();
+  readonly discardFilter: ObservableFilter<T> | undefined;
+
+  static isStrictEqual<T>(newValue: T, oldValue: T): boolean {
+    return newValue === oldValue;
+  }
 
   static isObservable(input: any): input is Observable<unknown> {
     if (input == null) {
@@ -17,43 +22,49 @@ export class Observable<T = number> {
     return input._isObservable === true;
   }
 
-  static ofValue<T>(value: T, filter?: ObservableFilter<T>): Observable<T> {
-    return new Observable<T>(value, filter);
+  static givenValue<T>(
+    value: T,
+    discardFilter?: ObservableFilter<T>
+  ): Observable<T> {
+    return new Observable<T>(value, discardFilter);
+  }
+
+  static ofEmpty<T>(discardFilter?: ObservableFilter<T>): Observable<T> {
+    return new Observable<T>(undefined, discardFilter);
   }
 
   private _value: T;
   private _isObservable = true;
-  private _filter: ObservableFilter<T> | undefined;
 
-  private constructor(value: T, filter?: ObservableFilter<T>) {
-    this._filter = filter;
-    this.setValue(value);
+  private constructor(value?: T, filter?: ObservableFilter<T>) {
+    this.discardFilter = filter;
+
+    if (value != null) {
+      this.setValue(value);
+    }
   }
 
   get value(): T {
     return this._value;
   }
 
-  setValue(value: T): void {
-    let allowUpdate: boolean;
+  setValue(newValue: T): void {
+    let discard: boolean = false;
 
-    if (this._filter != null) {
+    if (this.discardFilter != null) {
       try {
-        allowUpdate = this._filter(value);
+        discard = this.discardFilter(newValue, this._value);
       } catch (err) {
         console.warn(err);
-        allowUpdate = false;
       }
-    } else {
-      allowUpdate = true;
     }
 
-    if (!allowUpdate) {
+    if (discard) {
       return;
     }
 
-    this._value = value;
-    this.didChange.emit(value);
+    this._value = newValue;
+    this.didChange.emit(newValue);
   }
 
   mutate = (fn: (value: T) => void): void => {

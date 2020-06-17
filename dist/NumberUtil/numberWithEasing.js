@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.numberWithEasing = void 0;
 const numberWithHardLimit_1 = require("./numberWithHardLimit");
 const pow = Math.pow;
 const sqrt = Math.sqrt;

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.xyzGivenLab = void 0;
 function xyzGivenLab(labColor) {
     let y = (labColor.l + 16) / 116;
     let x = labColor.a / 500 + y;

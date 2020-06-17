@@ -87,7 +87,7 @@ describe("ManagedObject", () => {
     class MySubclass extends ManagedObject {
       initManagedObject() {
         this.addHandle(
-          Handle.ofFunction(() => {
+          Handle.givenReleaseFunction(() => {
             releaseCount += 1;
           })
         );
@@ -101,8 +101,11 @@ describe("ManagedObject", () => {
     assert(releaseCount === 0);
     handle1.release();
     handle1.release();
+
+    // @ts-ignore
     assert(releaseCount === 1); // second release has no effect
 
+    // @ts-ignore
     assert(instance.isInitialized === false);
 
     const handle2 = instance.init(); // init again
@@ -112,7 +115,11 @@ describe("ManagedObject", () => {
     assert(handle1 !== handle2); // different handle from the first init
 
     handle2.release();
+
+    // @ts-ignore
     assert(releaseCount === 2);
+
+    // @ts-ignore
     assert(instance.isInitialized === false);
   });
 
@@ -140,6 +147,8 @@ describe("ManagedObject", () => {
     assert(childInstance.isInitialized === false);
 
     parentInstance.addChild(childInstance);
+
+    // @ts-ignore
     assert(childInstance.isInitialized === true);
   });
 
@@ -209,6 +218,8 @@ describe("ManagedObject", () => {
     assert(childInstance.isInitialized === true);
 
     parentInstance1.uninit();
+
+    // @ts-ignore
     assert(childInstance.isInitialized === false);
   });
 
@@ -223,6 +234,8 @@ describe("ManagedObject", () => {
     assert(childInstance.isInitialized === false); // parent is not initialized yet
 
     parentInstance1.init();
+
+    // @ts-ignore
     assert(childInstance.isInitialized === true);
   });
 });

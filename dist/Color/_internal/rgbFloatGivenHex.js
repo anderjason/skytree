@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.rgbFloatGivenHex = void 0;
 const Ratio_1 = require("../../Ratio");
 const hexRegex = /^#?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 function rgbFloatGivenHex(hexColor) {
@@ -20,9 +21,9 @@ function rgbFloatGivenHex(hexColor) {
     const g = (u >> 8) & 0xff;
     const b = u & 0xff;
     return {
-        r: Ratio_1.Ratio.ofDecimal(r / 255),
-        g: Ratio_1.Ratio.ofDecimal(g / 255),
-        b: Ratio_1.Ratio.ofDecimal(b / 255),
+        r: Ratio_1.Ratio.givenDecimal(r / 255),
+        g: Ratio_1.Ratio.givenDecimal(g / 255),
+        b: Ratio_1.Ratio.givenDecimal(b / 255),
     };
 }
 exports.rgbFloatGivenHex = rgbFloatGivenHex;

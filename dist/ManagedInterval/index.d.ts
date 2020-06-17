@@ -1,7 +1,7 @@
 import { Duration } from "../Duration";
 import { ManagedObject } from "../ManagedObject";
 export declare class ManagedInterval extends ManagedObject {
-    static ofFunction(callback: Function, duration: Duration): ManagedInterval;
+    static givenCallback(callback: Function, duration: Duration): ManagedInterval;
     private _interval;
     private _duration;
     private _callback;

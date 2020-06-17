@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.labGivenHcl = void 0;
 const DEG2RAD = Math.PI / 180;
 function labGivenHcl(hclColor) {
     let h = hclColor.h.toDecimal() * 360;

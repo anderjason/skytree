@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Handle = void 0;
 class Handle {
     constructor(release) {
         this.release = () => {
@@ -12,7 +13,7 @@ class Handle {
         };
         this._releaseFn = release;
     }
-    static ofFunction(release) {
+    static givenReleaseFunction(release) {
         return new Handle(release);
     }
     get isReleased() {

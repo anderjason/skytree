@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.StringUtil = void 0;
 const stringOfRandomCharacters_1 = require("./stringOfRandomCharacters");
 const stringIsEmpty_1 = require("./stringIsEmpty");
 class StringUtil {

@@ -1,16 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Point3 = void 0;
 class Point3 {
     constructor(x, y, z) {
         this._x = x;
         this._y = y;
         this._z = z;
     }
-    static ofXYZ(x, y, z) {
+    static givenXYZ(x, y, z) {
         return new Point3(x, y, z);
     }
     static ofZero() {
         return new Point3(0, 0, 0);
+    }
+    static isEqual(newValue, oldValue) {
+        if (newValue == null || oldValue == null) {
+            return false;
+        }
+        return newValue.isEqual(oldValue);
     }
     get x() {
         return this._x;

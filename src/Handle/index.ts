@@ -1,7 +1,7 @@
 export class Handle {
   private _releaseFn: (() => void) | undefined;
 
-  static ofFunction(release: () => void): Handle {
+  static givenReleaseFunction(release: () => void): Handle {
     return new Handle(release);
   }
 

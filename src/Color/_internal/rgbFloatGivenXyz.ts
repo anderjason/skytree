@@ -30,8 +30,8 @@ export function rgbFloatGivenXyz(xyzColor: XyzColor): RgbFloatColor {
   }
 
   return {
-    r: Ratio.ofDecimal(numberWithHardLimit(r, 0, 1)),
-    g: Ratio.ofDecimal(numberWithHardLimit(g, 0, 1)),
-    b: Ratio.ofDecimal(numberWithHardLimit(b, 0, 1)),
+    r: Ratio.givenDecimal(numberWithHardLimit(r, 0, 1)),
+    g: Ratio.givenDecimal(numberWithHardLimit(g, 0, 1)),
+    b: Ratio.givenDecimal(numberWithHardLimit(b, 0, 1)),
   };
 }

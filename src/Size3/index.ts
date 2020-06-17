@@ -15,6 +15,14 @@ export class Size3 {
     return new Size3(0, 0, 0);
   }
 
+  static isEqual(newValue: Size3, oldValue: Size3): boolean {
+    if (newValue == null || oldValue == null) {
+      return false;
+    }
+
+    return newValue.isEqual(oldValue);
+  }
+
   protected constructor(width: number, height: number, depth: number) {
     this._width = width;
     this._height = height;

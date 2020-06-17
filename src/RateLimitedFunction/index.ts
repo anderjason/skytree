@@ -18,7 +18,7 @@ export class RateLimitedFunction<T> {
   private _isRunning: boolean;
   private _wasInvokedWhileRunning: boolean;
 
-  static ofDefinition<T>(
+  static givenDefinition<T>(
     definition: RateLimitedFunctionDefinition<T>
   ): RateLimitedFunction<T> {
     return new RateLimitedFunction(definition);

@@ -6,10 +6,10 @@ export function highContrastColorGivenColor(input: Color): Color {
 
   let v: Ratio;
   if (hclColor.l.toDecimal() > 0.5) {
-    v = Ratio.ofDecimal(0);
+    v = Ratio.givenDecimal(0);
   } else {
-    v = Ratio.ofDecimal(1);
+    v = Ratio.givenDecimal(1);
   }
 
-  return Color.ofRgbFloat({ r: v, g: v, b: v });
+  return Color.givenRgbFloat({ r: v, g: v, b: v });
 }

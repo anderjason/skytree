@@ -7,7 +7,7 @@ export class Instant {
     return new Instant(new Date().getTime());
   }
 
-  static ofEpochMilliseconds(epochMilliseconds: number): Instant {
+  static givenEpochMilliseconds(epochMilliseconds: number): Instant {
     if (typeof epochMilliseconds === "string") {
       return new Instant(parseInt(epochMilliseconds));
     } else {
