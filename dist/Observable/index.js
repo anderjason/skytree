@@ -10,7 +10,7 @@ class Observable {
             fn(this.value);
             this.didChange.emit(this.value);
         };
-        this._discardFilter = filter;
+        this.discardFilter = filter;
         if (value != null) {
             this.setValue(value);
         }
@@ -38,9 +38,9 @@ class Observable {
     }
     setValue(newValue) {
         let discard = false;
-        if (this._discardFilter != null) {
+        if (this.discardFilter != null) {
             try {
-                discard = this._discardFilter(newValue, this._value);
+                discard = this.discardFilter(newValue, this._value);
             }
             catch (err) {
                 console.warn(err);
