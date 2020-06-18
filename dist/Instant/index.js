@@ -5,6 +5,15 @@ class Instant {
     constructor(epochMilliseconds) {
         this._epochMilliseconds = epochMilliseconds;
     }
+    static isEqual(a, b) {
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null || b == null) {
+            return false;
+        }
+        return a.isEqual(b);
+    }
     static ofNow() {
         return new Instant(new Date().getTime());
     }
@@ -15,6 +24,12 @@ class Instant {
         else {
             return new Instant(epochMilliseconds);
         }
+    }
+    isEqual(other) {
+        if (other == null) {
+            return false;
+        }
+        return this._epochMilliseconds === other._epochMilliseconds;
     }
     toEpochMilliseconds() {
         return this._epochMilliseconds;

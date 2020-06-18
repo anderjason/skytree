@@ -3,6 +3,18 @@ import { Instant } from "../Instant";
 export class Duration {
   private _milliseconds: number;
 
+  static isEqual(a: Duration, b: Duration): boolean {
+    if (a == null && b == null) {
+      return true;
+    }
+
+    if (a == null || b == null) {
+      return false;
+    }
+
+    return a.isEqual(b);
+  }
+
   static givenMilliseconds(milliseconds: number): Duration {
     return new Duration(milliseconds);
   }
@@ -31,6 +43,14 @@ export class Duration {
 
   private constructor(milliseconds: number) {
     this._milliseconds = milliseconds;
+  }
+
+  isEqual(other: Duration): boolean {
+    if (other == null) {
+      return false;
+    }
+
+    return this._milliseconds === other._milliseconds;
   }
 
   toMilliseconds(): number {

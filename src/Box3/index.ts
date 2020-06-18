@@ -18,7 +18,7 @@ export class Box3 {
     const maxY = Math.max(pointA.y, pointB.y);
     const maxZ = Math.max(pointA.z, pointB.z);
 
-    const size = Size3.ofWidthHeightDepth(
+    const size = Size3.givenWidthHeightDepth(
       maxX - minX,
       maxY - minY,
       maxZ - minZ
@@ -32,12 +32,16 @@ export class Box3 {
     return this.givenCenterSize(center, size);
   }
 
-  static isEqual(newValue: Box3, oldValue: Box3): boolean {
-    if (newValue == null || oldValue == null) {
+  static isEqual(a: Box3, b: Box3): boolean {
+    if (a == null && b == null) {
+      return true;
+    }
+
+    if (a == null || b == null) {
       return false;
     }
 
-    return newValue.isEqual(oldValue);
+    return a.isEqual(b);
   }
 
   private constructor(center: Point3, size: Size3) {

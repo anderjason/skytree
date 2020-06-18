@@ -26,6 +26,15 @@ class Color {
         this._labColor = labColor;
         this._alpha = alpha;
     }
+    static isEqual(a, b) {
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null || b == null) {
+            return false;
+        }
+        return a.isEqual(b);
+    }
     static givenHslFloat(hslColor, alpha = Ratio_1.Ratio.givenDecimal(1)) {
         return Color.givenRgbFloat(rgbFloatGivenHsl_1.rgbFloatGivenHsl(hslColor), alpha);
     }

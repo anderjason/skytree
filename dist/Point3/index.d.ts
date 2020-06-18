@@ -4,7 +4,7 @@ export declare class Point3 {
     protected _z: number;
     static givenXYZ(x: number, y: number, z: number): Point3;
     static ofZero(): Point3;
-    static isEqual(newValue: Point3, oldValue: Point3): boolean;
+    static isEqual(a: Point3, b: Point3): boolean;
     protected constructor(x: number, y: number, z: number);
     get x(): number;
     get y(): number;

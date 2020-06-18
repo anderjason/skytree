@@ -6,6 +6,15 @@ class Ratio {
     constructor(decimalValue) {
         this._value = decimalValue;
     }
+    static isEqual(a, b) {
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null || b == null) {
+            return false;
+        }
+        return a.isEqual(b);
+    }
     static givenDecimal(decimalValue) {
         return new Ratio(decimalValue);
     }
@@ -30,6 +39,15 @@ class Ratio {
     static givenPercent(percent) {
         const n = percent.toNumber();
         return new Ratio(n / 100);
+    }
+    static ofZero() {
+        return new Ratio(0);
+    }
+    isEqual(other) {
+        if (other == null) {
+            return false;
+        }
+        return this._value === other._value;
     }
     toDecimal() {
         return this._value;

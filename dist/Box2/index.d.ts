@@ -6,7 +6,7 @@ export declare class Box2 {
     static givenCenterSize(center: Point2, size: Size2): Box2;
     static givenOppositeCorners(pointA: Point2, pointB: Point2): Box2;
     static givenTopLeftSize(topLeft: Point2, size: Size2): Box2;
-    static isEqual(newValue: Box2, oldValue: Box2): boolean;
+    static isEqual(a: Box2, b: Box2): boolean;
     private constructor();
     get top(): number;
     get left(): number;

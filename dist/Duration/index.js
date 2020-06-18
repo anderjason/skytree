@@ -5,6 +5,15 @@ class Duration {
     constructor(milliseconds) {
         this._milliseconds = milliseconds;
     }
+    static isEqual(a, b) {
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null || b == null) {
+            return false;
+        }
+        return a.isEqual(b);
+    }
     static givenMilliseconds(milliseconds) {
         return new Duration(milliseconds);
     }
@@ -22,6 +31,12 @@ class Duration {
     }
     static givenInstantRange(start, end) {
         return new Duration(end.toEpochMilliseconds() - start.toEpochMilliseconds());
+    }
+    isEqual(other) {
+        if (other == null) {
+            return false;
+        }
+        return this._milliseconds === other._milliseconds;
     }
     toMilliseconds() {
         return this._milliseconds;

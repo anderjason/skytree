@@ -1,6 +1,7 @@
 import { Instant } from "../Instant";
 export declare class Duration {
     private _milliseconds;
+    static isEqual(a: Duration, b: Duration): boolean;
     static givenMilliseconds(milliseconds: number): Duration;
     static givenSeconds(seconds: number): Duration;
     static givenMinutes(minutes: number): Duration;
@@ -8,6 +9,7 @@ export declare class Duration {
     static givenDays(days: number): Duration;
     static givenInstantRange(start: Instant, end: Instant): Duration;
     private constructor();
+    isEqual(other: Duration): boolean;
     toMilliseconds(): number;
     toSeconds(): number;
     toMinutes(): number;

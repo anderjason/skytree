@@ -1,4 +1,16 @@
 export class DataSize {
+  static isEqual(a: DataSize, b: DataSize): boolean {
+    if (a == null && b == null) {
+      return true;
+    }
+
+    if (a == null || b == null) {
+      return false;
+    }
+
+    return a.isEqual(b);
+  }
+
   static givenBytes(bytes: number): DataSize {
     return new DataSize(bytes);
   }
@@ -39,6 +51,14 @@ export class DataSize {
 
   constructor(bytes: number) {
     this._bytes = bytes;
+  }
+
+  isEqual(other: DataSize): boolean {
+    if (other == null) {
+      return false;
+    }
+
+    return this._bytes === other._bytes;
   }
 
   toBytes(): number {

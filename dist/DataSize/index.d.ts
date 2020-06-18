@@ -1,4 +1,5 @@
 export declare class DataSize {
+    static isEqual(a: DataSize, b: DataSize): boolean;
     static givenBytes(bytes: number): DataSize;
     static givenKilobytes(kilobytes: number): DataSize;
     static givenKibibytes(kibibytes: number): DataSize;
@@ -10,6 +11,7 @@ export declare class DataSize {
     static givenTebibytes(tebibytes: number): DataSize;
     private _bytes;
     constructor(bytes: number);
+    isEqual(other: DataSize): boolean;
     toBytes(): number;
     toKilobytes(): number;
     toKibibytes(): number;

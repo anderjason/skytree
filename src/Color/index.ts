@@ -60,6 +60,18 @@ export class Color {
   private _alpha: Ratio;
   private _hexString: string | undefined;
 
+  static isEqual(a: Color, b: Color): boolean {
+    if (a == null && b == null) {
+      return true;
+    }
+
+    if (a == null || b == null) {
+      return false;
+    }
+
+    return a.isEqual(b);
+  }
+
   static givenHslFloat(
     hslColor: HslColor,
     alpha: Ratio = Ratio.givenDecimal(1)

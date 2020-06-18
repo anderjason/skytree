@@ -34,12 +34,16 @@ export class Box2 {
     return this.givenCenterSize(center, size);
   }
 
-  static isEqual(newValue: Box2, oldValue: Box2): boolean {
-    if (newValue == null || oldValue == null) {
+  static isEqual(a: Box2, b: Box2): boolean {
+    if (a == null && b == null) {
+      return true;
+    }
+
+    if (a == null || b == null) {
       return false;
     }
 
-    return newValue.isEqual(oldValue);
+    return a.isEqual(b);
   }
 
   private constructor(center: Point2, size: Size2) {

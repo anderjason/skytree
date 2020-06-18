@@ -7,17 +7,20 @@ class Size3 {
         this._height = height;
         this._depth = depth;
     }
-    static ofWidthHeightDepth(width, height, depth) {
+    static givenWidthHeightDepth(width, height, depth) {
         return new Size3(width, height, depth);
     }
     static ofZero() {
         return new Size3(0, 0, 0);
     }
-    static isEqual(newValue, oldValue) {
-        if (newValue == null || oldValue == null) {
+    static isEqual(a, b) {
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null || b == null) {
             return false;
         }
-        return newValue.isEqual(oldValue);
+        return a.isEqual(b);
     }
     get width() {
         return this._width;

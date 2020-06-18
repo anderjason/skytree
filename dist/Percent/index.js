@@ -6,6 +6,15 @@ class Percent {
     constructor(value) {
         this._value = value;
     }
+    static isEqual(a, b) {
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null || b == null) {
+            return false;
+        }
+        return a.isEqual(b);
+    }
     static givenNumber(value) {
         return new Percent(value);
     }
@@ -14,6 +23,15 @@ class Percent {
     }
     static givenString(value) {
         return new Percent(parseFloat(value));
+    }
+    static ofZero() {
+        return new Percent(0);
+    }
+    isEqual(other) {
+        if (other == null) {
+            return false;
+        }
+        return this._value === other._value;
     }
     toString(fractionDigits) {
         return `${this._value.toFixed(fractionDigits)}%`;

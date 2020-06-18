@@ -10,12 +10,16 @@ export class Size2 {
     return new Size2(0, 0);
   }
 
-  static isEqual(newValue: Size2, oldValue: Size2): boolean {
-    if (newValue == null || oldValue == null) {
+  static isEqual(a: Size2, b: Size2): boolean {
+    if (a == null && b == null) {
+      return true;
+    }
+
+    if (a == null || b == null) {
       return false;
     }
 
-    return newValue.isEqual(oldValue);
+    return a.isEqual(b);
   }
 
   protected constructor(width: number, height: number) {

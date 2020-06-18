@@ -1,9 +1,5 @@
 export class Size3 {
-  protected _width: number;
-  protected _height: number;
-  protected _depth: number;
-
-  static ofWidthHeightDepth(
+  static givenWidthHeightDepth(
     width: number,
     height: number,
     depth: number
@@ -15,13 +11,21 @@ export class Size3 {
     return new Size3(0, 0, 0);
   }
 
-  static isEqual(newValue: Size3, oldValue: Size3): boolean {
-    if (newValue == null || oldValue == null) {
+  static isEqual(a: Size3, b: Size3): boolean {
+    if (a == null && b == null) {
+      return true;
+    }
+
+    if (a == null || b == null) {
       return false;
     }
 
-    return newValue.isEqual(oldValue);
+    return a.isEqual(b);
   }
+
+  protected _width: number;
+  protected _height: number;
+  protected _depth: number;
 
   protected constructor(width: number, height: number, depth: number) {
     this._width = width;

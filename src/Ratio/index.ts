@@ -1,7 +1,17 @@
 import { Percent } from "../Percent";
 
 export class Ratio {
-  private _value: number;
+  static isEqual(a: Ratio, b: Ratio): boolean {
+    if (a == null && b == null) {
+      return true;
+    }
+
+    if (a == null || b == null) {
+      return false;
+    }
+
+    return a.isEqual(b);
+  }
 
   static givenDecimal(decimalValue: number): Ratio {
     return new Ratio(decimalValue);
@@ -37,8 +47,22 @@ export class Ratio {
     return new Ratio(n / 100);
   }
 
+  static ofZero(): Ratio {
+    return new Ratio(0);
+  }
+
+  private _value: number;
+
   private constructor(decimalValue: number) {
     this._value = decimalValue;
+  }
+
+  isEqual(other: Ratio): boolean {
+    if (other == null) {
+      return false;
+    }
+
+    return this._value === other._value;
   }
 
   toDecimal(): number {

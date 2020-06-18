@@ -5,6 +5,15 @@ class DataSize {
     constructor(bytes) {
         this._bytes = bytes;
     }
+    static isEqual(a, b) {
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null || b == null) {
+            return false;
+        }
+        return a.isEqual(b);
+    }
     static givenBytes(bytes) {
         return new DataSize(bytes);
     }
@@ -31,6 +40,12 @@ class DataSize {
     }
     static givenTebibytes(tebibytes) {
         return DataSize.givenGibibytes(tebibytes * 1024);
+    }
+    isEqual(other) {
+        if (other == null) {
+            return false;
+        }
+        return this._bytes === other._bytes;
     }
     toBytes() {
         return this._bytes;

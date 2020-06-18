@@ -33,6 +33,7 @@ export declare class Color {
     private _labColor;
     private _alpha;
     private _hexString;
+    static isEqual(a: Color, b: Color): boolean;
     static givenHslFloat(hslColor: HslColor, alpha?: Ratio): Color;
     static givenHex(hexColor: string): Color;
     static givenHclFloat(hclColor: HclColor, alpha?: Ratio): Color;

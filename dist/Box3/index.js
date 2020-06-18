@@ -18,15 +18,18 @@ class Box3 {
         const maxX = Math.max(pointA.x, pointB.x);
         const maxY = Math.max(pointA.y, pointB.y);
         const maxZ = Math.max(pointA.z, pointB.z);
-        const size = Size3_1.Size3.ofWidthHeightDepth(maxX - minX, maxY - minY, maxZ - minZ);
+        const size = Size3_1.Size3.givenWidthHeightDepth(maxX - minX, maxY - minY, maxZ - minZ);
         const center = Point3_1.Point3.givenXYZ(minX + size.width / 2, minY + size.height / 2, minZ + size.depth / 2);
         return this.givenCenterSize(center, size);
     }
-    static isEqual(newValue, oldValue) {
-        if (newValue == null || oldValue == null) {
+    static isEqual(a, b) {
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null || b == null) {
             return false;
         }
-        return newValue.isEqual(oldValue);
+        return a.isEqual(b);
     }
     get top() {
         return this.center.y - this.size.height / 2;

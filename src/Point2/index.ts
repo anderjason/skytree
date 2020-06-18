@@ -10,12 +10,16 @@ export class Point2 {
     return new Point2(0, 0);
   }
 
-  static isEqual(newValue: Point2, oldValue: Point2): boolean {
-    if (newValue == null || oldValue == null) {
+  static isEqual(a: Point2, b: Point2): boolean {
+    if (a == null && b == null) {
+      return true;
+    }
+
+    if (a == null || b == null) {
       return false;
     }
 
-    return newValue.isEqual(oldValue);
+    return a.isEqual(b);
   }
 
   protected constructor(x: number, y: number) {

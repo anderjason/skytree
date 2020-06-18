@@ -13,11 +13,14 @@ class Point3 {
     static ofZero() {
         return new Point3(0, 0, 0);
     }
-    static isEqual(newValue, oldValue) {
-        if (newValue == null || oldValue == null) {
+    static isEqual(a, b) {
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null || b == null) {
             return false;
         }
-        return newValue.isEqual(oldValue);
+        return a.isEqual(b);
     }
     get x() {
         return this._x;

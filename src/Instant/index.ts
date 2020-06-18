@@ -1,7 +1,17 @@
 import { Duration } from "../Duration";
 
 export class Instant {
-  private _epochMilliseconds: number;
+  static isEqual(a: Instant, b: Instant): boolean {
+    if (a == null && b == null) {
+      return true;
+    }
+
+    if (a == null || b == null) {
+      return false;
+    }
+
+    return a.isEqual(b);
+  }
 
   static ofNow(): Instant {
     return new Instant(new Date().getTime());
@@ -15,8 +25,18 @@ export class Instant {
     }
   }
 
+  private _epochMilliseconds: number;
+
   private constructor(epochMilliseconds: number) {
     this._epochMilliseconds = epochMilliseconds;
+  }
+
+  isEqual(other: Instant): boolean {
+    if (other == null) {
+      return false;
+    }
+
+    return this._epochMilliseconds === other._epochMilliseconds;
   }
 
   toEpochMilliseconds(): number {

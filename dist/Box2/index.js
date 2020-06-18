@@ -24,11 +24,14 @@ class Box2 {
         const center = Point2_1.Point2.givenXY(topLeft.x + size.width / 2, topLeft.y + size.height / 2);
         return this.givenCenterSize(center, size);
     }
-    static isEqual(newValue, oldValue) {
-        if (newValue == null || oldValue == null) {
+    static isEqual(a, b) {
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null || b == null) {
             return false;
         }
-        return newValue.isEqual(oldValue);
+        return a.isEqual(b);
     }
     get top() {
         return this.center.y - this.size.height / 2;
