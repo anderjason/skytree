@@ -7,6 +7,7 @@ export declare class Point2 {
     protected constructor(x: number, y: number);
     get x(): number;
     get y(): number;
+    get isZero(): boolean;
     isEqual(other: Point2): boolean;
     toClone(): Point2;
     toAngleGivenPoint(other: Point2): number;

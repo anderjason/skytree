@@ -9,6 +9,7 @@ export declare class Point3 {
     get x(): number;
     get y(): number;
     get z(): number;
+    get isZero(): boolean;
     toClone(): Point3;
     isEqual(other: Point3): boolean;
 }

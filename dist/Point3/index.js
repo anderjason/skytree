@@ -31,6 +31,9 @@ class Point3 {
     get z() {
         return this._z;
     }
+    get isZero() {
+        return this._x === 0 && this._y === 0 && this._z === 0;
+    }
     toClone() {
         return new Point3(this._x, this._y, this._z);
     }

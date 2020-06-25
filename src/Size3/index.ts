@@ -1,3 +1,5 @@
+import { ScaleMode } from "../Size2";
+
 export class Size3 {
   static givenWidthHeightDepth(
     width: number,
@@ -45,6 +47,10 @@ export class Size3 {
     return this._depth;
   }
 
+  get isZero(): boolean {
+    return this._width === 0 || this._height === 0 || this._depth === 0;
+  }
+
   toClone() {
     return new Size3(this._width, this._height, this._depth);
   }
@@ -58,6 +64,37 @@ export class Size3 {
       other._width == this._width &&
       other._height == this._height &&
       other._depth == this._depth
+    );
+  }
+
+  withAvailableSize(availableSize: Size3, scaleMode: ScaleMode): Size3 {
+    if (availableSize == null) {
+      throw new Error("availableSize is required");
+    }
+
+    if (availableSize.isZero || this.isZero) {
+      return Size3.ofZero();
+    }
+
+    const scaleX = availableSize.width / this._width;
+    const scaleY = availableSize.height / this._height;
+    const scaleZ = availableSize.depth / this._depth;
+    const scale = Math.min(scaleX, scaleY, scaleZ);
+
+    if (scale < 1 && scaleMode === "expand") {
+      // would shrink, but only expanding is allowed
+      return this.toClone();
+    }
+
+    if (scale > 1 && scaleMode === "shrink") {
+      // would expand, but only shrinking is allowed
+      return this.toClone();
+    }
+
+    return Size3.givenWidthHeightDepth(
+      this._width * scale,
+      this._height * scale,
+      this._depth * scale
     );
   }
 }

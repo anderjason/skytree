@@ -1,3 +1,4 @@
+import { ScaleMode } from "../Size2";
 export declare class Size3 {
     static givenWidthHeightDepth(width: number, height: number, depth: number): Size3;
     static ofZero(): Size3;
@@ -9,6 +10,8 @@ export declare class Size3 {
     get width(): number;
     get height(): number;
     get depth(): number;
+    get isZero(): boolean;
     toClone(): Size3;
     isEqual(other: Size3): boolean;
+    withAvailableSize(availableSize: Size3, scaleMode: ScaleMode): Size3;
 }

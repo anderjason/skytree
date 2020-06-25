@@ -22,6 +22,14 @@
 
 `TODO`
 
+### ColorGradient
+
+`TODO`
+
+### DataSize
+
+`TODO`
+
 ### Duration
 
 `TODO`
@@ -117,6 +125,10 @@
 `TODO`
 
 ### PromiseUtil
+
+`TODO`
+
+### SetUtil
 
 `TODO`
 

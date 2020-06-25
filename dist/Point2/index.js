@@ -27,6 +27,9 @@ class Point2 {
     get y() {
         return this._y;
     }
+    get isZero() {
+        return this._x === 0 && this._y === 0;
+    }
     isEqual(other) {
         if (other == null) {
             return false;

@@ -35,6 +35,10 @@ export class Point2 {
     return this._y;
   }
 
+  get isZero(): boolean {
+    return this._x === 0 && this._y === 0;
+  }
+
   isEqual(other: Point2): boolean {
     if (other == null) {
       return false;

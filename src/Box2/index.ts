@@ -1,5 +1,16 @@
 import { Point2 } from "../Point2";
-import { Size2 } from "../Size2";
+import { Size2, ScaleMode } from "../Size2";
+
+type Anchor2 =
+  | "leftTop"
+  | "centerTop"
+  | "rightTop"
+  | "leftCenter"
+  | "center"
+  | "rightCenter"
+  | "leftBottom"
+  | "centerBottom"
+  | "rightBottom";
 
 export class Box2 {
   readonly center: Point2;
@@ -32,6 +43,22 @@ export class Box2 {
     );
 
     return this.givenCenterSize(center, size);
+  }
+
+  static givenContainedPoints(points: Point2[]): Box2 {
+    const allX = points.map((point) => point.x);
+    const allY = points.map((point) => point.y);
+
+    const minX = Math.min(...allX);
+    const minY = Math.min(...allY);
+
+    const maxX = Math.max(...allX);
+    const maxY = Math.max(...allY);
+
+    return Box2.givenOppositeCorners(
+      Point2.givenXY(minX, minY),
+      Point2.givenXY(maxX, maxY)
+    );
   }
 
   static isEqual(a: Box2, b: Box2): boolean {
@@ -67,6 +94,38 @@ export class Box2 {
     return this.center.y + this.size.height / 2;
   }
 
+  get leftTop(): Point2 {
+    return Point2.givenXY(this.left, this.top);
+  }
+
+  get centerTop(): Point2 {
+    return Point2.givenXY(this.center.x, this.top);
+  }
+
+  get rightTop(): Point2 {
+    return Point2.givenXY(this.right, this.top);
+  }
+
+  get leftCenter(): Point2 {
+    return Point2.givenXY(this.left, this.center.y);
+  }
+
+  get rightCenter(): Point2 {
+    return Point2.givenXY(this.right, this.center.y);
+  }
+
+  get leftBottom(): Point2 {
+    return Point2.givenXY(this.left, this.bottom);
+  }
+
+  get centerBottom(): Point2 {
+    return Point2.givenXY(this.center.x, this.bottom);
+  }
+
+  get rightBottom(): Point2 {
+    return Point2.givenXY(this.right, this.bottom);
+  }
+
   containsPoint(point: Point2): boolean {
     return (
       point.x >= this.left &&
@@ -82,5 +141,53 @@ export class Box2 {
     }
 
     return other.center.isEqual(this.center) && other.size.isEqual(this.size);
+  }
+
+  withAvailableSize(
+    availableSize: Size2,
+    scaleMode: ScaleMode,
+    anchor: Anchor2
+  ): Box2 {
+    const newSize = this.size.withAvailableSize(availableSize, scaleMode);
+
+    let centerX: number;
+    switch (anchor) {
+      case "leftTop":
+      case "leftCenter":
+      case "leftBottom":
+        centerX = this.left + newSize.width / 2;
+        break;
+      case "centerTop":
+      case "center":
+      case "centerBottom":
+        centerX = this.center.x;
+        break;
+      case "rightTop":
+      case "rightCenter":
+      case "rightBottom":
+        centerX = this.right - newSize.width / 2;
+        break;
+    }
+
+    let centerY: number;
+    switch (anchor) {
+      case "leftTop":
+      case "centerTop":
+      case "rightTop":
+        centerY = this.top + newSize.height / 2;
+        break;
+      case "leftCenter":
+      case "center":
+      case "rightCenter":
+        centerY = this.center.y;
+        break;
+      case "leftBottom":
+      case "centerBottom":
+      case "rightBottom":
+        centerY = this.bottom - newSize.height / 2;
+        break;
+    }
+
+    return Box2.givenCenterSize(Point2.givenXY(centerX, centerY), newSize);
   }
 }
