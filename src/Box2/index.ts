@@ -1,7 +1,7 @@
 import { Point2 } from "../Point2";
 import { Size2, ScaleMode } from "../Size2";
 
-type Anchor2 =
+export type Anchor2 =
   | "leftTop"
   | "centerTop"
   | "rightTop"
@@ -143,29 +143,29 @@ export class Box2 {
     return other.center.isEqual(this.center) && other.size.isEqual(this.size);
   }
 
-  withAvailableSize(
-    availableSize: Size2,
+  withBoundingBox(
+    boundingBox: Box2,
     scaleMode: ScaleMode,
     anchor: Anchor2
   ): Box2 {
-    const newSize = this.size.withAvailableSize(availableSize, scaleMode);
+    const newSize = this.size.withAvailableSize(boundingBox.size, scaleMode);
 
     let centerX: number;
     switch (anchor) {
       case "leftTop":
       case "leftCenter":
       case "leftBottom":
-        centerX = this.left + newSize.width / 2;
+        centerX = boundingBox.left + newSize.toHalf().width;
         break;
       case "centerTop":
       case "center":
       case "centerBottom":
-        centerX = this.center.x;
+        centerX = boundingBox.center.x;
         break;
       case "rightTop":
       case "rightCenter":
       case "rightBottom":
-        centerX = this.right - newSize.width / 2;
+        centerX = boundingBox.right - newSize.toHalf().width;
         break;
     }
 
@@ -174,17 +174,17 @@ export class Box2 {
       case "leftTop":
       case "centerTop":
       case "rightTop":
-        centerY = this.top + newSize.height / 2;
+        centerY = boundingBox.top + newSize.toHalf().height;
         break;
       case "leftCenter":
       case "center":
       case "rightCenter":
-        centerY = this.center.y;
+        centerY = boundingBox.center.y;
         break;
       case "leftBottom":
       case "centerBottom":
       case "rightBottom":
-        centerY = this.bottom - newSize.height / 2;
+        centerY = boundingBox.bottom - newSize.toHalf().height;
         break;
     }
 

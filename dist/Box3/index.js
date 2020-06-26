@@ -127,7 +127,7 @@ class Box3 {
         return Point3_1.Point3.givenXYZ(this.left, this.center.y, this.back);
     }
     get backCenter() {
-        return Point3_1.Point3.givenXYZ(this.left, this.center.y, this.back);
+        return Point3_1.Point3.givenXYZ(this.center.x, this.center.y, this.back);
     }
     get rightCenterBack() {
         return Point3_1.Point3.givenXYZ(this.right, this.center.y, this.back);
@@ -135,7 +135,7 @@ class Box3 {
     get leftBottomBack() {
         return Point3_1.Point3.givenXYZ(this.left, this.bottom, this.back);
     }
-    get bottomCenterBack() {
+    get centerBottomBack() {
         return Point3_1.Point3.givenXYZ(this.center.x, this.bottom, this.back);
     }
     get rightBottomBack() {
@@ -155,8 +155,8 @@ class Box3 {
         }
         return other.center.isEqual(this.center) && other.size.isEqual(this.size);
     }
-    withAvailableSize(availableSize, scaleMode, anchor) {
-        const newSize = this.size.withAvailableSize(availableSize, scaleMode);
+    withBoundingBox(boundingBox, scaleMode, anchor) {
+        const newSize = this.size.withAvailableSize(boundingBox.size, scaleMode);
         let centerX;
         switch (anchor) {
             case "leftTopFront":
@@ -168,7 +168,7 @@ class Box3 {
             case "leftBottomFront":
             case "leftBottomCenter":
             case "leftBottomBack":
-                centerX = this.left + newSize.width / 2;
+                centerX = boundingBox.left + newSize.toHalf().width;
                 break;
             case "centerTopFront":
             case "topCenter":
@@ -179,7 +179,7 @@ class Box3 {
             case "centerBottomFront":
             case "bottomCenter":
             case "centerBottomBack":
-                centerX = this.center.x;
+                centerX = boundingBox.center.x;
                 break;
             case "rightTopFront":
             case "rightTopCenter":
@@ -190,7 +190,7 @@ class Box3 {
             case "rightBottomFront":
             case "rightBottomCenter":
             case "rightBottomBack":
-                centerX = this.right - newSize.width / 2;
+                centerX = boundingBox.right - newSize.toHalf().width;
                 break;
         }
         let centerY;
@@ -204,7 +204,7 @@ class Box3 {
             case "leftTopBack":
             case "centerTopBack":
             case "rightTopBack":
-                centerY = this.top + newSize.height / 2;
+                centerY = boundingBox.top + newSize.toHalf().height;
                 break;
             case "leftCenterFront":
             case "frontCenter":
@@ -215,7 +215,7 @@ class Box3 {
             case "leftCenterBack":
             case "backCenter":
             case "rightCenterBack":
-                centerY = this.center.y;
+                centerY = boundingBox.center.y;
                 break;
             case "leftBottomFront":
             case "centerBottomFront":
@@ -226,7 +226,7 @@ class Box3 {
             case "leftBottomBack":
             case "centerBottomBack":
             case "rightBottomBack":
-                centerY = this.bottom - newSize.height / 2;
+                centerY = boundingBox.bottom - newSize.toHalf().height;
                 break;
         }
         let centerZ;
@@ -240,7 +240,7 @@ class Box3 {
             case "leftBottomFront":
             case "centerBottomFront":
             case "rightBottomFront":
-                centerZ = this.front - newSize.depth / 2;
+                centerZ = boundingBox.front - newSize.toHalf().depth;
                 break;
             case "leftTopCenter":
             case "topCenter":
@@ -251,7 +251,7 @@ class Box3 {
             case "leftBottomCenter":
             case "bottomCenter":
             case "rightBottomCenter":
-                centerZ = this.center.z;
+                centerZ = boundingBox.center.z;
                 break;
             case "leftTopBack":
             case "centerTopBack":
@@ -262,7 +262,7 @@ class Box3 {
             case "leftBottomBack":
             case "centerBottomBack":
             case "rightBottomBack":
-                centerZ = this.back + newSize.depth / 2;
+                centerZ = boundingBox.back + newSize.toHalf().depth;
                 break;
         }
         return Box3.givenCenterSize(Point3_1.Point3.givenXYZ(centerX, centerY, centerZ), newSize);

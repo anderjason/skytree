@@ -6,12 +6,14 @@ export declare class Size3 {
     protected _width: number;
     protected _height: number;
     protected _depth: number;
+    protected _half: Size3;
     protected constructor(width: number, height: number, depth: number);
     get width(): number;
     get height(): number;
     get depth(): number;
     get isZero(): boolean;
     toClone(): Size3;
+    toHalf(): Size3;
     isEqual(other: Size3): boolean;
     withAvailableSize(availableSize: Size3, scaleMode: ScaleMode): Size3;
 }

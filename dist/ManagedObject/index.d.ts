@@ -11,8 +11,8 @@ export declare abstract class ManagedObject {
     get children(): ManagedObject[];
     init: () => Handle;
     uninit: () => void;
-    addChild: <T extends ManagedObject>(child: T) => T;
+    addManagedObject: <T extends ManagedObject>(child: T) => T;
     addHandle: (handle: Handle) => Handle;
-    removeChild: (child: ManagedObject) => void;
+    removeManagedObject: (child: ManagedObject) => void;
     protected abstract initManagedObject(): void;
 }

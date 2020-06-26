@@ -1,7 +1,7 @@
 import { Size3 } from "../Size3";
 import { Point3 } from "../Point3";
 import { ScaleMode } from "../Size2";
-declare type Anchor3 = "leftTopFront" | "centerTopFront" | "rightTopFront" | "leftCenterFront" | "frontCenter" | "rightCenterFront" | "leftBottomFront" | "centerBottomFront" | "rightBottomFront" | "leftTopCenter" | "topCenter" | "rightTopCenter" | "leftCenter" | "center" | "rightCenter" | "leftBottomCenter" | "bottomCenter" | "rightBottomCenter" | "leftTopBack" | "centerTopBack" | "rightTopBack" | "leftCenterBack" | "backCenter" | "rightCenterBack" | "leftBottomBack" | "centerBottomBack" | "rightBottomBack";
+export declare type Anchor3 = "leftTopFront" | "centerTopFront" | "rightTopFront" | "leftCenterFront" | "frontCenter" | "rightCenterFront" | "leftBottomFront" | "centerBottomFront" | "rightBottomFront" | "leftTopCenter" | "topCenter" | "rightTopCenter" | "leftCenter" | "center" | "rightCenter" | "leftBottomCenter" | "bottomCenter" | "rightBottomCenter" | "leftTopBack" | "centerTopBack" | "rightTopBack" | "leftCenterBack" | "backCenter" | "rightCenterBack" | "leftBottomBack" | "centerBottomBack" | "rightBottomBack";
 export declare class Box3 {
     readonly center: Point3;
     readonly size: Size3;
@@ -40,10 +40,9 @@ export declare class Box3 {
     get backCenter(): Point3;
     get rightCenterBack(): Point3;
     get leftBottomBack(): Point3;
-    get bottomCenterBack(): Point3;
+    get centerBottomBack(): Point3;
     get rightBottomBack(): Point3;
     containsPoint(point: Point3): boolean;
     isEqual(other: Box3): boolean;
-    withAvailableSize(availableSize: Size3, scaleMode: ScaleMode, anchor: Anchor3): Box3;
+    withBoundingBox(boundingBox: Box3, scaleMode: ScaleMode, anchor: Anchor3): Box3;
 }
-export {};

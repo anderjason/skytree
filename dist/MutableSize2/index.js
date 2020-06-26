@@ -17,9 +17,11 @@ class MutableSize2 extends Size2_1.Size2 {
     }
     set width(value) {
         this._width = value;
+        this._half = undefined;
     }
     set height(value) {
         this._height = value;
+        this._half = undefined;
     }
     toClone() {
         return new MutableSize2(this.width, this.height);

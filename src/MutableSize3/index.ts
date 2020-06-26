@@ -23,10 +23,12 @@ export class MutableSize3 extends Size3 {
 
   set width(value: number) {
     this._width = value;
+    this._half = undefined;
   }
 
   set height(value: number) {
     this._height = value;
+    this._half = undefined;
   }
 
   set depth(value: number) {

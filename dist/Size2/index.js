@@ -33,6 +33,12 @@ class Size2 {
     toClone() {
         return new Size2(this._width, this._height);
     }
+    toHalf() {
+        if (this._half == null) {
+            this._half = Size2.givenWidthHeight(this._width / 2, this._height / 2);
+        }
+        return this._half;
+    }
     isEqual(other) {
         if (other == null) {
             return false;

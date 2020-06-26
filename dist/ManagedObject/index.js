@@ -29,12 +29,12 @@ class ManagedObject {
                 child.uninit();
             });
         };
-        this.addChild = (child) => {
+        this.addManagedObject = (child) => {
             if (this._children.has(child)) {
                 return;
             }
             if (child.parent != null) {
-                child.parent.removeChild(child);
+                child.parent.removeManagedObject(child);
             }
             this._children.add(child);
             child._parent = this;
@@ -47,7 +47,7 @@ class ManagedObject {
             this._handles.push(handle);
             return handle;
         };
-        this.removeChild = (child) => {
+        this.removeManagedObject = (child) => {
             if (!this._children.has(child)) {
                 throw new Error("Object was not found as a child of this object");
             }

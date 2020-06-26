@@ -146,7 +146,7 @@ describe("ManagedObject", () => {
     const childInstance = new MySubclass();
     assert(childInstance.isInitialized === false);
 
-    parentInstance.addChild(childInstance);
+    parentInstance.addManagedObject(childInstance);
 
     // @ts-ignore
     assert(childInstance.isInitialized === true);
@@ -163,7 +163,7 @@ describe("ManagedObject", () => {
     const childInstance = new MySubclass();
     assert(childInstance.parent == null);
 
-    parentInstance.addChild(childInstance);
+    parentInstance.addManagedObject(childInstance);
     assert(childInstance.parent === parentInstance);
   });
 
@@ -176,8 +176,8 @@ describe("ManagedObject", () => {
     parentInstance.init();
 
     const childInstance = new MySubclass();
-    parentInstance.addChild(childInstance);
-    parentInstance.removeChild(childInstance);
+    parentInstance.addManagedObject(childInstance);
+    parentInstance.removeManagedObject(childInstance);
 
     assert(childInstance.parent == null);
   });
@@ -194,12 +194,12 @@ describe("ManagedObject", () => {
     parentInstance2.init();
 
     const childInstance = new MySubclass();
-    parentInstance1.addChild(childInstance);
+    parentInstance1.addManagedObject(childInstance);
     assert(childInstance.parent === parentInstance1);
     assert(parentInstance1.children.includes(childInstance));
     assert(!parentInstance2.children.includes(childInstance));
 
-    parentInstance2.addChild(childInstance);
+    parentInstance2.addManagedObject(childInstance);
     assert(childInstance.parent === parentInstance2);
     assert(parentInstance2.children.includes(childInstance)); // added
     assert(!parentInstance1.children.includes(childInstance)); // removed
@@ -214,7 +214,7 @@ describe("ManagedObject", () => {
     parentInstance1.init();
 
     const childInstance = new MySubclass();
-    parentInstance1.addChild(childInstance);
+    parentInstance1.addManagedObject(childInstance);
     assert(childInstance.isInitialized === true);
 
     parentInstance1.uninit();
@@ -230,7 +230,7 @@ describe("ManagedObject", () => {
 
     const parentInstance1 = new MySubclass();
     const childInstance = new MySubclass();
-    parentInstance1.addChild(childInstance);
+    parentInstance1.addManagedObject(childInstance);
     assert(childInstance.isInitialized === false); // parent is not initialized yet
 
     parentInstance1.init();

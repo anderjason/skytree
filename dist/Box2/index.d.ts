@@ -1,6 +1,6 @@
 import { Point2 } from "../Point2";
 import { Size2, ScaleMode } from "../Size2";
-declare type Anchor2 = "leftTop" | "centerTop" | "rightTop" | "leftCenter" | "center" | "rightCenter" | "leftBottom" | "centerBottom" | "rightBottom";
+export declare type Anchor2 = "leftTop" | "centerTop" | "rightTop" | "leftCenter" | "center" | "rightCenter" | "leftBottom" | "centerBottom" | "rightBottom";
 export declare class Box2 {
     readonly center: Point2;
     readonly size: Size2;
@@ -24,6 +24,5 @@ export declare class Box2 {
     get rightBottom(): Point2;
     containsPoint(point: Point2): boolean;
     isEqual(other: Box2): boolean;
-    withAvailableSize(availableSize: Size2, scaleMode: ScaleMode, anchor: Anchor2): Box2;
+    withBoundingBox(boundingBox: Box2, scaleMode: ScaleMode, anchor: Anchor2): Box2;
 }
-export {};

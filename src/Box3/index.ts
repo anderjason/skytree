@@ -2,7 +2,7 @@ import { Size3 } from "../Size3";
 import { Point3 } from "../Point3";
 import { ScaleMode } from "../Size2";
 
-type Anchor3 =
+export type Anchor3 =
   | "leftTopFront"
   | "centerTopFront"
   | "rightTopFront"
@@ -212,7 +212,7 @@ export class Box3 {
   }
 
   get backCenter(): Point3 {
-    return Point3.givenXYZ(this.left, this.center.y, this.back);
+    return Point3.givenXYZ(this.center.x, this.center.y, this.back);
   }
 
   get rightCenterBack(): Point3 {
@@ -223,7 +223,7 @@ export class Box3 {
     return Point3.givenXYZ(this.left, this.bottom, this.back);
   }
 
-  get bottomCenterBack(): Point3 {
+  get centerBottomBack(): Point3 {
     return Point3.givenXYZ(this.center.x, this.bottom, this.back);
   }
 
@@ -250,12 +250,12 @@ export class Box3 {
     return other.center.isEqual(this.center) && other.size.isEqual(this.size);
   }
 
-  withAvailableSize(
-    availableSize: Size3,
+  withBoundingBox(
+    boundingBox: Box3,
     scaleMode: ScaleMode,
     anchor: Anchor3
   ): Box3 {
-    const newSize = this.size.withAvailableSize(availableSize, scaleMode);
+    const newSize = this.size.withAvailableSize(boundingBox.size, scaleMode);
 
     let centerX: number;
     switch (anchor) {
@@ -268,7 +268,7 @@ export class Box3 {
       case "leftBottomFront":
       case "leftBottomCenter":
       case "leftBottomBack":
-        centerX = this.left + newSize.width / 2;
+        centerX = boundingBox.left + newSize.toHalf().width;
         break;
       case "centerTopFront":
       case "topCenter":
@@ -279,7 +279,7 @@ export class Box3 {
       case "centerBottomFront":
       case "bottomCenter":
       case "centerBottomBack":
-        centerX = this.center.x;
+        centerX = boundingBox.center.x;
         break;
       case "rightTopFront":
       case "rightTopCenter":
@@ -290,7 +290,7 @@ export class Box3 {
       case "rightBottomFront":
       case "rightBottomCenter":
       case "rightBottomBack":
-        centerX = this.right - newSize.width / 2;
+        centerX = boundingBox.right - newSize.toHalf().width;
         break;
     }
 
@@ -305,7 +305,7 @@ export class Box3 {
       case "leftTopBack":
       case "centerTopBack":
       case "rightTopBack":
-        centerY = this.top + newSize.height / 2;
+        centerY = boundingBox.top + newSize.toHalf().height;
         break;
       case "leftCenterFront":
       case "frontCenter":
@@ -316,7 +316,7 @@ export class Box3 {
       case "leftCenterBack":
       case "backCenter":
       case "rightCenterBack":
-        centerY = this.center.y;
+        centerY = boundingBox.center.y;
         break;
       case "leftBottomFront":
       case "centerBottomFront":
@@ -327,7 +327,7 @@ export class Box3 {
       case "leftBottomBack":
       case "centerBottomBack":
       case "rightBottomBack":
-        centerY = this.bottom - newSize.height / 2;
+        centerY = boundingBox.bottom - newSize.toHalf().height;
         break;
     }
 
@@ -342,7 +342,7 @@ export class Box3 {
       case "leftBottomFront":
       case "centerBottomFront":
       case "rightBottomFront":
-        centerZ = this.front - newSize.depth / 2;
+        centerZ = boundingBox.front - newSize.toHalf().depth;
         break;
       case "leftTopCenter":
       case "topCenter":
@@ -353,7 +353,7 @@ export class Box3 {
       case "leftBottomCenter":
       case "bottomCenter":
       case "rightBottomCenter":
-        centerZ = this.center.z;
+        centerZ = boundingBox.center.z;
         break;
       case "leftTopBack":
       case "centerTopBack":
@@ -364,7 +364,7 @@ export class Box3 {
       case "leftBottomBack":
       case "centerBottomBack":
       case "rightBottomBack":
-        centerZ = this.back + newSize.depth / 2;
+        centerZ = boundingBox.back + newSize.toHalf().depth;
         break;
     }
 

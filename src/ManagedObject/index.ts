@@ -54,13 +54,13 @@ export abstract class ManagedObject {
     });
   };
 
-  addChild = <T extends ManagedObject>(child: T): T => {
+  addManagedObject = <T extends ManagedObject>(child: T): T => {
     if (this._children.has(child)) {
       return;
     }
 
     if (child.parent != null) {
-      child.parent.removeChild(child);
+      child.parent.removeManagedObject(child);
     }
 
     this._children.add(child);
@@ -79,7 +79,7 @@ export abstract class ManagedObject {
     return handle;
   };
 
-  removeChild = (child: ManagedObject): void => {
+  removeManagedObject = (child: ManagedObject): void => {
     if (!this._children.has(child)) {
       throw new Error("Object was not found as a child of this object");
     }

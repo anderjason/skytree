@@ -24,6 +24,8 @@ export class Size2 {
     return a.isEqual(b);
   }
 
+  protected _half: Size2;
+
   protected constructor(width: number, height: number) {
     this._width = width;
     this._height = height;
@@ -43,6 +45,14 @@ export class Size2 {
 
   toClone(): Size2 {
     return new Size2(this._width, this._height);
+  }
+
+  toHalf(): Size2 {
+    if (this._half == null) {
+      this._half = Size2.givenWidthHeight(this._width / 2, this._height / 2);
+    }
+
+    return this._half;
   }
 
   isEqual(other: Size2): boolean {

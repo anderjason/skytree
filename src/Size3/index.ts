@@ -28,6 +28,7 @@ export class Size3 {
   protected _width: number;
   protected _height: number;
   protected _depth: number;
+  protected _half: Size3;
 
   protected constructor(width: number, height: number, depth: number) {
     this._width = width;
@@ -53,6 +54,18 @@ export class Size3 {
 
   toClone() {
     return new Size3(this._width, this._height, this._depth);
+  }
+
+  toHalf(): Size3 {
+    if (this._half == null) {
+      this._half = Size3.givenWidthHeightDepth(
+        this._width / 2,
+        this._height / 2,
+        this._depth / 2
+      );
+    }
+
+    return this._half;
   }
 
   isEqual(other: Size3): boolean {

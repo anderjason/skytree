@@ -17,9 +17,11 @@ class MutableSize3 extends Size3_1.Size3 {
     }
     set width(value) {
         this._width = value;
+        this._half = undefined;
     }
     set height(value) {
         this._height = value;
+        this._half = undefined;
     }
     set depth(value) {
         this._depth = value;
