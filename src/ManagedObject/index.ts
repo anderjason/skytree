@@ -1,7 +1,10 @@
 import { Handle } from "../Handle";
 import { stringOfRandomCharacters } from "../StringUtil/stringOfRandomCharacters";
+import { Observable } from "../Observable";
 
-export abstract class ManagedObject {
+export class ManagedObject {
+  static readonly initializedCount = Observable.givenValue<number>(0);
+
   readonly id: string;
 
   private _handles: Handle[] = [];
@@ -33,6 +36,10 @@ export abstract class ManagedObject {
         child.init();
       });
 
+      ManagedObject.initializedCount.setValue(
+        ManagedObject.initializedCount.value + 1
+      );
+
       this.initManagedObject();
     }
 
@@ -40,6 +47,10 @@ export abstract class ManagedObject {
   };
 
   uninit = (): void => {
+    ManagedObject.initializedCount.setValue(
+      ManagedObject.initializedCount.value - 1
+    );
+
     this._thisHandle = undefined;
 
     if (this._handles != null && this._handles.length > 0) {
@@ -89,5 +100,5 @@ export abstract class ManagedObject {
     child._parent = undefined;
   };
 
-  protected abstract initManagedObject(): void;
+  protected initManagedObject(): void {}
 }

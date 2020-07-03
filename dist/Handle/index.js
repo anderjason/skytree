@@ -9,11 +9,16 @@ class Handle {
             }
             this._releaseFn();
             this._releaseFn = undefined;
+            Handle._unreleasedCount -= 1;
             return;
         };
         this._releaseFn = release;
     }
+    static getUnreleasedCount() {
+        return this._unreleasedCount;
+    }
     static givenReleaseFunction(release) {
+        this._unreleasedCount += 1;
         return new Handle(release);
     }
     get isReleased() {
@@ -21,4 +26,5 @@ class Handle {
     }
 }
 exports.Handle = Handle;
+Handle._unreleasedCount = 0;
 //# sourceMappingURL=index.js.map

@@ -6,11 +6,8 @@ const _1 = require(".");
 const Handle_1 = require("../Handle");
 describe("ManagedObject", () => {
     it("has a unique id per instance", () => {
-        class MySubclass extends _1.ManagedObject {
-            initManagedObject() { }
-        }
-        const instance1 = new MySubclass();
-        const instance2 = new MySubclass();
+        const instance1 = new _1.ManagedObject();
+        const instance2 = new _1.ManagedObject();
         assert(instance1.id != null);
         assert(instance1.id.length === 8);
         assert(instance2.id != null);
@@ -177,6 +174,19 @@ describe("ManagedObject", () => {
         parentInstance1.init();
         // @ts-ignore
         assert(childInstance.isInitialized === true);
+    });
+    it("updates the static initialized count", () => {
+        class MySubclass extends _1.ManagedObject {
+            initManagedObject() { }
+        }
+        const startValue = _1.ManagedObject.initializedCount.value;
+        const parentInstance1 = new MySubclass();
+        const childInstance = new MySubclass();
+        parentInstance1.addManagedObject(childInstance);
+        parentInstance1.init();
+        assert.strictEqual(_1.ManagedObject.initializedCount.value, startValue + 2);
+        parentInstance1.uninit();
+        assert.strictEqual(_1.ManagedObject.initializedCount.value, startValue);
     });
 });
 //# sourceMappingURL=index.spec.js.map

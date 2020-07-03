@@ -1,4 +1,6 @@
 export declare class Handle {
+    private static _unreleasedCount;
+    static getUnreleasedCount(): number;
     private _releaseFn;
     static givenReleaseFunction(release: () => void): Handle;
     private constructor();

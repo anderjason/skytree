@@ -1,7 +1,15 @@
 export class Handle {
+  private static _unreleasedCount: number = 0;
+
+  static getUnreleasedCount(): number {
+    return this._unreleasedCount;
+  }
+
   private _releaseFn: (() => void) | undefined;
 
   static givenReleaseFunction(release: () => void): Handle {
+    this._unreleasedCount += 1;
+
     return new Handle(release);
   }
 
@@ -20,6 +28,8 @@ export class Handle {
 
     this._releaseFn();
     this._releaseFn = undefined;
+
+    Handle._unreleasedCount -= 1;
 
     return;
   };

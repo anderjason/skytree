@@ -1,5 +1,7 @@
 import { Handle } from "../Handle";
-export declare abstract class ManagedObject {
+import { Observable } from "../Observable";
+export declare class ManagedObject {
+    static readonly initializedCount: Observable<number>;
     readonly id: string;
     private _handles;
     private _thisHandle;
@@ -14,5 +16,5 @@ export declare abstract class ManagedObject {
     addManagedObject: <T extends ManagedObject>(child: T) => T;
     addHandle: (handle: Handle) => Handle;
     removeManagedObject: (child: ManagedObject) => void;
-    protected abstract initManagedObject(): void;
+    protected initManagedObject(): void;
 }

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ManagedObject = void 0;
 const Handle_1 = require("../Handle");
 const stringOfRandomCharacters_1 = require("../StringUtil/stringOfRandomCharacters");
+const Observable_1 = require("../Observable");
 class ManagedObject {
     constructor() {
         this._handles = [];
@@ -13,11 +14,13 @@ class ManagedObject {
                 this._children.forEach((child) => {
                     child.init();
                 });
+                ManagedObject.initializedCount.setValue(ManagedObject.initializedCount.value + 1);
                 this.initManagedObject();
             }
             return this._thisHandle;
         };
         this.uninit = () => {
+            ManagedObject.initializedCount.setValue(ManagedObject.initializedCount.value - 1);
             this._thisHandle = undefined;
             if (this._handles != null && this._handles.length > 0) {
                 this._handles.reverse().forEach((handle) => {
@@ -66,6 +69,8 @@ class ManagedObject {
     get children() {
         return Array.from(this._children);
     }
+    initManagedObject() { }
 }
 exports.ManagedObject = ManagedObject;
+ManagedObject.initializedCount = Observable_1.Observable.givenValue(0);
 //# sourceMappingURL=index.js.map

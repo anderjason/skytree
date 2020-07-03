@@ -5,12 +5,8 @@ import { Handle } from "../Handle";
 
 describe("ManagedObject", () => {
   it("has a unique id per instance", () => {
-    class MySubclass extends ManagedObject {
-      initManagedObject() {}
-    }
-
-    const instance1 = new MySubclass();
-    const instance2 = new MySubclass();
+    const instance1 = new ManagedObject();
+    const instance2 = new ManagedObject();
 
     assert(instance1.id != null);
     assert(instance1.id.length === 8);
@@ -237,5 +233,24 @@ describe("ManagedObject", () => {
 
     // @ts-ignore
     assert(childInstance.isInitialized === true);
+  });
+
+  it("updates the static initialized count", () => {
+    class MySubclass extends ManagedObject {
+      initManagedObject() {}
+    }
+
+    const startValue = ManagedObject.initializedCount.value;
+
+    const parentInstance1 = new MySubclass();
+    const childInstance = new MySubclass();
+    parentInstance1.addManagedObject(childInstance);
+    parentInstance1.init();
+
+    assert.strictEqual(ManagedObject.initializedCount.value, startValue + 2);
+
+    parentInstance1.uninit();
+
+    assert.strictEqual(ManagedObject.initializedCount.value, startValue);
   });
 });
