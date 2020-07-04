@@ -15,6 +15,15 @@ class MutablePoint3 extends Point3_1.Point3 {
     constructor(x, y, z) {
         super(x, y, z);
     }
+    get x() {
+        return this._x;
+    }
+    get y() {
+        return this._y;
+    }
+    get z() {
+        return this._z;
+    }
     set x(value) {
         this._x = value;
     }

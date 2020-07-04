@@ -15,6 +15,15 @@ class MutableSize3 extends Size3_1.Size3 {
     constructor(width, height, depth) {
         super(width, height, depth);
     }
+    get width() {
+        return this._width;
+    }
+    get height() {
+        return this._height;
+    }
+    get depth() {
+        return this._depth;
+    }
     set width(value) {
         this._width = value;
         this._half = undefined;
@@ -25,6 +34,7 @@ class MutableSize3 extends Size3_1.Size3 {
     }
     set depth(value) {
         this._depth = value;
+        this._half = undefined;
     }
     toClone() {
         return new MutableSize3(this.width, this.height, this.depth);

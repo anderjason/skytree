@@ -4,6 +4,9 @@ export declare class MutablePoint3 extends Point3 {
     static givenPoint3(point: Point3): MutablePoint3;
     static ofZero(): MutablePoint3;
     private constructor();
+    get x(): number;
+    get y(): number;
+    get z(): number;
     set x(value: number);
     set y(value: number);
     set z(value: number);

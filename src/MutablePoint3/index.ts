@@ -17,6 +17,18 @@ export class MutablePoint3 extends Point3 {
     super(x, y, z);
   }
 
+  get x(): number {
+    return this._x;
+  }
+
+  get y(): number {
+    return this._y;
+  }
+
+  get z(): number {
+    return this._z;
+  }
+
   set x(value: number) {
     this._x = value;
   }

@@ -17,6 +17,14 @@ export class MutablePoint2 extends Point2 {
     super(x, y);
   }
 
+  get x(): number {
+    return this._x;
+  }
+
+  get y(): number {
+    return this._y;
+  }
+
   set x(value: number) {
     this._x = value;
   }

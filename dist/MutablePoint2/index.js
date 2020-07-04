@@ -15,6 +15,12 @@ class MutablePoint2 extends Point2_1.Point2 {
     constructor(x, y) {
         super(x, y);
     }
+    get x() {
+        return this._x;
+    }
+    get y() {
+        return this._y;
+    }
     set x(value) {
         this._x = value;
     }

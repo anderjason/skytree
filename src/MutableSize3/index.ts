@@ -21,6 +21,18 @@ export class MutableSize3 extends Size3 {
     super(width, height, depth);
   }
 
+  get width(): number {
+    return this._width;
+  }
+
+  get height(): number {
+    return this._height;
+  }
+
+  get depth(): number {
+    return this._depth;
+  }
+
   set width(value: number) {
     this._width = value;
     this._half = undefined;
@@ -33,6 +45,7 @@ export class MutableSize3 extends Size3 {
 
   set depth(value: number) {
     this._depth = value;
+    this._half = undefined;
   }
 
   toClone(): MutableSize3 {

@@ -17,6 +17,14 @@ export class MutableSize2 extends Size2 {
     super(width, height);
   }
 
+  get width(): number {
+    return this._width;
+  }
+
+  get height(): number {
+    return this._height;
+  }
+
   set width(value: number) {
     this._width = value;
     this._half = undefined;

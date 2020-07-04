@@ -15,6 +15,12 @@ class MutableSize2 extends Size2_1.Size2 {
     constructor(width, height) {
         super(width, height);
     }
+    get width() {
+        return this._width;
+    }
+    get height() {
+        return this._height;
+    }
     set width(value) {
         this._width = value;
         this._half = undefined;
