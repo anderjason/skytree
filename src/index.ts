@@ -11,6 +11,7 @@ import { Instant } from "./Instant";
 import { ManagedInterval } from "./ManagedInterval";
 import { ManagedObject } from "./ManagedObject";
 import { ManagedTimeout } from "./ManagedTimeout";
+import { MultiBinding } from "./MultiBinding";
 import { MutablePoint2 } from "./MutablePoint2";
 import { MutablePoint3 } from "./MutablePoint3";
 import { MutableSize2 } from "./MutableSize2";
@@ -18,6 +19,7 @@ import { MutableSize3 } from "./MutableSize3";
 import { NumberUtil } from "./NumberUtil";
 import { ObjectUtil } from "./ObjectUtil";
 import { Observable } from "./Observable";
+import { ObservableSet } from "./ObservableSet";
 import { Palette } from "./Palette";
 import { Percent } from "./Percent";
 import { Point2 } from "./Point2";
@@ -45,6 +47,7 @@ export {
   ManagedInterval,
   ManagedObject,
   ManagedTimeout,
+  MultiBinding,
   MutablePoint2,
   MutablePoint3,
   MutableSize2,
@@ -52,6 +55,7 @@ export {
   NumberUtil,
   ObjectUtil,
   Observable,
+  ObservableSet,
   Palette,
   Percent,
   Point2,

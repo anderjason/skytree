@@ -1,17 +1,15 @@
+import { Observable } from "../Observable";
+
 export class Handle {
-  private static _unreleasedCount: number = 0;
-
-  static getUnreleasedCount(): number {
-    return this._unreleasedCount;
-  }
-
-  private _releaseFn: (() => void) | undefined;
+  static readonly unreleasedCount = Observable.givenValue<number>(0);
 
   static givenReleaseFunction(release: () => void): Handle {
-    this._unreleasedCount += 1;
+    this.unreleasedCount.setValue(this.unreleasedCount.value + 1);
 
     return new Handle(release);
   }
+
+  private _releaseFn: (() => void) | undefined;
 
   private constructor(release: () => void) {
     this._releaseFn = release;
@@ -29,7 +27,7 @@ export class Handle {
     this._releaseFn();
     this._releaseFn = undefined;
 
-    Handle._unreleasedCount -= 1;
+    Handle.unreleasedCount.setValue(Handle.unreleasedCount.value - 1);
 
     return;
   };

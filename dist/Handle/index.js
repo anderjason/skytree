@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Handle = void 0;
+const Observable_1 = require("../Observable");
 class Handle {
     constructor(release) {
         this.release = () => {
@@ -9,16 +10,13 @@ class Handle {
             }
             this._releaseFn();
             this._releaseFn = undefined;
-            Handle._unreleasedCount -= 1;
+            Handle.unreleasedCount.setValue(Handle.unreleasedCount.value - 1);
             return;
         };
         this._releaseFn = release;
     }
-    static getUnreleasedCount() {
-        return this._unreleasedCount;
-    }
     static givenReleaseFunction(release) {
-        this._unreleasedCount += 1;
+        this.unreleasedCount.setValue(this.unreleasedCount.value + 1);
         return new Handle(release);
     }
     get isReleased() {
@@ -26,5 +24,5 @@ class Handle {
     }
 }
 exports.Handle = Handle;
-Handle._unreleasedCount = 0;
+Handle.unreleasedCount = Observable_1.Observable.givenValue(0);
 //# sourceMappingURL=index.js.map

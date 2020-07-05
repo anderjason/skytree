@@ -1,8 +1,8 @@
+import { Observable } from "../Observable";
 export declare class Handle {
-    private static _unreleasedCount;
-    static getUnreleasedCount(): number;
-    private _releaseFn;
+    static readonly unreleasedCount: Observable<number>;
     static givenReleaseFunction(release: () => void): Handle;
+    private _releaseFn;
     private constructor();
     get isReleased(): boolean;
     release: () => void;
