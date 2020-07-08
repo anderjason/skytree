@@ -15,6 +15,7 @@ class ObjectUtil {
 }
 exports.ObjectUtil = ObjectUtil;
 ObjectUtil.itemAtPathGivenObject = itemAtPathGivenObject_1.itemAtPathGivenObject;
+ObjectUtil.valueAtPathGivenObject = itemAtPathGivenObject_1.itemAtPathGivenObject;
 ObjectUtil.mergedObjectGivenObjects = mergedObjectGivenObjects_1.mergedObjectGivenObjects;
 ObjectUtil.objectGivenQueryString = objectGivenQueryString_1.objectGivenQueryString;
 ObjectUtil.objectIsDeepEqualToObject = objectIsDeepEqualToObject_1.objectIsDeepEqualToObject;

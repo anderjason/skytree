@@ -35,6 +35,16 @@ class ObservableSet {
         });
         return true;
     }
+    clear() {
+        const values = this.toValues();
+        this._set.clear();
+        values.forEach((value) => {
+            this.didChange.emit({
+                type: "remove",
+                value,
+            });
+        });
+    }
     hasValue(value) {
         return this._set.has(value);
     }

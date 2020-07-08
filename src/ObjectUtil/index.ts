@@ -11,6 +11,7 @@ import { queryStringGivenObject } from "./queryStringGivenObject";
 
 export class ObjectUtil {
   static itemAtPathGivenObject = itemAtPathGivenObject;
+  static valueAtPathGivenObject = itemAtPathGivenObject;
   static mergedObjectGivenObjects = mergedObjectGivenObjects;
   static objectGivenQueryString = objectGivenQueryString;
   static objectIsDeepEqualToObject = objectIsDeepEqualToObject;

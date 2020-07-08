@@ -11,6 +11,7 @@ export declare class ObservableSet<T> {
     private constructor();
     addValue(value: T): boolean;
     removeValue(value: T): boolean;
+    clear(): void;
     hasValue(value: T): boolean;
     toValues(): T[];
     toCount(): number;

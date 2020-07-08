@@ -50,6 +50,19 @@ export class ObservableSet<T> {
     return true;
   }
 
+  clear(): void {
+    const values = this.toValues();
+
+    this._set.clear();
+
+    values.forEach((value) => {
+      this.didChange.emit({
+        type: "remove",
+        value,
+      });
+    });
+  }
+
   hasValue(value: T): boolean {
     return this._set.has(value);
   }
