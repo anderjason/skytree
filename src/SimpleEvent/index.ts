@@ -1,5 +1,5 @@
 import { Handle } from "../Handle";
-import { arrayWithoutItem } from "../ArrayUtil/arrayWithoutItem";
+import { ArrayUtil } from "../ArrayUtil";
 
 export type SimpleEventHandler<T> = (newValue: T, oldValue?: T) => void;
 
@@ -51,7 +51,7 @@ export class SimpleEvent<T = void> {
       return;
     }
 
-    this._handlers = arrayWithoutItem(this._handlers, handler);
+    this._handlers = ArrayUtil.arrayWithoutValue(this._handlers, handler);
 
     if (this._handlers.length === 0) {
       this._handlers = undefined;

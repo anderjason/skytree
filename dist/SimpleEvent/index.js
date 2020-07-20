@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SimpleEvent = void 0;
 const Handle_1 = require("../Handle");
-const arrayWithoutItem_1 = require("../ArrayUtil/arrayWithoutItem");
+const ArrayUtil_1 = require("../ArrayUtil");
 class SimpleEvent {
     constructor(lastValue) {
         this._handlers = undefined;
@@ -36,7 +36,7 @@ class SimpleEvent {
         if (this._handlers == null) {
             return;
         }
-        this._handlers = arrayWithoutItem_1.arrayWithoutItem(this._handlers, handler);
+        this._handlers = ArrayUtil_1.ArrayUtil.arrayWithoutValue(this._handlers, handler);
         if (this._handlers.length === 0) {
             this._handlers = undefined;
         }

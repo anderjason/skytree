@@ -1,5 +1,4 @@
 import { ArrayUtil } from "./ArrayUtil";
-import { Binding } from "./Binding";
 import { Box2 } from "./Box2";
 import { Box3 } from "./Box3";
 import { Color } from "./Color";
@@ -32,10 +31,11 @@ import { SimpleEvent } from "./SimpleEvent";
 import { Size2 } from "./Size2";
 import { Size3 } from "./Size3";
 import { StringUtil } from "./StringUtil";
+import { Test } from "./Test";
+import { Transformer } from "./Transformer";
 
 export {
   ArrayUtil,
-  Binding,
   Box2,
   Box3,
   Color,
@@ -68,4 +68,6 @@ export {
   Size2,
   Size3,
   StringUtil,
+  Test,
+  Transformer,
 };

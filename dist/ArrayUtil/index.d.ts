@@ -1,18 +1,18 @@
 import { arrayWithOrderFromValue } from "./arrayWithOrderFromValue";
-import { arrayWithoutItem } from "./arrayWithoutItem";
-import { optionalRandomItemGivenArray } from "./optionalRandomItemGivenArray";
-import { arrayWithoutDuplicateItems } from "./arrayWithoutDuplicateItems";
+import { arrayWithoutDuplicateValues } from "./arrayWithoutDuplicateValues";
+import { arrayWithoutValue } from "./arrayWithoutValue";
 import { equalSizeGroupsGivenArray } from "./equalSizeGroupsGivenArray";
-import { optionalLastItemGivenArray } from "./optionalLastItemGivenArray";
-import { pageItemsGivenArray } from "./pageItemsGivenArray";
 import { numberArrayGivenRange } from "./numberArrayGivenRange";
+import { optionalLastValueGivenArray } from "./optionalLastValueGivenArray";
+import { optionalRandomValueGivenArray } from "./optionalRandomValueGivenArray";
+import { pageItemsGivenArray } from "./pageItemsGivenArray";
 export declare class ArrayUtil {
     static arrayWithOrderFromValue: typeof arrayWithOrderFromValue;
-    static arrayWithoutDuplicateItems: typeof arrayWithoutDuplicateItems;
-    static arrayWithoutItem: typeof arrayWithoutItem;
+    static arrayWithoutDuplicateValues: typeof arrayWithoutDuplicateValues;
+    static arrayWithoutValue: typeof arrayWithoutValue;
     static equalSizeGroupsGivenArray: typeof equalSizeGroupsGivenArray;
     static numberArrayGivenRange: typeof numberArrayGivenRange;
-    static optionalLastItemGivenArray: typeof optionalLastItemGivenArray;
-    static optionalRandomItemGivenArray: typeof optionalRandomItemGivenArray;
+    static optionalLastValueGivenArray: typeof optionalLastValueGivenArray;
+    static optionalRandomValueGivenArray: typeof optionalRandomValueGivenArray;
     static pageItemsGivenArray: typeof pageItemsGivenArray;
 }

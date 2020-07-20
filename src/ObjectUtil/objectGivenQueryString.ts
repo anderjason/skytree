@@ -1,7 +1,11 @@
-export function objectGivenQueryString(
-  queryString: string = window.location.search
-): any {
+import { StringUtil } from "../StringUtil";
+
+export function objectGivenQueryString(queryString: string): any {
   const result: any = {};
+
+  if (StringUtil.stringIsEmpty(queryString)) {
+    return result;
+  }
 
   const text = queryString.trim().replace(/^[?#&]/, "");
   if (text.length == 0) {
@@ -15,13 +19,6 @@ export function objectGivenQueryString(
 
     const key = decodeURIComponent(splitPart[0]);
     let val = decodeURIComponent(splitPart[1]);
-
-    try {
-      val = atob(val);
-      val = JSON.parse(val);
-    } catch {
-      // empty
-    }
 
     result[key] = val;
   });

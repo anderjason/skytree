@@ -10,7 +10,7 @@ export function rgbInterpolatedColorOfColors(
   const decimalRatioPerStep: number = 1 / (colors.length - 1);
 
   if (ratio.toDecimal() === 1) {
-    return ArrayUtil.optionalLastItemGivenArray(colors)!;
+    return ArrayUtil.optionalLastValueGivenArray(colors)!;
   }
 
   const lowerBoundIdx = Math.floor(ratio.toDecimal() * (colors.length - 1));

@@ -1,1 +1,1 @@
-export declare function objectGivenQueryString(queryString?: string): any;
+export declare function objectGivenQueryString(queryString: string): any;

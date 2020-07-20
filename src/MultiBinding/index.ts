@@ -9,10 +9,10 @@ export class MultiBinding<T> extends ManagedObject {
     return new MultiBinding(ObservableSet.givenValues(inputs));
   }
 
-  static givenObservableInputs<T>(
-    inputs: ObservableSet<Observable<T>>
+  static givenObservableInputSet<T>(
+    inputSet: ObservableSet<Observable<T>>
   ): MultiBinding<T> {
-    return new MultiBinding(inputs);
+    return new MultiBinding(inputSet);
   }
 
   readonly didChange = SimpleEvent.ofEmpty<void>();
@@ -55,9 +55,9 @@ export class MultiBinding<T> extends ManagedObject {
 
     this._willNotifyChange = true;
 
-    setImmediate(() => {
+    setTimeout(() => {
       this._willNotifyChange = false;
       this.didChange.emit();
-    });
+    }, 1);
   };
 }

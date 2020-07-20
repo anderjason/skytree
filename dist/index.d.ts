@@ -1,5 +1,4 @@
 import { ArrayUtil } from "./ArrayUtil";
-import { Binding } from "./Binding";
 import { Box2 } from "./Box2";
 import { Box3 } from "./Box3";
 import { Color } from "./Color";
@@ -32,4 +31,6 @@ import { SimpleEvent } from "./SimpleEvent";
 import { Size2 } from "./Size2";
 import { Size3 } from "./Size3";
 import { StringUtil } from "./StringUtil";
-export { ArrayUtil, Binding, Box2, Box3, Color, ColorGradient, DataSize, Duration, Handle, Instant, ManagedInterval, ManagedObject, ManagedTimeout, MultiBinding, MutablePoint2, MutablePoint3, MutableSize2, MutableSize3, NumberUtil, ObjectUtil, Observable, ObservableSet, Palette, Percent, Point2, Point3, PromiseUtil, RateLimitedFunction, Ratio, SetUtil, SimpleEvent, Size2, Size3, StringUtil, };
+import { Test } from "./Test";
+import { Transformer } from "./Transformer";
+export { ArrayUtil, Box2, Box3, Color, ColorGradient, DataSize, Duration, Handle, Instant, ManagedInterval, ManagedObject, ManagedTimeout, MultiBinding, MutablePoint2, MutablePoint3, MutableSize2, MutableSize3, NumberUtil, ObjectUtil, Observable, ObservableSet, Palette, Percent, Point2, Point3, PromiseUtil, RateLimitedFunction, Ratio, SetUtil, SimpleEvent, Size2, Size3, StringUtil, Test, Transformer, };

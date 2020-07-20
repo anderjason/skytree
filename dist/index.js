@@ -1,10 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StringUtil = exports.Size3 = exports.Size2 = exports.SimpleEvent = exports.SetUtil = exports.Ratio = exports.RateLimitedFunction = exports.PromiseUtil = exports.Point3 = exports.Point2 = exports.Percent = exports.Palette = exports.ObservableSet = exports.Observable = exports.ObjectUtil = exports.NumberUtil = exports.MutableSize3 = exports.MutableSize2 = exports.MutablePoint3 = exports.MutablePoint2 = exports.MultiBinding = exports.ManagedTimeout = exports.ManagedObject = exports.ManagedInterval = exports.Instant = exports.Handle = exports.Duration = exports.DataSize = exports.ColorGradient = exports.Color = exports.Box3 = exports.Box2 = exports.Binding = exports.ArrayUtil = void 0;
+exports.Transformer = exports.Test = exports.StringUtil = exports.Size3 = exports.Size2 = exports.SimpleEvent = exports.SetUtil = exports.Ratio = exports.RateLimitedFunction = exports.PromiseUtil = exports.Point3 = exports.Point2 = exports.Percent = exports.Palette = exports.ObservableSet = exports.Observable = exports.ObjectUtil = exports.NumberUtil = exports.MutableSize3 = exports.MutableSize2 = exports.MutablePoint3 = exports.MutablePoint2 = exports.MultiBinding = exports.ManagedTimeout = exports.ManagedObject = exports.ManagedInterval = exports.Instant = exports.Handle = exports.Duration = exports.DataSize = exports.ColorGradient = exports.Color = exports.Box3 = exports.Box2 = exports.ArrayUtil = void 0;
 const ArrayUtil_1 = require("./ArrayUtil");
 Object.defineProperty(exports, "ArrayUtil", { enumerable: true, get: function () { return ArrayUtil_1.ArrayUtil; } });
-const Binding_1 = require("./Binding");
-Object.defineProperty(exports, "Binding", { enumerable: true, get: function () { return Binding_1.Binding; } });
 const Box2_1 = require("./Box2");
 Object.defineProperty(exports, "Box2", { enumerable: true, get: function () { return Box2_1.Box2; } });
 const Box3_1 = require("./Box3");
@@ -69,4 +67,8 @@ const Size3_1 = require("./Size3");
 Object.defineProperty(exports, "Size3", { enumerable: true, get: function () { return Size3_1.Size3; } });
 const StringUtil_1 = require("./StringUtil");
 Object.defineProperty(exports, "StringUtil", { enumerable: true, get: function () { return StringUtil_1.StringUtil; } });
+const Test_1 = require("./Test");
+Object.defineProperty(exports, "Test", { enumerable: true, get: function () { return Test_1.Test; } });
+const Transformer_1 = require("./Transformer");
+Object.defineProperty(exports, "Transformer", { enumerable: true, get: function () { return Transformer_1.Transformer; } });
 //# sourceMappingURL=index.js.map

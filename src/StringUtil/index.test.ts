@@ -1,0 +1,9 @@
+import "./stringIsEmpty.test";
+import "./stringOfRandomCharacters.test";
+import "./stringWithCamelCase.test";
+import "./stringWithEachMatchReplaced.test";
+import "./stringWithInitialCapital.test";
+import "./stringWithKebabCase.test";
+import "./stringWithPascalCase.test";
+import "./stringWithSnakeCase.test";
+import "./stringWithSpaceCase.test";

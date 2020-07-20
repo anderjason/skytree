@@ -27,18 +27,18 @@ class MultiBinding extends ManagedObject_1.ManagedObject {
                 return;
             }
             this._willNotifyChange = true;
-            setImmediate(() => {
+            setTimeout(() => {
                 this._willNotifyChange = false;
                 this.didChange.emit();
-            });
+            }, 1);
         };
         this.inputs = inputs;
     }
     static givenInputs(inputs) {
         return new MultiBinding(ObservableSet_1.ObservableSet.givenValues(inputs));
     }
-    static givenObservableInputs(inputs) {
-        return new MultiBinding(inputs);
+    static givenObservableInputSet(inputSet) {
+        return new MultiBinding(inputSet);
     }
     initManagedObject() {
         this.addHandle(this.inputs.didChange.subscribe(this.subscribeInputs, true));

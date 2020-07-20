@@ -7,7 +7,7 @@ const ArrayUtil_1 = require("../../ArrayUtil");
 function hclInterpolatedColorOfColors(colors, ratio) {
     const decimalRatioPerStep = 1 / (colors.length - 1);
     if (ratio.toDecimal() === 1) {
-        return ArrayUtil_1.ArrayUtil.optionalLastItemGivenArray(colors);
+        return ArrayUtil_1.ArrayUtil.optionalLastValueGivenArray(colors);
     }
     const lowerBoundIdx = Math.floor(ratio.toDecimal() * (colors.length - 1));
     const upperBoundIdx = Math.ceil(ratio.toDecimal() * (colors.length - 1));

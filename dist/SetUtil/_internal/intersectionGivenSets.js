@@ -14,7 +14,7 @@ function intersectionGivenSets(sets) {
     }
     const result = new Set();
     const smallestSet = ArrayUtil_1.ArrayUtil.arrayWithOrderFromValue(sets, (s) => s.size)[0];
-    const otherSets = ArrayUtil_1.ArrayUtil.arrayWithoutItem(sets, smallestSet);
+    const otherSets = ArrayUtil_1.ArrayUtil.arrayWithoutValue(sets, smallestSet);
     smallestSet.forEach((item) => {
         if (otherSets.every((otherSet) => otherSet.has(item))) {
             result.add(item);
