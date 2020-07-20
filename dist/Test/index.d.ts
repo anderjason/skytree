@@ -3,6 +3,8 @@ export declare function assertThrows(fn: () => any, failedMessage?: string): Pro
 export declare class Test {
     private static _allTests;
     static define(label: string, fn: () => Promise<any> | void): void;
+    static assert: typeof assert;
+    static assertThrows: typeof assertThrows;
     static runAll(): Promise<void>;
     private _label;
     private _fn;

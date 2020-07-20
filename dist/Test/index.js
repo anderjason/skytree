@@ -49,4 +49,6 @@ class Test {
 }
 exports.Test = Test;
 Test._allTests = [];
+Test.assert = assert;
+Test.assertThrows = assertThrows;
 //# sourceMappingURL=index.js.map

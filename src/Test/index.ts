@@ -45,6 +45,9 @@ export class Test {
     Test._allTests.push(new Test(label, fn));
   }
 
+  static assert = assert;
+  static assertThrows = assertThrows;
+
   static async runAll(): Promise<void> {
     await PromiseUtil.promiseOfSequentialActions(
       Test._allTests,
