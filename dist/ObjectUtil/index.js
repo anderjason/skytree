@@ -16,9 +16,11 @@ class ObjectUtil {
 exports.ObjectUtil = ObjectUtil;
 ObjectUtil.mergedObjectGivenObjects = mergedObjectGivenObjects_1.mergedObjectGivenObjects;
 ObjectUtil.objectGivenQueryString = objectGivenQueryString_1.objectGivenQueryString;
-ObjectUtil.objectIsDeepEqualToObject = objectIsDeepEqualToObject_1.objectIsDeepEqualToObject;
+ObjectUtil.objectIsDeepEqual = objectIsDeepEqualToObject_1.objectIsDeepEqualToObject;
+ObjectUtil.objectIsDeepEqualToObject = objectIsDeepEqualToObject_1.objectIsDeepEqualToObject; // deprecated
 ObjectUtil.objectIsEmpty = objectIsEmpty_1.objectIsEmpty;
-ObjectUtil.objectIsShallowEqualToObject = objectIsShallowEqualToObject_1.objectIsShallowEqualToObject;
+ObjectUtil.objectIsShallowEqual = objectIsShallowEqualToObject_1.objectIsShallowEqualToObject;
+ObjectUtil.objectIsShallowEqualToObject = objectIsShallowEqualToObject_1.objectIsShallowEqualToObject; // deprecated
 ObjectUtil.objectWithDeepMerge = objectWithDeepMerge_1.objectWithDeepMerge;
 ObjectUtil.objectWithoutBlankValues = objectWithoutBlankValues_1.objectWithoutBlankValues;
 ObjectUtil.objectWithValueAtPath = objectWithValueAtPath_1.objectWithValueAtPath;

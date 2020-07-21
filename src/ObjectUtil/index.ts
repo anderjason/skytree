@@ -12,9 +12,11 @@ import { queryStringGivenObject } from "./queryStringGivenObject";
 export class ObjectUtil {
   static mergedObjectGivenObjects = mergedObjectGivenObjects;
   static objectGivenQueryString = objectGivenQueryString;
-  static objectIsDeepEqualToObject = objectIsDeepEqualToObject;
+  static objectIsDeepEqual = objectIsDeepEqualToObject;
+  static objectIsDeepEqualToObject = objectIsDeepEqualToObject; // deprecated
   static objectIsEmpty = objectIsEmpty;
-  static objectIsShallowEqualToObject = objectIsShallowEqualToObject;
+  static objectIsShallowEqual = objectIsShallowEqualToObject;
+  static objectIsShallowEqualToObject = objectIsShallowEqualToObject; // deprecated
   static objectWithDeepMerge = objectWithDeepMerge;
   static objectWithoutBlankValues = objectWithoutBlankValues;
   static objectWithValueAtPath = objectWithValueAtPath;

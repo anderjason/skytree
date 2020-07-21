@@ -11,8 +11,10 @@ import { queryStringGivenObject } from "./queryStringGivenObject";
 export declare class ObjectUtil {
     static mergedObjectGivenObjects: typeof mergedObjectGivenObjects;
     static objectGivenQueryString: typeof objectGivenQueryString;
+    static objectIsDeepEqual: typeof objectIsDeepEqualToObject;
     static objectIsDeepEqualToObject: typeof objectIsDeepEqualToObject;
     static objectIsEmpty: typeof objectIsEmpty;
+    static objectIsShallowEqual: typeof objectIsShallowEqualToObject;
     static objectIsShallowEqualToObject: typeof objectIsShallowEqualToObject;
     static objectWithDeepMerge: typeof objectWithDeepMerge;
     static objectWithoutBlankValues: typeof objectWithoutBlankValues;
