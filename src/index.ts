@@ -11,6 +11,7 @@ import { Instant } from "./Instant";
 import { ManagedInterval } from "./ManagedInterval";
 import { ManagedObject } from "./ManagedObject";
 import { ManagedTimeout } from "./ManagedTimeout";
+import { MapUtil } from "./MapUtil";
 import { MultiBinding } from "./MultiBinding";
 import { MutablePoint2 } from "./MutablePoint2";
 import { MutablePoint3 } from "./MutablePoint3";
@@ -49,6 +50,7 @@ export {
   ManagedInterval,
   ManagedObject,
   ManagedTimeout,
+  MapUtil,
   MultiBinding,
   MutablePoint2,
   MutablePoint3,

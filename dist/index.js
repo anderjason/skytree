@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Transformer = exports.Test = exports.StringUtil = exports.Size3 = exports.Size2 = exports.SimpleEvent = exports.SetUtil = exports.Ratio = exports.RateLimitedFunction = exports.PromiseUtil = exports.Point3 = exports.Point2 = exports.Percent = exports.Palette = exports.ObservableSet = exports.Observable = exports.ObjectUtil = exports.NumberUtil = exports.MutableSize3 = exports.MutableSize2 = exports.MutablePoint3 = exports.MutablePoint2 = exports.MultiBinding = exports.ManagedTimeout = exports.ManagedObject = exports.ManagedInterval = exports.Instant = exports.Handle = exports.Duration = exports.DataSize = exports.ColorGradient = exports.Color = exports.Box3 = exports.Box2 = exports.ArrayUtil = exports.AbstractDateTime = void 0;
+exports.Transformer = exports.Test = exports.StringUtil = exports.Size3 = exports.Size2 = exports.SimpleEvent = exports.SetUtil = exports.Ratio = exports.RateLimitedFunction = exports.PromiseUtil = exports.Point3 = exports.Point2 = exports.Percent = exports.Palette = exports.ObservableSet = exports.Observable = exports.ObjectUtil = exports.NumberUtil = exports.MutableSize3 = exports.MutableSize2 = exports.MutablePoint3 = exports.MutablePoint2 = exports.MultiBinding = exports.MapUtil = exports.ManagedTimeout = exports.ManagedObject = exports.ManagedInterval = exports.Instant = exports.Handle = exports.Duration = exports.DataSize = exports.ColorGradient = exports.Color = exports.Box3 = exports.Box2 = exports.ArrayUtil = exports.AbstractDateTime = void 0;
 const AbstractDateTime_1 = require("./AbstractDateTime");
 Object.defineProperty(exports, "AbstractDateTime", { enumerable: true, get: function () { return AbstractDateTime_1.AbstractDateTime; } });
 const ArrayUtil_1 = require("./ArrayUtil");
@@ -27,6 +27,8 @@ const ManagedObject_1 = require("./ManagedObject");
 Object.defineProperty(exports, "ManagedObject", { enumerable: true, get: function () { return ManagedObject_1.ManagedObject; } });
 const ManagedTimeout_1 = require("./ManagedTimeout");
 Object.defineProperty(exports, "ManagedTimeout", { enumerable: true, get: function () { return ManagedTimeout_1.ManagedTimeout; } });
+const MapUtil_1 = require("./MapUtil");
+Object.defineProperty(exports, "MapUtil", { enumerable: true, get: function () { return MapUtil_1.MapUtil; } });
 const MultiBinding_1 = require("./MultiBinding");
 Object.defineProperty(exports, "MultiBinding", { enumerable: true, get: function () { return MultiBinding_1.MultiBinding; } });
 const MutablePoint2_1 = require("./MutablePoint2");
