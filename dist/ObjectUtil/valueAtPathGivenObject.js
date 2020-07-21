@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.valueAtPathGivenObject = void 0;
 function valueAtPathGivenObject(object, valuePath) {
-    if (object == null) {
-        throw new Error("Object is required");
-    }
     if (valuePath == null) {
         throw new Error("Value path is required");
+    }
+    if (object == null) {
+        return undefined;
     }
     let index = 0;
     let parts;
