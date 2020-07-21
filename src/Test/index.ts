@@ -1,4 +1,5 @@
 import { PromiseUtil } from "../PromiseUtil";
+import { ObjectUtil } from "..";
 
 let currentAssertionIndex: number = 0;
 
@@ -6,6 +7,20 @@ export function assert(value: boolean, failedMessage?: string): void {
   currentAssertionIndex += 1;
 
   if (!value) {
+    throw new Error(
+      failedMessage || `Assertion ${currentAssertionIndex} failed`
+    );
+  }
+}
+
+export function assertIsEqual(
+  actual: any,
+  expected: any,
+  failedMessage?: string
+): void {
+  currentAssertionIndex += 1;
+
+  if (!ObjectUtil.objectIsDeepEqual(actual, expected)) {
     throw new Error(
       failedMessage || `Assertion ${currentAssertionIndex} failed`
     );
@@ -47,6 +62,7 @@ export class Test {
 
   static assert = assert;
   static assertThrows = assertThrows;
+  static assertIsEqual = assertIsEqual;
 
   static async runAll(): Promise<void> {
     await PromiseUtil.promiseOfSequentialActions(

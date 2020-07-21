@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Test = exports.assertThrows = exports.assert = void 0;
+exports.Test = exports.assertThrows = exports.assertIsEqual = exports.assert = void 0;
 const PromiseUtil_1 = require("../PromiseUtil");
+const __1 = require("..");
 let currentAssertionIndex = 0;
 function assert(value, failedMessage) {
     currentAssertionIndex += 1;
@@ -10,6 +11,13 @@ function assert(value, failedMessage) {
     }
 }
 exports.assert = assert;
+function assertIsEqual(actual, expected, failedMessage) {
+    currentAssertionIndex += 1;
+    if (!__1.ObjectUtil.objectIsDeepEqual(actual, expected)) {
+        throw new Error(failedMessage || `Assertion ${currentAssertionIndex} failed`);
+    }
+}
+exports.assertIsEqual = assertIsEqual;
 async function assertThrows(fn, failedMessage) {
     currentAssertionIndex += 1;
     try {
@@ -51,4 +59,5 @@ exports.Test = Test;
 Test._allTests = [];
 Test.assert = assert;
 Test.assertThrows = assertThrows;
+Test.assertIsEqual = assertIsEqual;
 //# sourceMappingURL=index.js.map
