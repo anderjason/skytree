@@ -1,2 +1,2 @@
-import { PathPart } from "./PathPart";
-export declare function objectWithValueAtPath<T>(object: T, path: PathPart[], value: any): T;
+import { ValuePath, PathPart } from "../ValuePath";
+export declare function objectWithValueAtPath<T>(object: T, valuePath: PathPart[] | ValuePath, value: any): T;

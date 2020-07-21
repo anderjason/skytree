@@ -35,6 +35,7 @@ import { Size3 } from "./Size3";
 import { StringUtil } from "./StringUtil";
 import { Test } from "./Test";
 import { Transformer } from "./Transformer";
+import { ValuePath } from "./ValuePath";
 
 export {
   AbstractDateTime,
@@ -74,4 +75,5 @@ export {
   StringUtil,
   Test,
   Transformer,
+  ValuePath,
 };

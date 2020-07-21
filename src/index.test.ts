@@ -17,6 +17,7 @@ import "./SimpleEvent/index.test";
 import "./Size2/index.test";
 import "./Size3/index.test";
 import "./StringUtil/index.test";
+import "./ValuePath/index.test";
 
 Test.runAll()
   .then(() => {

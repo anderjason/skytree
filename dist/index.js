@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Transformer = exports.Test = exports.StringUtil = exports.Size3 = exports.Size2 = exports.SimpleEvent = exports.SetUtil = exports.Ratio = exports.RateLimitedFunction = exports.PromiseUtil = exports.Point3 = exports.Point2 = exports.Percent = exports.Palette = exports.ObservableSet = exports.Observable = exports.ObjectUtil = exports.NumberUtil = exports.MutableSize3 = exports.MutableSize2 = exports.MutablePoint3 = exports.MutablePoint2 = exports.MultiBinding = exports.MapUtil = exports.ManagedTimeout = exports.ManagedObject = exports.ManagedInterval = exports.Instant = exports.Handle = exports.Duration = exports.DataSize = exports.ColorGradient = exports.Color = exports.Box3 = exports.Box2 = exports.ArrayUtil = exports.AbstractDateTime = void 0;
+exports.ValuePath = exports.Transformer = exports.Test = exports.StringUtil = exports.Size3 = exports.Size2 = exports.SimpleEvent = exports.SetUtil = exports.Ratio = exports.RateLimitedFunction = exports.PromiseUtil = exports.Point3 = exports.Point2 = exports.Percent = exports.Palette = exports.ObservableSet = exports.Observable = exports.ObjectUtil = exports.NumberUtil = exports.MutableSize3 = exports.MutableSize2 = exports.MutablePoint3 = exports.MutablePoint2 = exports.MultiBinding = exports.MapUtil = exports.ManagedTimeout = exports.ManagedObject = exports.ManagedInterval = exports.Instant = exports.Handle = exports.Duration = exports.DataSize = exports.ColorGradient = exports.Color = exports.Box3 = exports.Box2 = exports.ArrayUtil = exports.AbstractDateTime = void 0;
 const AbstractDateTime_1 = require("./AbstractDateTime");
 Object.defineProperty(exports, "AbstractDateTime", { enumerable: true, get: function () { return AbstractDateTime_1.AbstractDateTime; } });
 const ArrayUtil_1 = require("./ArrayUtil");
@@ -75,4 +75,6 @@ const Test_1 = require("./Test");
 Object.defineProperty(exports, "Test", { enumerable: true, get: function () { return Test_1.Test; } });
 const Transformer_1 = require("./Transformer");
 Object.defineProperty(exports, "Transformer", { enumerable: true, get: function () { return Transformer_1.Transformer; } });
+const ValuePath_1 = require("./ValuePath");
+Object.defineProperty(exports, "ValuePath", { enumerable: true, get: function () { return ValuePath_1.ValuePath; } });
 //# sourceMappingURL=index.js.map

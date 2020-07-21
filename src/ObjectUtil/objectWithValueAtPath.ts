@@ -1,12 +1,24 @@
-import { PathPart } from "./PathPart";
+import { ValuePath, PathPart } from "../ValuePath";
 
 export function objectWithValueAtPath<T>(
   object: T,
-  path: PathPart[],
+  valuePath: PathPart[] | ValuePath,
   value: any
 ): T {
+  if (valuePath == null) {
+    throw new Error("Value path is required");
+  }
+
   let index = 0;
-  let length = path.length;
+  let parts: PathPart[];
+
+  if (Array.isArray(valuePath)) {
+    parts = valuePath;
+  } else {
+    parts = valuePath.toParts();
+  }
+
+  let length = parts.length;
 
   // shallow clone
   let result: T;
@@ -19,7 +31,7 @@ export function objectWithValueAtPath<T>(
   // mutate the clone
   let pointer: any = result;
   while (pointer != null && index < length - 1) {
-    let key = path[index];
+    let key = parts[index];
 
     if (Array.isArray(pointer[key])) {
       pointer[key] = [...pointer[key]];
@@ -33,7 +45,7 @@ export function objectWithValueAtPath<T>(
   }
 
   if (pointer != null) {
-    pointer[path[index]] = value;
+    pointer[parts[index]] = value;
   }
 
   return result;

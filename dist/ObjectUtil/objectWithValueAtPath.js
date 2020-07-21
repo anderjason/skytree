@@ -1,9 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.objectWithValueAtPath = void 0;
-function objectWithValueAtPath(object, path, value) {
+function objectWithValueAtPath(object, valuePath, value) {
+    if (valuePath == null) {
+        throw new Error("Value path is required");
+    }
     let index = 0;
-    let length = path.length;
+    let parts;
+    if (Array.isArray(valuePath)) {
+        parts = valuePath;
+    }
+    else {
+        parts = valuePath.toParts();
+    }
+    let length = parts.length;
     // shallow clone
     let result;
     if (Array.isArray(object)) {
@@ -15,7 +25,7 @@ function objectWithValueAtPath(object, path, value) {
     // mutate the clone
     let pointer = result;
     while (pointer != null && index < length - 1) {
-        let key = path[index];
+        let key = parts[index];
         if (Array.isArray(pointer[key])) {
             pointer[key] = [...pointer[key]];
         }
@@ -26,7 +36,7 @@ function objectWithValueAtPath(object, path, value) {
         index += 1;
     }
     if (pointer != null) {
-        pointer[path[index]] = value;
+        pointer[parts[index]] = value;
     }
     return result;
 }

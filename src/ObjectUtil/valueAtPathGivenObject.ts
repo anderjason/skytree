@@ -1,11 +1,30 @@
-import { PathPart } from "./PathPart";
+import { ValuePath, PathPart } from "../ValuePath";
 
-export function valueAtPathGivenObject(object: any, path: PathPart[]): any {
+export function valueAtPathGivenObject(
+  object: any,
+  valuePath: ValuePath | PathPart[]
+): any {
+  if (object == null) {
+    throw new Error("Object is required");
+  }
+
+  if (valuePath == null) {
+    throw new Error("Value path is required");
+  }
+
   let index = 0;
-  let length = path.length;
+  let parts: PathPart[];
+
+  if (Array.isArray(valuePath)) {
+    parts = valuePath;
+  } else {
+    parts = valuePath.toParts();
+  }
+
+  let length = parts.length;
 
   while (object != null && index < length) {
-    object = object[path[index++]];
+    object = object[parts[index++]];
   }
 
   return index && index == length ? object : undefined;
