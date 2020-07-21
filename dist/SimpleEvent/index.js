@@ -3,9 +3,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SimpleEvent = void 0;
 const Handle_1 = require("../Handle");
 const ArrayUtil_1 = require("../ArrayUtil");
+const PromiseUtil_1 = require("../PromiseUtil");
 class SimpleEvent {
     constructor(lastValue) {
         this._handlers = undefined;
+        this.emit = async (event) => {
+            if (this._handlers != null) {
+                await PromiseUtil_1.PromiseUtil.promiseOfSequentialActions(this._handlers, async (handler) => {
+                    await handler(event, this._lastValue);
+                });
+            }
+            this._lastValue = event;
+        };
         this._lastValue = lastValue;
     }
     static ofEmpty() {
@@ -23,14 +32,6 @@ class SimpleEvent {
             handler(this._lastValue);
         }
         return Handle_1.Handle.givenReleaseFunction(() => this.unsubscribe(handler));
-    }
-    emit(event) {
-        if (this._handlers != null) {
-            this._handlers.forEach((handler) => {
-                handler(event, this._lastValue);
-            });
-        }
-        this._lastValue = event;
     }
     unsubscribe(handler) {
         if (this._handlers == null) {

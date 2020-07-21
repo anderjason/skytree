@@ -1,7 +1,11 @@
 import { Handle } from "../Handle";
 import { ArrayUtil } from "../ArrayUtil";
+import { PromiseUtil } from "../PromiseUtil";
 
-export type SimpleEventHandler<T> = (newValue: T, oldValue?: T) => void;
+export type SimpleEventHandler<T> = (
+  newValue: T,
+  oldValue?: T
+) => void | Promise<void>;
 
 export class SimpleEvent<T = void> {
   private _handlers: SimpleEventHandler<T>[] | undefined = undefined;
@@ -36,15 +40,18 @@ export class SimpleEvent<T = void> {
     return Handle.givenReleaseFunction(() => this.unsubscribe(handler));
   }
 
-  emit(event: T): void {
+  emit = async (event: T): Promise<void> => {
     if (this._handlers != null) {
-      this._handlers.forEach((handler) => {
-        handler(event, this._lastValue);
-      });
+      await PromiseUtil.promiseOfSequentialActions(
+        this._handlers,
+        async (handler) => {
+          await handler(event, this._lastValue);
+        }
+      );
     }
 
     this._lastValue = event;
-  }
+  };
 
   private unsubscribe(handler: SimpleEventHandler<T>): void {
     if (this._handlers == null) {
