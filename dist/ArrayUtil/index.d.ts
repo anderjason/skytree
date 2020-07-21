@@ -6,7 +6,15 @@ import { numberArrayGivenRange } from "./numberArrayGivenRange";
 import { optionalLastValueGivenArray } from "./optionalLastValueGivenArray";
 import { optionalRandomValueGivenArray } from "./optionalRandomValueGivenArray";
 import { pageItemsGivenArray } from "./pageItemsGivenArray";
+import { arrayWithValue } from "./arrayWithValue";
+import { arrayIsEmptyOrNull } from "./arrayIsEmptyOrNull";
+import { valueGivenArray } from "./valueGivenArray";
+import { arrayWithReversedOrder } from "./arrayWithReversedOrder";
+import { optionalIndexOfFirstMatchGivenArray } from "./optionalIndexOfFirstMatchGivenArray";
+import { optionalNthValueGivenArray } from "./optionalNthValueGivenArray";
 export declare class ArrayUtil {
+    static arrayIsEmptyOrNull: typeof arrayIsEmptyOrNull;
+    static arrayWithValue: typeof arrayWithValue;
     static arrayWithOrderFromValue: typeof arrayWithOrderFromValue;
     static arrayWithoutDuplicateValues: typeof arrayWithoutDuplicateValues;
     static arrayWithoutValue: typeof arrayWithoutValue;
@@ -15,4 +23,8 @@ export declare class ArrayUtil {
     static optionalLastValueGivenArray: typeof optionalLastValueGivenArray;
     static optionalRandomValueGivenArray: typeof optionalRandomValueGivenArray;
     static pageItemsGivenArray: typeof pageItemsGivenArray;
+    static arrayWithReversedOrder: typeof arrayWithReversedOrder;
+    static valueGivenArray: typeof valueGivenArray;
+    static optionalIndexOfFirstMatchGivenArray: typeof optionalIndexOfFirstMatchGivenArray;
+    static optionalNthValueGivenArray: typeof optionalNthValueGivenArray;
 }
