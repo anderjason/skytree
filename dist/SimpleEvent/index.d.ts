@@ -7,6 +7,6 @@ export declare class SimpleEvent<T = void> {
     static givenLastValue<T>(lastValue: T): SimpleEvent<T>;
     private constructor();
     subscribe(handler: SimpleEventHandler<T>, includeLast?: boolean): Handle;
-    emit: (event: T) => Promise<void>;
+    emit: (newValue: T) => Promise<void>;
     private unsubscribe;
 }

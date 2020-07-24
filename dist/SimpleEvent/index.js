@@ -7,13 +7,14 @@ const PromiseUtil_1 = require("../PromiseUtil");
 class SimpleEvent {
     constructor(lastValue) {
         this._handlers = undefined;
-        this.emit = async (event) => {
+        this.emit = async (newValue) => {
+            const previousValue = this._lastValue;
+            this._lastValue = newValue;
             if (this._handlers != null) {
                 await PromiseUtil_1.PromiseUtil.promiseOfSequentialActions(this._handlers, async (handler) => {
-                    await handler(event, this._lastValue);
+                    await handler(newValue, previousValue);
                 });
             }
-            this._lastValue = event;
         };
         this._lastValue = lastValue;
     }

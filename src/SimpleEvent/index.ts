@@ -40,17 +40,18 @@ export class SimpleEvent<T = void> {
     return Handle.givenReleaseFunction(() => this.unsubscribe(handler));
   }
 
-  emit = async (event: T): Promise<void> => {
+  emit = async (newValue: T): Promise<void> => {
+    const previousValue = this._lastValue;
+    this._lastValue = newValue;
+
     if (this._handlers != null) {
       await PromiseUtil.promiseOfSequentialActions(
         this._handlers,
         async (handler) => {
-          await handler(event, this._lastValue);
+          await handler(newValue, previousValue);
         }
       );
     }
-
-    this._lastValue = event;
   };
 
   private unsubscribe(handler: SimpleEventHandler<T>): void {
