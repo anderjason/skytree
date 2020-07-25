@@ -2,6 +2,14 @@ export function setIsEqualToSet(
   firstSet: Set<any>,
   secondSet: Set<any>
 ): boolean {
+  if (firstSet == null && secondSet == null) {
+    return true;
+  }
+
+  if (firstSet == null || secondSet == null) {
+    return false;
+  }
+
   if (firstSet.size !== secondSet.size) {
     return false;
   }

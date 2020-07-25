@@ -2,6 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setIsEqualToSet = void 0;
 function setIsEqualToSet(firstSet, secondSet) {
+    if (firstSet == null && secondSet == null) {
+        return true;
+    }
+    if (firstSet == null || secondSet == null) {
+        return false;
+    }
     if (firstSet.size !== secondSet.size) {
         return false;
     }
