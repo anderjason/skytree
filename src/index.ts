@@ -1,11 +1,14 @@
 import { AbstractDateTime } from "./AbstractDateTime";
+import { ArrayInitializer } from "./ArrayInitializer";
 import { ArrayUtil } from "./ArrayUtil";
+import { BooleanInitializer } from "./BooleanInitializer";
 import { Box2 } from "./Box2";
 import { Box3 } from "./Box3";
 import { Color } from "./Color";
 import { ColorGradient } from "./ColorGradient";
 import { DataSize } from "./DataSize";
 import { Duration } from "./Duration";
+import { ExclusiveInitializer } from "./ExclusiveInitializer";
 import { Handle } from "./Handle";
 import { Instant } from "./Instant";
 import { ManagedInterval } from "./ManagedInterval";
@@ -20,6 +23,7 @@ import { MutableSize3 } from "./MutableSize3";
 import { NumberUtil } from "./NumberUtil";
 import { ObjectUtil } from "./ObjectUtil";
 import { Observable } from "./Observable";
+import { ObservableArray } from "./ObservableArray";
 import { ObservableSet } from "./ObservableSet";
 import { Palette } from "./Palette";
 import { Percent } from "./Percent";
@@ -36,9 +40,6 @@ import { StringUtil } from "./StringUtil";
 import { Test } from "./Test";
 import { Transformer } from "./Transformer";
 import { ValuePath } from "./ValuePath";
-import { BooleanInitializer } from "./BooleanInitializer";
-import { ArrayInitializer } from "./ArrayInitializer";
-import { ObservableArray } from "./ObservableArray";
 
 export {
   AbstractDateTime,
@@ -51,6 +52,7 @@ export {
   ColorGradient,
   DataSize,
   Duration,
+  ExclusiveInitializer,
   Handle,
   Instant,
   ManagedInterval,
