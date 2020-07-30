@@ -36,10 +36,15 @@ import { StringUtil } from "./StringUtil";
 import { Test } from "./Test";
 import { Transformer } from "./Transformer";
 import { ValuePath } from "./ValuePath";
+import { BooleanInitializer } from "./BooleanInitializer";
+import { ArrayInitializer } from "./ArrayInitializer";
+import { ObservableArray } from "./ObservableArray";
 
 export {
   AbstractDateTime,
+  ArrayInitializer,
   ArrayUtil,
+  BooleanInitializer,
   Box2,
   Box3,
   Color,
@@ -60,6 +65,7 @@ export {
   NumberUtil,
   ObjectUtil,
   Observable,
+  ObservableArray,
   ObservableSet,
   Palette,
   Percent,

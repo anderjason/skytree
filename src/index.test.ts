@@ -1,4 +1,5 @@
 import { Test } from "./Test";
+import "./ArrayInitializer/index.test";
 import "./ArrayUtil/index.test";
 import "./Box2/index.test";
 import "./Box3/index.test";
@@ -10,6 +11,7 @@ import "./MutablePoint2/index.test";
 import "./MutablePoint3/index.test";
 import "./NumberUtil/index.test";
 import "./Observable/index.test";
+import "./ObservableArray/index.test";
 import "./Percent/index.test";
 import "./PromiseUtil/index.test";
 import "./Ratio/index.test";

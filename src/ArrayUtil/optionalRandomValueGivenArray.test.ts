@@ -16,9 +16,12 @@ Test.define(
   }
 );
 
-Test.define("returns undefined if the array is empty", () => {
-  const items: any[] = [];
-  const result = optionalRandomValueGivenArray(items);
+Test.define(
+  "optionalRandomValueGivenArray returns undefined if the array is empty",
+  () => {
+    const items: any[] = [];
+    const result = optionalRandomValueGivenArray(items);
 
-  assert(typeof result === "undefined");
-});
+    assert(typeof result === "undefined");
+  }
+);

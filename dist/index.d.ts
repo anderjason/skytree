@@ -36,4 +36,7 @@ import { StringUtil } from "./StringUtil";
 import { Test } from "./Test";
 import { Transformer } from "./Transformer";
 import { ValuePath } from "./ValuePath";
-export { AbstractDateTime, ArrayUtil, Box2, Box3, Color, ColorGradient, DataSize, Duration, Handle, Instant, ManagedInterval, ManagedObject, ManagedTimeout, MapUtil, MultiBinding, MutablePoint2, MutablePoint3, MutableSize2, MutableSize3, NumberUtil, ObjectUtil, Observable, ObservableSet, Palette, Percent, Point2, Point3, PromiseUtil, RateLimitedFunction, Ratio, SetUtil, SimpleEvent, Size2, Size3, StringUtil, Test, Transformer, ValuePath, };
+import { BooleanInitializer } from "./BooleanInitializer";
+import { ArrayInitializer } from "./ArrayInitializer";
+import { ObservableArray } from "./ObservableArray";
+export { AbstractDateTime, ArrayInitializer, ArrayUtil, BooleanInitializer, Box2, Box3, Color, ColorGradient, DataSize, Duration, Handle, Instant, ManagedInterval, ManagedObject, ManagedTimeout, MapUtil, MultiBinding, MutablePoint2, MutablePoint3, MutableSize2, MutableSize3, NumberUtil, ObjectUtil, Observable, ObservableArray, ObservableSet, Palette, Percent, Point2, Point3, PromiseUtil, RateLimitedFunction, Ratio, SetUtil, SimpleEvent, Size2, Size3, StringUtil, Test, Transformer, ValuePath, };
