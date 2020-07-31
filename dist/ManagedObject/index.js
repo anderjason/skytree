@@ -20,9 +20,11 @@ class ManagedObject {
             return this._thisHandle;
         };
         this.uninit = () => {
+            if (this._thisHandle == null) {
+                return;
+            }
             ManagedObject.initializedCount.setValue(ManagedObject.initializedCount.value - 1);
-            this._thisHandle = undefined;
-            if (this._handles != null && this._handles.length > 0) {
+            if (this._handles != null) {
                 this._handles.reverse().forEach((handle) => {
                     handle.release();
                 });
@@ -31,6 +33,9 @@ class ManagedObject {
             this._children.forEach((child) => {
                 child.uninit();
             });
+            const handle = this._thisHandle;
+            this._thisHandle = undefined;
+            handle.release();
         };
         this.addManagedObject = (child) => {
             if (this._children.has(child)) {

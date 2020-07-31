@@ -25,17 +25,19 @@ export class BooleanInitializer extends ManagedObject {
   }
 
   initManagedObject() {
-    this._input.didChange.subscribe((isActive) => {
-      if (isActive) {
-        if (this._activeInstance == null) {
-          this._activeInstance = this.addManagedObject(this._instance);
+    this.addHandle(
+      this._input.didChange.subscribe((isActive) => {
+        if (isActive) {
+          if (this._activeInstance == null) {
+            this._activeInstance = this.addManagedObject(this._instance);
+          }
+        } else {
+          if (this._activeInstance != null) {
+            this.removeManagedObject(this._activeInstance);
+            this._activeInstance = undefined;
+          }
         }
-      } else {
-        if (this._activeInstance != null) {
-          this.removeManagedObject(this._activeInstance);
-          this._activeInstance = undefined;
-        }
-      }
-    }, true);
+      }, true)
+    );
   }
 }

@@ -12,6 +12,7 @@ import "./MutablePoint3/index.test";
 import "./NumberUtil/index.test";
 import "./Observable/index.test";
 import "./ObservableArray/index.test";
+import "./PathBinding/index.test";
 import "./Percent/index.test";
 import "./PromiseUtil/index.test";
 import "./Ratio/index.test";

@@ -8,8 +8,9 @@ class Handle {
             if (this._releaseFn == null) {
                 return;
             }
-            this._releaseFn();
+            const fn = this._releaseFn;
             this._releaseFn = undefined;
+            fn();
             Handle.unreleasedCount.setValue(Handle.unreleasedCount.value - 1);
             return;
         };

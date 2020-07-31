@@ -2,6 +2,7 @@ import { ManagedObject } from "../ManagedObject";
 import { Test } from "../Test";
 import { ObservableArray } from "../ObservableArray";
 import { ArrayInitializer } from ".";
+import { Handle } from "../Handle";
 
 Test.define("ArrayInitializer can be created", () => {
   class TestObject extends ManagedObject {

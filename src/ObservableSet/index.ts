@@ -16,7 +16,20 @@ export class ObservableSet<T> {
     return new ObservableSet(new Set(values));
   }
 
+  static isObservableSet(input: any): input is ObservableSet<unknown> {
+    if (input == null) {
+      return false;
+    }
+
+    if (typeof input !== "object") {
+      return false;
+    }
+
+    return input._isObservableSet === true;
+  }
+
   private _set: Set<T>;
+  private _isObservableSet = true;
 
   private constructor(values: Set<T>) {
     this._set = values;

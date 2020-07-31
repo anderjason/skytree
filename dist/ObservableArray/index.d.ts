@@ -9,7 +9,9 @@ export declare class ObservableArray<T> {
     readonly didChange: SimpleEvent<ObservableArrayChange<T>[]>;
     static ofEmpty<T>(): ObservableArray<T>;
     static givenValues<T>(values: T[]): ObservableArray<T>;
+    static isObservableArray(input: any): input is ObservableArray<unknown>;
     private _array;
+    private _isObservableArray;
     private constructor();
     addValue(value: T, index?: number): void;
     moveValueAtIndex(oldIndex: number, newIndex: number): void;

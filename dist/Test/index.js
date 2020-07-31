@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Test = exports.assertThrows = exports.assertIsEqual = exports.assert = void 0;
 const PromiseUtil_1 = require("../PromiseUtil");
-const __1 = require("..");
+const ObjectUtil_1 = require("../ObjectUtil");
+const Handle_1 = require("../Handle");
+const ManagedObject_1 = require("../ManagedObject");
 let currentAssertionIndex = 0;
 function assert(value, failedMessage) {
     currentAssertionIndex += 1;
@@ -13,7 +15,7 @@ function assert(value, failedMessage) {
 exports.assert = assert;
 function assertIsEqual(actual, expected, failedMessage) {
     currentAssertionIndex += 1;
-    if (!__1.ObjectUtil.objectIsDeepEqual(actual, expected)) {
+    if (!ObjectUtil_1.ObjectUtil.objectIsDeepEqual(actual, expected)) {
         throw new Error(failedMessage || `Assertion ${currentAssertionIndex} failed`);
     }
 }
@@ -32,7 +34,7 @@ async function assertThrows(fn, failedMessage) {
 exports.assertThrows = assertThrows;
 class Test {
     constructor(label, fn) {
-        this._label = label;
+        this.label = label;
         this._fn = fn;
     }
     static define(label, fn) {
@@ -46,12 +48,22 @@ class Test {
     }
     static async runAll() {
         await PromiseUtil_1.PromiseUtil.promiseOfSequentialActions(Test._allTests, async (test) => {
+            const unreleasedHandlesBefore = Handle_1.Handle.unreleasedCount.value;
+            const managedObjectsBefore = ManagedObject_1.ManagedObject.initializedCount.value;
             await test.toPromise();
+            const unreleasedHandlesAfter = Handle_1.Handle.unreleasedCount.value;
+            const managedObjectsAfter = ManagedObject_1.ManagedObject.initializedCount.value;
+            if (managedObjectsBefore !== managedObjectsAfter) {
+                throw new Error(`Some managed objects are still initialized after test '${test.label}' (before ${managedObjectsBefore}, after ${managedObjectsAfter})`);
+            }
+            if (unreleasedHandlesBefore !== unreleasedHandlesAfter) {
+                throw new Error(`Some handles were not released after test '${test.label}' (before ${unreleasedHandlesBefore}, after ${unreleasedHandlesAfter})`);
+            }
         });
     }
     async toPromise() {
         currentAssertionIndex = 0;
-        console.log(this._label);
+        console.log(this.label);
         await this._fn();
     }
 }

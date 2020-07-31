@@ -5,6 +5,7 @@ const SimpleEvent_1 = require("../SimpleEvent");
 class ObservableSet {
     constructor(values) {
         this.didChange = SimpleEvent_1.SimpleEvent.ofEmpty();
+        this._isObservableSet = true;
         this._set = values;
     }
     static ofEmpty() {
@@ -12,6 +13,15 @@ class ObservableSet {
     }
     static givenValues(values) {
         return new ObservableSet(new Set(values));
+    }
+    static isObservableSet(input) {
+        if (input == null) {
+            return false;
+        }
+        if (typeof input !== "object") {
+            return false;
+        }
+        return input._isObservableSet === true;
     }
     addValue(value) {
         if (this._set.has(value)) {

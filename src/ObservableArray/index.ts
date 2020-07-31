@@ -19,7 +19,20 @@ export class ObservableArray<T> {
     return new ObservableArray([...values]);
   }
 
+  static isObservableArray(input: any): input is ObservableArray<unknown> {
+    if (input == null) {
+      return false;
+    }
+
+    if (typeof input !== "object") {
+      return false;
+    }
+
+    return input._isObservableArray === true;
+  }
+
   private _array: T[];
+  private _isObservableArray = true;
 
   private constructor(values: T[]) {
     this._array = values;
@@ -103,10 +116,6 @@ export class ObservableArray<T> {
   }
 
   replaceValueAtIndex = (index: number, value: T): void => {
-    if (value == null) {
-      throw new Error("Value is required");
-    }
-
     if (index < 0) {
       throw new Error("Index cannot be negative");
     }

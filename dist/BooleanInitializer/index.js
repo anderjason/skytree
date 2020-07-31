@@ -12,7 +12,7 @@ class BooleanInitializer extends ManagedObject_1.ManagedObject {
         return new BooleanInitializer(definition);
     }
     initManagedObject() {
-        this._input.didChange.subscribe((isActive) => {
+        this.addHandle(this._input.didChange.subscribe((isActive) => {
             if (isActive) {
                 if (this._activeInstance == null) {
                     this._activeInstance = this.addManagedObject(this._instance);
@@ -24,7 +24,7 @@ class BooleanInitializer extends ManagedObject_1.ManagedObject {
                     this._activeInstance = undefined;
                 }
             }
-        }, true);
+        }, true));
     }
 }
 exports.BooleanInitializer = BooleanInitializer;

@@ -6,10 +6,8 @@ const ArrayUtil_1 = require("../ArrayUtil");
 class ObservableArray {
     constructor(values) {
         this.didChange = SimpleEvent_1.SimpleEvent.ofEmpty();
+        this._isObservableArray = true;
         this.replaceValueAtIndex = (index, value) => {
-            if (value == null) {
-                throw new Error("Value is required");
-            }
             if (index < 0) {
                 throw new Error("Index cannot be negative");
             }
@@ -52,6 +50,15 @@ class ObservableArray {
     }
     static givenValues(values) {
         return new ObservableArray([...values]);
+    }
+    static isObservableArray(input) {
+        if (input == null) {
+            return false;
+        }
+        if (typeof input !== "object") {
+            return false;
+        }
+        return input._isObservableArray === true;
     }
     addValue(value, index) {
         const newIndex = index != null ? index : this._array.length;

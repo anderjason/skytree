@@ -4,6 +4,8 @@ import { Handle } from ".";
 Test.define("Handle is not released by default", () => {
   const handle = Handle.givenReleaseFunction(() => {});
   assert(!handle.isReleased);
+
+  handle.release();
 });
 
 Test.define("Handle is released after calling release", () => {

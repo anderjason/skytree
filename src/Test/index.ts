@@ -1,5 +1,7 @@
 import { PromiseUtil } from "../PromiseUtil";
-import { ObjectUtil } from "..";
+import { ObjectUtil } from "../ObjectUtil";
+import { Handle } from "../Handle";
+import { ManagedObject } from "../ManagedObject";
 
 let currentAssertionIndex: number = 0;
 
@@ -68,23 +70,42 @@ export class Test {
     await PromiseUtil.promiseOfSequentialActions(
       Test._allTests,
       async (test) => {
+        const unreleasedHandlesBefore = Handle.unreleasedCount.value;
+        const managedObjectsBefore = ManagedObject.initializedCount.value;
+
         await test.toPromise();
+
+        const unreleasedHandlesAfter = Handle.unreleasedCount.value;
+        const managedObjectsAfter = ManagedObject.initializedCount.value;
+
+        if (managedObjectsBefore !== managedObjectsAfter) {
+          throw new Error(
+            `Some managed objects are still initialized after test '${test.label}' (before ${managedObjectsBefore}, after ${managedObjectsAfter})`
+          );
+        }
+
+        if (unreleasedHandlesBefore !== unreleasedHandlesAfter) {
+          throw new Error(
+            `Some handles were not released after test '${test.label}' (before ${unreleasedHandlesBefore}, after ${unreleasedHandlesAfter})`
+          );
+        }
       }
     );
   }
 
-  private _label: string;
+  readonly label: string;
+
   private _fn: () => Promise<any> | void;
 
   private constructor(label: string, fn: () => Promise<any> | void) {
-    this._label = label;
+    this.label = label;
     this._fn = fn;
   }
 
   async toPromise(): Promise<void> {
     currentAssertionIndex = 0;
 
-    console.log(this._label);
+    console.log(this.label);
     await this._fn();
   }
 }

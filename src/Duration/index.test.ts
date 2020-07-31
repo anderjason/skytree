@@ -75,5 +75,5 @@ Test.define("Duration can create a promise of a delay", async () => {
   const elapsed = Duration.givenInstantRange(start, end);
   const deltaFromExpectedMs = Math.abs(delayMs - elapsed.toMilliseconds());
 
-  assert(deltaFromExpectedMs < 5);
+  assert(deltaFromExpectedMs < 25);
 });

@@ -7,7 +7,9 @@ export declare class ObservableSet<T> {
     readonly didChange: SimpleEvent<ObservableSetChange<T>>;
     static ofEmpty<T>(): ObservableSet<T>;
     static givenValues<T>(values: T[] | Set<T>): ObservableSet<T>;
+    static isObservableSet(input: any): input is ObservableSet<unknown>;
     private _set;
+    private _isObservableSet;
     private constructor();
     addValue(value: T): boolean;
     removeValue(value: T): boolean;

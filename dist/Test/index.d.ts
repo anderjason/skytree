@@ -8,7 +8,7 @@ export declare class Test {
     static assertThrows: typeof assertThrows;
     static assertIsEqual: typeof assertIsEqual;
     static runAll(): Promise<void>;
-    private _label;
+    readonly label: string;
     private _fn;
     private constructor();
     toPromise(): Promise<void>;

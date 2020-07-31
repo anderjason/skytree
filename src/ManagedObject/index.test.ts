@@ -31,6 +31,8 @@ Test.define(
 
     assert(didInit === true);
     assert(instance.isInitialized === true);
+
+    instance.uninit();
   }
 );
 
@@ -49,6 +51,8 @@ Test.define("ManagedObject only invokes initManagedObject once", () => {
   instance.init();
 
   assert(initCount === 1);
+
+  instance.uninit();
 });
 
 Test.define("ManagedObject returns a handle from init", () => {
@@ -61,6 +65,8 @@ Test.define("ManagedObject returns a handle from init", () => {
 
   assert(handle != null);
   assert(handle.isReleased === false);
+
+  instance.uninit();
 });
 
 Test.define(
@@ -78,6 +84,8 @@ Test.define(
     assert(handle1 != null);
     assert(handle1 === handle2);
     assert(handle1 === handle3);
+
+    instance.uninit();
   }
 );
 
@@ -133,6 +141,8 @@ Test.define("ManagedObject has a list of child objects", () => {
 
   assert(parentInstance.children != null);
   assert(parentInstance.children.length === 0);
+
+  parentInstance.uninit();
 });
 
 Test.define("ManagedObject initializes objects when added as children", () => {
@@ -150,6 +160,8 @@ Test.define("ManagedObject initializes objects when added as children", () => {
 
   // @ts-ignore
   assert(childInstance.isInitialized === true);
+
+  parentInstance.uninit();
 });
 
 Test.define(
@@ -167,6 +179,8 @@ Test.define(
 
     parentInstance.addManagedObject(childInstance);
     assert(childInstance.parent === parentInstance);
+
+    parentInstance.uninit();
   }
 );
 
@@ -185,6 +199,8 @@ Test.define(
     parentInstance.removeManagedObject(childInstance);
 
     assert(childInstance.parent == null);
+
+    parentInstance.uninit();
   }
 );
 
@@ -211,6 +227,9 @@ Test.define(
     assert(childInstance.parent === parentInstance2);
     assert(parentInstance2.children.includes(childInstance)); // added
     assert(!parentInstance1.children.includes(childInstance)); // removed
+
+    parentInstance1.uninit();
+    parentInstance2.uninit();
   }
 );
 
@@ -246,6 +265,8 @@ Test.define("ManagedObject inits child objects when init is called", () => {
 
   // @ts-ignore
   assert(childInstance.isInitialized === true);
+
+  parentInstance1.uninit();
 });
 
 Test.define("ManagedObject updates the static initialized count", () => {

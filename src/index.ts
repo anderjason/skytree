@@ -26,6 +26,7 @@ import { Observable } from "./Observable";
 import { ObservableArray } from "./ObservableArray";
 import { ObservableSet } from "./ObservableSet";
 import { Palette } from "./Palette";
+import { PathBinding } from "./PathBinding";
 import { Percent } from "./Percent";
 import { Point2 } from "./Point2";
 import { Point3 } from "./Point3";
@@ -70,6 +71,7 @@ export {
   ObservableArray,
   ObservableSet,
   Palette,
+  PathBinding,
   Percent,
   Point2,
   Point3,
