@@ -21,6 +21,7 @@ export declare class ObservableArray<T> {
     removeAllWhere(filter: (value: T, index: number) => boolean): void;
     clear(): void;
     hasValue(value: T): boolean;
+    toValueGivenIndex(index: number): T;
     toValues(): T[];
     toCount(): number;
 }

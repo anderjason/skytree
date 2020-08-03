@@ -1,6 +1,7 @@
 import { Handle } from "../Handle";
 import { stringOfRandomCharacters } from "../StringUtil/stringOfRandomCharacters";
 import { Observable } from "../Observable";
+import { ArrayUtil } from "..";
 
 export class ManagedObject {
   static readonly initializedCount = Observable.givenValue<number>(0);
@@ -10,7 +11,7 @@ export class ManagedObject {
   private _handles: Handle[] = [];
   private _thisHandle: Handle | undefined;
   private _parent?: ManagedObject;
-  private _children: Set<ManagedObject> = new Set();
+  private _children: ManagedObject[] = [];
 
   constructor() {
     this.id = stringOfRandomCharacters(8);
@@ -65,6 +66,7 @@ export class ManagedObject {
     this._children.forEach((child) => {
       child.uninit();
     });
+    this._children = [];
 
     const handle = this._thisHandle;
     this._thisHandle = undefined;
@@ -73,15 +75,11 @@ export class ManagedObject {
   };
 
   addManagedObject = <T extends ManagedObject>(child: T): T => {
-    if (this._children.has(child)) {
-      return;
-    }
-
     if (child.parent != null) {
       child.parent.removeManagedObject(child);
     }
 
-    this._children.add(child);
+    this._children.push(child);
     child._parent = this;
 
     if (this.isInitialized) {
@@ -98,12 +96,12 @@ export class ManagedObject {
   };
 
   removeManagedObject = (child: ManagedObject): void => {
-    if (!this._children.has(child)) {
+    if (this._children.indexOf(child) === -1) {
       throw new Error("Object was not found as a child of this object");
     }
 
     child.uninit();
-    this._children.delete(child);
+    this._children = ArrayUtil.arrayWithoutValue(this._children, child);
     child._parent = undefined;
   };
 

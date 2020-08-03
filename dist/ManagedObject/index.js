@@ -4,10 +4,11 @@ exports.ManagedObject = void 0;
 const Handle_1 = require("../Handle");
 const stringOfRandomCharacters_1 = require("../StringUtil/stringOfRandomCharacters");
 const Observable_1 = require("../Observable");
+const __1 = require("..");
 class ManagedObject {
     constructor() {
         this._handles = [];
-        this._children = new Set();
+        this._children = [];
         this.init = () => {
             if (!this.isInitialized) {
                 this._thisHandle = Handle_1.Handle.givenReleaseFunction(this.uninit);
@@ -33,18 +34,16 @@ class ManagedObject {
             this._children.forEach((child) => {
                 child.uninit();
             });
+            this._children = [];
             const handle = this._thisHandle;
             this._thisHandle = undefined;
             handle.release();
         };
         this.addManagedObject = (child) => {
-            if (this._children.has(child)) {
-                return;
-            }
             if (child.parent != null) {
                 child.parent.removeManagedObject(child);
             }
-            this._children.add(child);
+            this._children.push(child);
             child._parent = this;
             if (this.isInitialized) {
                 child.init();
@@ -56,11 +55,11 @@ class ManagedObject {
             return handle;
         };
         this.removeManagedObject = (child) => {
-            if (!this._children.has(child)) {
+            if (this._children.indexOf(child) === -1) {
                 throw new Error("Object was not found as a child of this object");
             }
             child.uninit();
-            this._children.delete(child);
+            this._children = __1.ArrayUtil.arrayWithoutValue(this._children, child);
             child._parent = undefined;
         };
         this.id = stringOfRandomCharacters_1.stringOfRandomCharacters(8);

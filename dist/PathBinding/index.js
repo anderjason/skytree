@@ -15,7 +15,6 @@ class PathBinding extends ManagedObject_1.ManagedObject {
             this._pathHandles = [];
         };
         this.rebuild = () => {
-            console.log("rebuild");
             this.clearPathHandles();
             let index = 0;
             let parts = this._path.toParts();

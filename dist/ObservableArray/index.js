@@ -176,6 +176,9 @@ class ObservableArray {
     hasValue(value) {
         return this._array.indexOf(value) !== -1;
     }
+    toValueGivenIndex(index) {
+        return this._array[index];
+    }
     toValues() {
         return Array.from(this._array);
     }

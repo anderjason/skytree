@@ -224,6 +224,10 @@ export class ObservableArray<T> {
     return this._array.indexOf(value) !== -1;
   }
 
+  toValueGivenIndex(index: number): T {
+    return this._array[index];
+  }
+
   toValues(): T[] {
     return Array.from(this._array);
   }

@@ -48,8 +48,6 @@ export class PathBinding extends ManagedObject {
   };
 
   private rebuild = () => {
-    console.log("rebuild");
-
     this.clearPathHandles();
 
     let index = 0;
