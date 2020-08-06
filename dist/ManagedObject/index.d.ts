@@ -16,5 +16,6 @@ export declare class ManagedObject {
     addManagedObject: <T extends ManagedObject>(child: T) => T;
     addHandle: (handle: Handle) => Handle;
     removeManagedObject: (child: ManagedObject) => void;
+    removeHandle: (handle: Handle) => void;
     protected initManagedObject(): void;
 }

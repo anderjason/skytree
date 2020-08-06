@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ValuePath = exports.Transformer = exports.Test = exports.StringUtil = exports.Size3 = exports.Size2 = exports.SimpleEvent = exports.SetUtil = exports.Ratio = exports.RateLimitedFunction = exports.PromiseUtil = exports.Point3 = exports.Point2 = exports.Percent = exports.PathBinding = exports.Palette = exports.ObservableSet = exports.ObservableArray = exports.Observable = exports.ObjectUtil = exports.NumberUtil = exports.MutableSize3 = exports.MutableSize2 = exports.MutablePoint3 = exports.MutablePoint2 = exports.MultiBinding = exports.MapUtil = exports.ManagedTimeout = exports.ManagedObject = exports.ManagedInterval = exports.Instant = exports.Handle = exports.ExclusiveInitializer = exports.Duration = exports.DataSize = exports.ColorGradient = exports.Color = exports.Box3 = exports.Box2 = exports.BooleanInitializer = exports.ArrayUtil = exports.ArrayInitializer = exports.AbstractDateTime = void 0;
+exports.ValuePath = exports.Transformer = exports.Test = exports.StringUtil = exports.Size3 = exports.Size2 = exports.SimpleEvent = exports.SetUtil = exports.SequentialWorker = exports.Ratio = exports.RateLimitedFunction = exports.PromiseUtil = exports.Point3 = exports.Point2 = exports.Percent = exports.PathBinding = exports.Palette = exports.ObservableSet = exports.ObservableArray = exports.Observable = exports.ObjectUtil = exports.NumberUtil = exports.MutableSize3 = exports.MutableSize2 = exports.MutablePoint3 = exports.MutablePoint2 = exports.MultiBinding = exports.MapUtil = exports.ManagedTimeout = exports.ManagedObject = exports.ManagedInterval = exports.Instant = exports.Handle = exports.ExclusiveInitializer = exports.Duration = exports.DataSize = exports.ColorGradient = exports.Color = exports.Box3 = exports.Box2 = exports.BooleanInitializer = exports.ArrayUtil = exports.ArrayInitializer = exports.AbstractDateTime = void 0;
 const AbstractDateTime_1 = require("./AbstractDateTime");
 Object.defineProperty(exports, "AbstractDateTime", { enumerable: true, get: function () { return AbstractDateTime_1.AbstractDateTime; } });
 const ArrayInitializer_1 = require("./ArrayInitializer");
@@ -71,6 +71,8 @@ const RateLimitedFunction_1 = require("./RateLimitedFunction");
 Object.defineProperty(exports, "RateLimitedFunction", { enumerable: true, get: function () { return RateLimitedFunction_1.RateLimitedFunction; } });
 const Ratio_1 = require("./Ratio");
 Object.defineProperty(exports, "Ratio", { enumerable: true, get: function () { return Ratio_1.Ratio; } });
+const SequentialWorker_1 = require("./SequentialWorker");
+Object.defineProperty(exports, "SequentialWorker", { enumerable: true, get: function () { return SequentialWorker_1.SequentialWorker; } });
 const SetUtil_1 = require("./SetUtil");
 Object.defineProperty(exports, "SetUtil", { enumerable: true, get: function () { return SetUtil_1.SetUtil; } });
 const SimpleEvent_1 = require("./SimpleEvent");

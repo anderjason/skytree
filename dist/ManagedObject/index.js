@@ -62,6 +62,12 @@ class ManagedObject {
             this._children = __1.ArrayUtil.arrayWithoutValue(this._children, child);
             child._parent = undefined;
         };
+        this.removeHandle = (handle) => {
+            if (this._handles.indexOf(handle) === -1) {
+                throw new Error("Handle was not found on this object");
+            }
+            this._handles = __1.ArrayUtil.arrayWithoutValue(this._handles, handle);
+        };
         this.id = stringOfRandomCharacters_1.stringOfRandomCharacters(8);
     }
     get isInitialized() {

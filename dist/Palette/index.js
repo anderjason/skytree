@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Palette = void 0;
 const ArrayUtil_1 = require("../ArrayUtil");
+const colorsGivenCanvas_1 = require("./_internal/colorsGivenCanvas");
 class Palette {
     constructor(colors) {
         this.isEqual = (otherPalette) => {
@@ -16,6 +17,10 @@ class Palette {
         this._colors = colors;
     }
     static givenColors(colors) {
+        return new Palette(colors);
+    }
+    static givenCanvas(canvas, maxColors) {
+        const colors = colorsGivenCanvas_1.colorsGivenCanvas(canvas, maxColors);
         return new Palette(colors);
     }
     get colors() {
