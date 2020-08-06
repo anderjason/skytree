@@ -33,6 +33,7 @@ import { Point3 } from "./Point3";
 import { PromiseUtil } from "./PromiseUtil";
 import { RateLimitedFunction } from "./RateLimitedFunction";
 import { Ratio } from "./Ratio";
+import { SequentialWorker } from "./SequentialWorker";
 import { SetUtil } from "./SetUtil";
 import { SimpleEvent } from "./SimpleEvent";
 import { Size2 } from "./Size2";
@@ -78,6 +79,7 @@ export {
   PromiseUtil,
   RateLimitedFunction,
   Ratio,
+  SequentialWorker,
   SetUtil,
   SimpleEvent,
   Size2,

@@ -1,10 +1,16 @@
 import { Color } from "../Color";
 import { ArrayUtil } from "../ArrayUtil";
+import { colorsGivenCanvas } from "./_internal/colorsGivenCanvas";
 
 export class Palette {
   private _colors: Color[];
 
   static givenColors(colors: Color[]): Palette {
+    return new Palette(colors);
+  }
+
+  static givenCanvas(canvas: HTMLCanvasElement, maxColors: number): Palette {
+    const colors = colorsGivenCanvas(canvas, maxColors);
     return new Palette(colors);
   }
 

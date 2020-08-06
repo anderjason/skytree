@@ -1,6 +1,7 @@
 import { Test } from "./Test";
 import "./ArrayInitializer/index.test";
 import "./ArrayUtil/index.test";
+import "./BooleanInitializer/index.test";
 import "./Box2/index.test";
 import "./Box3/index.test";
 import "./Duration/index.test";
@@ -16,6 +17,7 @@ import "./PathBinding/index.test";
 import "./Percent/index.test";
 import "./PromiseUtil/index.test";
 import "./Ratio/index.test";
+import "./SequentialWorker/index.test";
 import "./SimpleEvent/index.test";
 import "./Size2/index.test";
 import "./Size3/index.test";

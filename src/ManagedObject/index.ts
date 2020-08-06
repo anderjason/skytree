@@ -105,5 +105,13 @@ export class ManagedObject {
     child._parent = undefined;
   };
 
+  removeHandle = (handle: Handle): void => {
+    if (this._handles.indexOf(handle) === -1) {
+      throw new Error("Handle was not found on this object");
+    }
+
+    this._handles = ArrayUtil.arrayWithoutValue(this._handles, handle);
+  };
+
   protected initManagedObject(): void {}
 }

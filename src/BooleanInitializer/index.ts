@@ -1,27 +1,58 @@
 import { ManagedObject } from "../ManagedObject";
 import { Observable } from "../Observable";
 
-export interface BooleanInitializerDefinition {
+export interface BooleanInitializerDefinition<TO> {
   input: Observable<boolean>;
-  instance: ManagedObject;
+  instance: TO;
 }
 
-export class BooleanInitializer extends ManagedObject {
-  static givenDefinition(
-    definition: BooleanInitializerDefinition
-  ): BooleanInitializer {
+export interface BooleanInitializerConditionalDefinition<TI, TO> {
+  input: Observable<TI>;
+  isActive: (input: TI) => boolean;
+  instance: TO;
+}
+
+export class BooleanInitializer<
+  TO extends ManagedObject
+> extends ManagedObject {
+  static givenDefinition<TO extends ManagedObject>(
+    definition: BooleanInitializerDefinition<TO>
+  ): BooleanInitializer<TO> {
     return new BooleanInitializer(definition);
   }
 
-  private _input: Observable<boolean>;
-  private _instance: ManagedObject;
-  private _activeInstance: ManagedObject;
+  static givenCondition<TI, TO extends ManagedObject>(
+    definition: BooleanInitializerConditionalDefinition<TI, TO>
+  ): BooleanInitializer<TO> {
+    const isActive = Observable.ofEmpty<boolean>(Observable.isStrictEqual);
 
-  private constructor(definition: BooleanInitializerDefinition) {
+    const handle = definition.input.didChange.subscribe((input) => {
+      isActive.setValue(definition.isActive(input));
+    }, true);
+
+    const result = new BooleanInitializer({
+      input: isActive,
+      instance: definition.instance,
+    });
+
+    result.addHandle(handle);
+
+    return result;
+  }
+
+  private _input: Observable<boolean>;
+  private _instance: TO;
+  private _activeInstance: TO;
+
+  private constructor(definition: BooleanInitializerDefinition<TO>) {
     super();
 
     this._input = definition.input;
     this._instance = definition.instance;
+  }
+
+  get instance(): TO | undefined {
+    return this._activeInstance;
   }
 
   initManagedObject() {
