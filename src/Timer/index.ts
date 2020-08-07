@@ -5,7 +5,8 @@ import { Handle } from "../Handle";
 export interface TimerDefinition {
   fn: () => void;
   duration: Duration;
-  isRepeating: boolean;
+
+  isRepeating?: boolean;
 }
 
 export class Timer extends ManagedObject {
@@ -23,7 +24,7 @@ export class Timer extends ManagedObject {
 
     this._fn = definition.fn;
     this._duration = definition.duration;
-    this._isRepeating = definition.isRepeating;
+    this._isRepeating = definition.isRepeating || false;
   }
 
   initManagedObject() {

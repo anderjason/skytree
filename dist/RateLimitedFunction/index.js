@@ -62,13 +62,11 @@ class RateLimitedFunction {
                 this._timeout = null;
             }
         };
-        if (definition.leading == false && definition.trailing == false) {
-            throw new Error("Expected at least one of leading or trailing to be true");
-        }
+        const mode = definition.mode || "trailing";
         this._fn = definition.fn;
         this._waitDuration = definition.waitDuration;
-        this._leading = definition.leading;
-        this._trailing = definition.trailing;
+        this._leading = mode === "leading" || mode === "both";
+        this._trailing = mode === "trailing" || mode === "both";
         this._isRunning = false;
         this._wasInvokedWhileRunning = false;
     }

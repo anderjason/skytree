@@ -8,7 +8,7 @@ class Timer extends ManagedObject_1.ManagedObject {
         super();
         this._fn = definition.fn;
         this._duration = definition.duration;
-        this._isRepeating = definition.isRepeating;
+        this._isRepeating = definition.isRepeating || false;
     }
     static givenDefinition(definition) {
         return new Timer(definition);

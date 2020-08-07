@@ -3,7 +3,7 @@ import { Duration } from "../Duration";
 export interface TimerDefinition {
     fn: () => void;
     duration: Duration;
-    isRepeating: boolean;
+    isRepeating?: boolean;
 }
 export declare class Timer extends ManagedObject {
     static givenDefinition(definition: TimerDefinition): Timer;

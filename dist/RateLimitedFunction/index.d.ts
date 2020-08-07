@@ -1,11 +1,12 @@
 import { Duration } from "../Duration";
+export declare type RateLimitedFunctionMode = "trailing" | "leading" | "both";
 interface RateLimitedFunctionDefinition<T> {
     fn: (args?: T) => Promise<void>;
     waitDuration: Duration;
-    leading: boolean;
-    trailing: boolean;
+    mode?: RateLimitedFunctionMode;
 }
 export declare class RateLimitedFunction<T> {
+    static givenDefinition<T>(definition: RateLimitedFunctionDefinition<T>): RateLimitedFunction<T>;
     private _count;
     private _timeout;
     private _lastArgs?;
@@ -15,7 +16,6 @@ export declare class RateLimitedFunction<T> {
     private _trailing;
     private _isRunning;
     private _wasInvokedWhileRunning;
-    static givenDefinition<T>(definition: RateLimitedFunctionDefinition<T>): RateLimitedFunction<T>;
     private constructor();
     invoke: (args?: T) => void;
     clear: () => void;
