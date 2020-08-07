@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ManagedObject = void 0;
 const Handle_1 = require("../Handle");
-const stringOfRandomCharacters_1 = require("../StringUtil/stringOfRandomCharacters");
+const StringUtil_1 = require("../StringUtil");
 const Observable_1 = require("../Observable");
-const __1 = require("..");
+const ArrayUtil_1 = require("../ArrayUtil");
 class ManagedObject {
     constructor() {
         this._handles = [];
@@ -59,16 +59,16 @@ class ManagedObject {
                 throw new Error("Object was not found as a child of this object");
             }
             child.uninit();
-            this._children = __1.ArrayUtil.arrayWithoutValue(this._children, child);
+            this._children = ArrayUtil_1.ArrayUtil.arrayWithoutValue(this._children, child);
             child._parent = undefined;
         };
         this.removeHandle = (handle) => {
             if (this._handles.indexOf(handle) === -1) {
                 throw new Error("Handle was not found on this object");
             }
-            this._handles = __1.ArrayUtil.arrayWithoutValue(this._handles, handle);
+            this._handles = ArrayUtil_1.ArrayUtil.arrayWithoutValue(this._handles, handle);
         };
-        this.id = stringOfRandomCharacters_1.stringOfRandomCharacters(8);
+        this.id = StringUtil_1.StringUtil.stringOfRandomCharacters(8);
     }
     get isInitialized() {
         return this._thisHandle != null && !this._thisHandle.isReleased;

@@ -1,4 +1,4 @@
-import { Test, assert } from "../Test";
+import { Test } from "../Test";
 import { Size2 } from ".";
 
 Test.define("Size2 can be adjusted to fit a larger bounding box", () => {
@@ -8,7 +8,7 @@ Test.define("Size2 can be adjusted to fit a larger bounding box", () => {
   const actual = original.withAvailableSize(bounds, "flexible");
   const expected = Size2.givenWidthHeight(500, 1000);
 
-  assert(actual.isEqual(expected));
+  Test.assert(actual.isEqual(expected));
 });
 
 Test.define("Size2 can be adjusted to fit a smaller bounding box", () => {
@@ -18,7 +18,7 @@ Test.define("Size2 can be adjusted to fit a smaller bounding box", () => {
   const actual = original.withAvailableSize(bounds, "flexible");
   const expected = Size2.givenWidthHeight(5, 10);
 
-  assert(actual.isEqual(expected));
+  Test.assert(actual.isEqual(expected));
 });
 
 Test.define(
@@ -30,7 +30,7 @@ Test.define(
     const actual = original.withAvailableSize(bounds, "shrink");
     const expected = Size2.givenWidthHeight(100, 200);
 
-    assert(actual.isEqual(expected));
+    Test.assert(actual.isEqual(expected));
   }
 );
 
@@ -41,5 +41,5 @@ Test.define("Size2 can be adjusted to fit a zero size bounding box", () => {
   const actual = original.withAvailableSize(bounds, "flexible");
   const expected = Size2.ofZero();
 
-  assert(actual.isEqual(expected));
+  Test.assert(actual.isEqual(expected));
 });

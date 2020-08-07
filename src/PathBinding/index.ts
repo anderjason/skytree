@@ -1,7 +1,9 @@
 import { Observable } from "../Observable";
 import { ValuePath } from "../ValuePath";
 import { ManagedObject } from "../ManagedObject";
-import { Handle, ObservableArray, ObservableSet, SimpleEvent } from "..";
+import { Handle } from "../Handle";
+import { ObservableArray } from "../ObservableArray";
+import { ObservableSet } from "../ObservableSet";
 
 export interface PathBindingDefinition {
   input: any;

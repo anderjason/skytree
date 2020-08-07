@@ -1,6 +1,7 @@
-import { Test, assert } from "../Test";
+import { Test } from "../Test";
 import { Box2, Anchor2 } from ".";
-import { Point2, Size2 } from "..";
+import { Point2 } from "../Point2";
+import { Size2 } from "../Size2";
 
 const anchors: Anchor2[] = [
   "leftTop",
@@ -29,7 +30,7 @@ Test.define("Box2 can be created from a set of contained points", () => {
     Point2.givenXY(400, 400)
   );
 
-  assert(actual.isEqual(expected));
+  Test.assert(actual.isEqual(expected));
 });
 
 Test.define(
@@ -50,11 +51,11 @@ Test.define(
     anchors.forEach((anchor) => {
       const actual = original.withBoundingBox(boundingBox, "flexible", anchor);
 
-      assert(
+      Test.assert(
         actual[anchor].isEqual(boundingBox[anchor]),
         `Anchor ${anchor} box does not match`
       );
-      assert(actual.size.isEqual(largerExpectedSize));
+      Test.assert(actual.size.isEqual(largerExpectedSize));
     });
   }
 );
@@ -77,11 +78,11 @@ Test.define(
     anchors.forEach((anchor) => {
       const actual = original.withBoundingBox(boundingBox, "flexible", anchor);
 
-      assert(
+      Test.assert(
         actual[anchor].isEqual(boundingBox[anchor]),
         `Anchor ${anchor} box does not match`
       );
-      assert(actual.size.isEqual(expectedSize));
+      Test.assert(actual.size.isEqual(expectedSize));
     });
   }
 );

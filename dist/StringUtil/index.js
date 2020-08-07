@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StringUtil = void 0;
-const stringOfRandomCharacters_1 = require("./stringOfRandomCharacters");
-const stringIsEmpty_1 = require("./stringIsEmpty");
-const stringWithCase_1 = require("./stringWithCase");
-const stringWithEachMatchReplaced_1 = require("./stringWithEachMatchReplaced");
-const stringWithReplacedTokens_1 = require("./stringWithReplacedTokens");
+const stringOfRandomCharacters_1 = require("./_internal/stringOfRandomCharacters");
+const stringIsEmpty_1 = require("./_internal/stringIsEmpty");
+const stringWithCase_1 = require("./_internal/stringWithCase");
+const stringWithEachMatchReplaced_1 = require("./_internal/stringWithEachMatchReplaced");
+const stringWithReplacedTokens_1 = require("./_internal/stringWithReplacedTokens");
 class StringUtil {
 }
 exports.StringUtil = StringUtil;

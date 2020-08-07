@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.rgbFloatGivenXyz = void 0;
-const numberWithHardLimit_1 = require("../../NumberUtil/numberWithHardLimit");
+const NumberUtil_1 = require("../../NumberUtil");
 const Ratio_1 = require("../../Ratio");
 function rgbFloatGivenXyz(xyzColor) {
     const x = xyzColor.x / 100;
@@ -29,9 +29,9 @@ function rgbFloatGivenXyz(xyzColor) {
         b = 12.92 * b;
     }
     return {
-        r: Ratio_1.Ratio.givenDecimal(numberWithHardLimit_1.numberWithHardLimit(r, 0, 1)),
-        g: Ratio_1.Ratio.givenDecimal(numberWithHardLimit_1.numberWithHardLimit(g, 0, 1)),
-        b: Ratio_1.Ratio.givenDecimal(numberWithHardLimit_1.numberWithHardLimit(b, 0, 1)),
+        r: Ratio_1.Ratio.givenDecimal(NumberUtil_1.NumberUtil.numberWithHardLimit(r, 0, 1)),
+        g: Ratio_1.Ratio.givenDecimal(NumberUtil_1.NumberUtil.numberWithHardLimit(g, 0, 1)),
+        b: Ratio_1.Ratio.givenDecimal(NumberUtil_1.NumberUtil.numberWithHardLimit(b, 0, 1)),
     };
 }
 exports.rgbFloatGivenXyz = rgbFloatGivenXyz;

@@ -1,6 +1,6 @@
-export declare function assert(value: boolean, failedMessage?: string): void;
-export declare function assertIsDeepEqual(actual: any, expected: any, failedMessage?: string): void;
-export declare function assertThrows(fn: () => any, failedMessage?: string): Promise<void>;
+declare function assert(value: boolean, failedMessage?: string): void;
+declare function assertIsDeepEqual(actual: any, expected: any, failedMessage?: string): void;
+declare function assertThrows(fn: () => any, failedMessage?: string): Promise<void>;
 export declare class Test {
     private static _allTests;
     static define(label: string, fn: () => Promise<any> | void): void;
@@ -13,3 +13,4 @@ export declare class Test {
     private constructor();
     toPromise(): Promise<void>;
 }
+export {};

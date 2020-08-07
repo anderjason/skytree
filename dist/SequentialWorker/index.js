@@ -11,7 +11,7 @@ class SequentialWorker extends ManagedObject_1.ManagedObject {
         this._jobs = [];
         this._callbackByJob = new Map();
         this._isBusy = false;
-        this.addWork = (callback) => {
+        this.addWork = (callback, cancelledCallback) => {
             const state = Observable_1.Observable.givenValue("queued");
             const handle = this.addHandle(Handle_1.Handle.givenCallback(() => {
                 if (job.state.value === "queued") {
@@ -19,6 +19,14 @@ class SequentialWorker extends ManagedObject_1.ManagedObject {
                 }
                 this._jobs = ArrayUtil_1.ArrayUtil.arrayWithoutValue(this._jobs, job);
                 this._callbackByJob.delete(job);
+                if (cancelledCallback != null) {
+                    try {
+                        cancelledCallback();
+                    }
+                    catch (err) {
+                        console.error(err);
+                    }
+                }
             }));
             const job = {
                 handle,

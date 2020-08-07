@@ -14,19 +14,17 @@ import { rgbFloatGivenHex } from "./_internal/rgbFloatGivenHex";
 import { Ratio } from "../Ratio";
 import { hexGivenRgb } from "./_internal/hexGivenRgb";
 import { highContrastColorGivenColor } from "./_internal/highContrastColorGivenColor";
-import { numberWithHardLimit } from "../NumberUtil/numberWithHardLimit";
 import { distanceGivenColors } from "./_internal/distanceGivenColors";
-import { numberWithRangeMap } from "../NumberUtil/numberWithRangeMap";
 import { NumberUtil } from "../NumberUtil";
 
 export interface HsbColor {
-  h: number;
-  s: number;
-  b: number;
+  h: Ratio;
+  s: Ratio;
+  b: Ratio;
 }
 
 export interface HslColor {
-  h: Ratio; // maybe hue has a different range than 0-1?
+  h: Ratio;
   s: Ratio;
   l: Ratio;
 }
@@ -38,7 +36,7 @@ export interface LabColor {
 }
 
 export interface HclColor {
-  h: Ratio; // maybe hue has a different range than 0-1?
+  h: Ratio;
   c: Ratio;
   l: Ratio;
 }
@@ -101,9 +99,9 @@ export class Color {
   static givenRgb255(r: number, g: number, b: number, a?: Ratio): Color {
     return Color.givenRgbFloat(
       {
-        r: Ratio.givenDecimal(numberWithRangeMap(r, 0, 255, 0, 1)),
-        g: Ratio.givenDecimal(numberWithRangeMap(g, 0, 255, 0, 1)),
-        b: Ratio.givenDecimal(numberWithRangeMap(b, 0, 255, 0, 1)),
+        r: Ratio.givenDecimal(NumberUtil.numberWithRangeMap(r, 0, 255, 0, 1)),
+        g: Ratio.givenDecimal(NumberUtil.numberWithRangeMap(g, 0, 255, 0, 1)),
+        b: Ratio.givenDecimal(NumberUtil.numberWithRangeMap(b, 0, 255, 0, 1)),
       },
       a
     );
@@ -204,7 +202,11 @@ export class Color {
     const hcl = hclGivenLab(this._labColor);
     let c = hcl.c.toDecimal();
 
-    c = numberWithHardLimit(c + relativeSaturation.toDecimal(), 0, 1);
+    c = NumberUtil.numberWithHardLimit(
+      c + relativeSaturation.toDecimal(),
+      0,
+      1
+    );
 
     return this.withSaturation(Ratio.givenDecimal(c));
   }

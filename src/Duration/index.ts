@@ -72,8 +72,4 @@ export class Duration {
   toDays(): number {
     return this.toHours() / 24;
   }
-
-  toDelay(): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, this._milliseconds));
-  }
 }

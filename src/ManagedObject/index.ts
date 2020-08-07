@@ -1,7 +1,7 @@
 import { Handle } from "../Handle";
-import { stringOfRandomCharacters } from "../StringUtil/stringOfRandomCharacters";
+import { StringUtil } from "../StringUtil";
 import { Observable } from "../Observable";
-import { ArrayUtil } from "..";
+import { ArrayUtil } from "../ArrayUtil";
 
 export class ManagedObject {
   static readonly initializedCount = Observable.givenValue<number>(0);
@@ -14,7 +14,7 @@ export class ManagedObject {
   private _children: ManagedObject[] = [];
 
   constructor() {
-    this.id = stringOfRandomCharacters(8);
+    this.id = StringUtil.stringOfRandomCharacters(8);
   }
 
   get isInitialized(): boolean {

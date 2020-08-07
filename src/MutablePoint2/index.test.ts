@@ -1,4 +1,4 @@
-import { Test, assert } from "../Test";
+import { Test } from "../Test";
 import { MutablePoint2 } from "./index";
 import { Point2 } from "../Point2";
 
@@ -6,8 +6,8 @@ Test.define(
   "MutablePoint2 can read values that were set in the constructor",
   () => {
     const mp = MutablePoint2.givenXY(5, 8);
-    assert(mp.x === 5);
-    assert(mp.y === 8);
+    Test.assert(mp.x === 5);
+    Test.assert(mp.y === 8);
   }
 );
 
@@ -16,8 +16,8 @@ Test.define("MutablePoint2 can set values and read them back", () => {
   mp.x = 50;
   mp.y = 80;
 
-  assert(mp.x === 50);
-  assert(mp.y === 80);
+  Test.assert(mp.x === 50);
+  Test.assert(mp.y === 80);
 });
 
 Test.define("MutablePoint2 can be used where a Point2 is expected", () => {
@@ -29,7 +29,7 @@ Test.define("MutablePoint2 can be used where a Point2 is expected", () => {
   mp.x = 50;
   mp.y = 80;
 
-  assert(expectsPoint(mp));
+  Test.assert(expectsPoint(mp));
 });
 
 Test.define(
@@ -38,7 +38,7 @@ Test.define(
     const first = MutablePoint2.givenXY(5, 8);
     const second = MutablePoint2.givenXY(5, 8);
 
-    assert(first.isEqual(second));
+    Test.assert(first.isEqual(second));
   }
 );
 
@@ -48,7 +48,7 @@ Test.define(
     const first = MutablePoint2.givenXY(5, 8);
     const second = MutablePoint2.givenXY(50, 80);
 
-    assert(!first.isEqual(second));
+    Test.assert(!first.isEqual(second));
   }
 );
 
@@ -56,7 +56,7 @@ Test.define("MutablePoint2 can be checked for equality with a Point2", () => {
   const first = MutablePoint2.givenXY(5, 8);
   const second = Point2.givenXY(5, 8);
 
-  assert(first.isEqual(second));
+  Test.assert(first.isEqual(second));
 });
 
 Test.define(
@@ -65,24 +65,24 @@ Test.define(
     const first = MutablePoint2.givenXY(5, 8);
     const second = Point2.givenXY(50, 80);
 
-    assert(!first.isEqual(second));
+    Test.assert(!first.isEqual(second));
   }
 );
 
 Test.define("MutablePoint2 is zero if the values are all zero", () => {
   const first = MutablePoint2.givenXY(0, 0);
 
-  assert(first.isZero);
+  Test.assert(first.isZero);
 });
 
 Test.define(
   "MutablePoint2 is not zero if any of the values are not zero",
   () => {
-    assert(!MutablePoint2.givenXY(0, 1).isZero);
-    assert(!MutablePoint2.givenXY(1, 0).isZero);
+    Test.assert(!MutablePoint2.givenXY(0, 1).isZero);
+    Test.assert(!MutablePoint2.givenXY(1, 0).isZero);
   }
 );
 
 Test.define("MutablePoint2 is not zero if the values are undefined", () => {
-  assert(!MutablePoint2.givenXY(undefined, undefined).isZero);
+  Test.assert(!MutablePoint2.givenXY(undefined, undefined).isZero);
 });

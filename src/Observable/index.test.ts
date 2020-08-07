@@ -1,9 +1,9 @@
 import { Observable } from ".";
-import { Test, assert } from "../Test";
+import { Test } from "../Test";
 
 Test.define("Observable can take an initial value", () => {
   const instance = Observable.givenValue(5);
-  assert(instance.value === 5);
+  Test.assert(instance.value === 5);
 });
 
 Test.define("Observable supports generic types", () => {
@@ -16,14 +16,14 @@ Test.define("Observable supports generic types", () => {
   };
 
   const instance = Observable.givenValue<Player>(bob);
-  assert(instance.value === bob);
+  Test.assert(instance.value === bob);
 });
 
 Test.define("Observable updates the value when setValue is called", () => {
   const instance = Observable.givenValue(5);
 
   instance.setValue(10);
-  assert(instance.value === 10);
+  Test.assert(instance.value === 10);
 });
 
 Test.define(
@@ -39,7 +39,7 @@ Test.define(
     instance.setValue(10);
     handle.release();
 
-    assert(didFire === true);
+    Test.assert(didFire === true);
   }
 );
 
@@ -48,8 +48,8 @@ Test.define(
   () => {
     const instance: unknown = Observable.givenValue(5) as unknown;
 
-    assert(Observable.isObservable(instance) === true);
-    assert(Observable.isObservable(5) === false);
-    assert(Observable.isObservable("something") === false);
+    Test.assert(Observable.isObservable(instance) === true);
+    Test.assert(Observable.isObservable(5) === false);
+    Test.assert(Observable.isObservable("something") === false);
   }
 );

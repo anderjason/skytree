@@ -5,7 +5,7 @@ import { ManagedObject } from "../ManagedObject";
 
 let currentAssertionIndex: number = 0;
 
-export function assert(value: boolean, failedMessage?: string): void {
+function assert(value: boolean, failedMessage?: string): void {
   currentAssertionIndex += 1;
 
   if (!value) {
@@ -15,7 +15,7 @@ export function assert(value: boolean, failedMessage?: string): void {
   }
 }
 
-export function assertIsDeepEqual(
+function assertIsDeepEqual(
   actual: any,
   expected: any,
   failedMessage?: string
@@ -29,7 +29,7 @@ export function assertIsDeepEqual(
   }
 }
 
-export async function assertThrows(
+async function assertThrows(
   fn: () => any,
   failedMessage?: string
 ): Promise<void> {

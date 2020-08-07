@@ -1,8 +1,8 @@
 import { Ratio } from "../Ratio";
 export interface HsbColor {
-    h: number;
-    s: number;
-    b: number;
+    h: Ratio;
+    s: Ratio;
+    b: Ratio;
 }
 export interface HslColor {
     h: Ratio;

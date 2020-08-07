@@ -1,4 +1,4 @@
-import { Test, assert } from "../Test";
+import { Test } from "../Test";
 import { ManagedObject } from ".";
 import { Handle } from "../Handle";
 
@@ -6,13 +6,13 @@ Test.define("ManagedObject has a unique id per instance", () => {
   const instance1 = new ManagedObject();
   const instance2 = new ManagedObject();
 
-  assert(instance1.id != null);
-  assert(instance1.id.length === 8);
+  Test.assert(instance1.id != null);
+  Test.assert(instance1.id.length === 8);
 
-  assert(instance2.id != null);
-  assert(instance2.id.length === 8);
+  Test.assert(instance2.id != null);
+  Test.assert(instance2.id.length === 8);
 
-  assert(instance1.id !== instance2.id);
+  Test.assert(instance1.id !== instance2.id);
 });
 
 Test.define(
@@ -29,8 +29,8 @@ Test.define(
     const instance = new MySubclass();
     instance.init();
 
-    assert(didInit === true);
-    assert(instance.isInitialized === true);
+    Test.assert(didInit === true);
+    Test.assert(instance.isInitialized === true);
 
     instance.uninit();
   }
@@ -50,7 +50,7 @@ Test.define("ManagedObject only invokes initManagedObject once", () => {
   instance.init();
   instance.init();
 
-  assert(initCount === 1);
+  Test.assert(initCount === 1);
 
   instance.uninit();
 });
@@ -63,8 +63,8 @@ Test.define("ManagedObject returns a handle from init", () => {
   const instance = new MySubclass();
   const handle = instance.init();
 
-  assert(handle != null);
-  assert(handle.isReleased === false);
+  Test.assert(handle != null);
+  Test.assert(handle.isReleased === false);
 
   instance.uninit();
 });
@@ -81,9 +81,9 @@ Test.define(
     const handle2 = instance.init();
     const handle3 = instance.init();
 
-    assert(handle1 != null);
-    assert(handle1 === handle2);
-    assert(handle1 === handle3);
+    Test.assert(handle1 != null);
+    Test.assert(handle1 === handle2);
+    Test.assert(handle1 === handle3);
 
     instance.uninit();
   }
@@ -104,31 +104,31 @@ Test.define("ManagedObject is reset when the handle is released", () => {
 
   const instance = new MySubclass();
   const handle1 = instance.init();
-  assert(instance.isInitialized === true);
+  Test.assert(instance.isInitialized === true);
 
-  assert(releaseCount === 0);
+  Test.assert(releaseCount === 0);
   handle1.release();
   handle1.release();
 
   // @ts-ignore
-  assert(releaseCount === 1); // second release has no effect
+  Test.assert(releaseCount === 1); // second release has no effect
 
   // @ts-ignore
-  assert(instance.isInitialized === false);
+  Test.assert(instance.isInitialized === false);
 
   const handle2 = instance.init(); // init again
-  assert(instance.isInitialized === true);
+  Test.assert(instance.isInitialized === true);
 
-  assert(handle2 != null);
-  assert(handle1 !== handle2); // different handle from the first init
+  Test.assert(handle2 != null);
+  Test.assert(handle1 !== handle2); // different handle from the first init
 
   handle2.release();
 
   // @ts-ignore
-  assert(releaseCount === 2);
+  Test.assert(releaseCount === 2);
 
   // @ts-ignore
-  assert(instance.isInitialized === false);
+  Test.assert(instance.isInitialized === false);
 });
 
 Test.define("ManagedObject has a list of child objects", () => {
@@ -139,8 +139,8 @@ Test.define("ManagedObject has a list of child objects", () => {
   const parentInstance = new MySubclass();
   parentInstance.init();
 
-  assert(parentInstance.children != null);
-  assert(parentInstance.children.length === 0);
+  Test.assert(parentInstance.children != null);
+  Test.assert(parentInstance.children.length === 0);
 
   parentInstance.uninit();
 });
@@ -154,12 +154,12 @@ Test.define("ManagedObject initializes objects when added as children", () => {
   parentInstance.init();
 
   const childInstance = new MySubclass();
-  assert(childInstance.isInitialized === false);
+  Test.assert(childInstance.isInitialized === false);
 
   parentInstance.addManagedObject(childInstance);
 
   // @ts-ignore
-  assert(childInstance.isInitialized === true);
+  Test.assert(childInstance.isInitialized === true);
 
   parentInstance.uninit();
 });
@@ -175,10 +175,10 @@ Test.define(
     parentInstance.init();
 
     const childInstance = new MySubclass();
-    assert(childInstance.parent == null);
+    Test.assert(childInstance.parent == null);
 
     parentInstance.addManagedObject(childInstance);
-    assert(childInstance.parent === parentInstance);
+    Test.assert(childInstance.parent === parentInstance);
 
     parentInstance.uninit();
   }
@@ -198,7 +198,7 @@ Test.define(
     parentInstance.addManagedObject(childInstance);
     parentInstance.removeManagedObject(childInstance);
 
-    assert(childInstance.parent == null);
+    Test.assert(childInstance.parent == null);
 
     parentInstance.uninit();
   }
@@ -219,14 +219,14 @@ Test.define(
 
     const childInstance = new MySubclass();
     parentInstance1.addManagedObject(childInstance);
-    assert(childInstance.parent === parentInstance1);
-    assert(parentInstance1.children.includes(childInstance));
-    assert(!parentInstance2.children.includes(childInstance));
+    Test.assert(childInstance.parent === parentInstance1);
+    Test.assert(parentInstance1.children.includes(childInstance));
+    Test.assert(!parentInstance2.children.includes(childInstance));
 
     parentInstance2.addManagedObject(childInstance);
-    assert(childInstance.parent === parentInstance2);
-    assert(parentInstance2.children.includes(childInstance)); // added
-    assert(!parentInstance1.children.includes(childInstance)); // removed
+    Test.assert(childInstance.parent === parentInstance2);
+    Test.assert(parentInstance2.children.includes(childInstance)); // added
+    Test.assert(!parentInstance1.children.includes(childInstance)); // removed
 
     parentInstance1.uninit();
     parentInstance2.uninit();
@@ -243,12 +243,12 @@ Test.define("ManagedObject uninits child objects when uninit is called", () => {
 
   const childInstance = new MySubclass();
   parentInstance1.addManagedObject(childInstance);
-  assert(childInstance.isInitialized === true);
+  Test.assert(childInstance.isInitialized === true);
 
   parentInstance1.uninit();
 
   // @ts-ignore
-  assert(childInstance.isInitialized === false);
+  Test.assert(childInstance.isInitialized === false);
 });
 
 Test.define("ManagedObject inits child objects when init is called", () => {
@@ -259,12 +259,12 @@ Test.define("ManagedObject inits child objects when init is called", () => {
   const parentInstance1 = new MySubclass();
   const childInstance = new MySubclass();
   parentInstance1.addManagedObject(childInstance);
-  assert(childInstance.isInitialized === false); // parent is not initialized yet
+  Test.assert(childInstance.isInitialized === false); // parent is not initialized yet
 
   parentInstance1.init();
 
   // @ts-ignore
-  assert(childInstance.isInitialized === true);
+  Test.assert(childInstance.isInitialized === true);
 
   parentInstance1.uninit();
 });
@@ -281,9 +281,9 @@ Test.define("ManagedObject updates the static initialized count", () => {
   parentInstance1.addManagedObject(childInstance);
   parentInstance1.init();
 
-  assert(ManagedObject.initializedCount.value === startValue + 2);
+  Test.assert(ManagedObject.initializedCount.value === startValue + 2);
 
   parentInstance1.uninit();
 
-  assert(ManagedObject.initializedCount.value === startValue);
+  Test.assert(ManagedObject.initializedCount.value === startValue);
 });

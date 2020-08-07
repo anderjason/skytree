@@ -1,4 +1,5 @@
 import { HsbColor, RgbFloatColor } from "..";
+import { Ratio } from "../..";
 
 export function hsbGivenRgbFloat(rgbFloatColor: RgbFloatColor): HsbColor {
   const r = rgbFloatColor.r.toDecimal();
@@ -29,8 +30,8 @@ export function hsbGivenRgbFloat(rgbFloatColor: RgbFloatColor): HsbColor {
   }
 
   return {
-    h: h / 360,
-    s: max == 0 ? 0 : (max - min) / max,
-    b: max,
+    h: Ratio.givenDecimal(h / 360),
+    s: Ratio.givenDecimal(max == 0 ? 0 : (max - min) / max),
+    b: Ratio.givenDecimal(max),
   };
 }

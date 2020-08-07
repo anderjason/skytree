@@ -15,5 +15,4 @@ export declare class Duration {
     toMinutes(): number;
     toHours(): number;
     toDays(): number;
-    toDelay(): Promise<void>;
 }

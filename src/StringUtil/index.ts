@@ -1,8 +1,8 @@
-import { stringOfRandomCharacters } from "./stringOfRandomCharacters";
-import { stringIsEmpty } from "./stringIsEmpty";
-import { stringWithCase } from "./stringWithCase";
-import { stringWithEachMatchReplaced } from "./stringWithEachMatchReplaced";
-import { stringWithReplacedTokens } from "./stringWithReplacedTokens";
+import { stringOfRandomCharacters } from "./_internal/stringOfRandomCharacters";
+import { stringIsEmpty } from "./_internal/stringIsEmpty";
+import { stringWithCase } from "./_internal/stringWithCase";
+import { stringWithEachMatchReplaced } from "./_internal/stringWithEachMatchReplaced";
+import { stringWithReplacedTokens } from "./_internal/stringWithReplacedTokens";
 
 export class StringUtil {
   static stringIsEmpty = stringIsEmpty;

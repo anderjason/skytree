@@ -1,3 +1,3 @@
-import "./numberWithDecimalPlaceLimit.test";
-import "./numberWithHardLimit.test";
-import "./numberWithRangeMap.test";
+import "./_internal/numberWithDecimalPlaceLimit.test";
+import "./_internal/numberWithHardLimit.test";
+import "./_internal/numberWithRangeMap.test";

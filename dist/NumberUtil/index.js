@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NumberUtil = void 0;
-const numberWithDecimalPlaceLimit_1 = require("./numberWithDecimalPlaceLimit");
-const numberWithEasing_1 = require("./numberWithEasing");
-const numberWithHardLimit_1 = require("./numberWithHardLimit");
-const numberWithRangeMap_1 = require("./numberWithRangeMap");
-const numberOfRandomValue_1 = require("./numberOfRandomValue");
-const numberWithQuantization_1 = require("./numberWithQuantization");
+const numberOfRandomValue_1 = require("./_internal/numberOfRandomValue");
+const numberWithDecimalPlaceLimit_1 = require("./_internal/numberWithDecimalPlaceLimit");
+const numberWithEasing_1 = require("./_internal/numberWithEasing");
+const numberWithHardLimit_1 = require("./_internal/numberWithHardLimit");
+const numberWithQuantization_1 = require("./_internal/numberWithQuantization");
+const numberWithRangeMap_1 = require("./_internal/numberWithRangeMap");
 class NumberUtil {
 }
 exports.NumberUtil = NumberUtil;

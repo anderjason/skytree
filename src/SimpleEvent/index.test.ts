@@ -1,4 +1,4 @@
-import { Test, assert } from "../Test";
+import { Test } from "../Test";
 import { SimpleEvent } from ".";
 
 Test.define("SimpleEvent can be subscribed to", () => {
@@ -6,7 +6,7 @@ Test.define("SimpleEvent can be subscribed to", () => {
 
   const handle = event.subscribe(() => {});
 
-  assert(handle != null);
+  Test.assert(handle != null);
   handle.release();
 });
 
@@ -19,7 +19,7 @@ Test.define("SimpleEvent can take an initial value", () => {
     result = v;
   }, true);
 
-  assert(result === 5);
+  Test.assert(result === 5);
   handle.release();
 });
 
@@ -37,16 +37,16 @@ Test.define(
     });
 
     event.emit(5);
-    assert(result === 5);
-    assert(eventCount === 1);
+    Test.assert(result === 5);
+    Test.assert(eventCount === 1);
 
     event.emit(10);
 
     // @ts-ignore
-    assert(result === 10);
+    Test.assert(result === 10);
 
     // @ts-ignore
-    assert(eventCount === 2);
+    Test.assert(eventCount === 2);
 
     handle.release();
   }
@@ -63,19 +63,19 @@ Test.define(
       eventCount += 1;
     });
 
-    assert(eventCount === 0);
+    Test.assert(eventCount === 0);
 
     event.emit(5);
 
     // @ts-ignore
-    assert(eventCount === 1);
+    Test.assert(eventCount === 1);
 
     handle.release();
 
     event.emit(10);
 
     // @ts-ignore
-    assert(eventCount === 1); // no change
+    Test.assert(eventCount === 1); // no change
   }
 );
 
@@ -87,13 +87,13 @@ Test.define(
     let result: number;
 
     event.emit(5);
-    assert(result == null);
+    Test.assert(result == null);
 
     const handle = event.subscribe((v) => {
       result = v;
     }, true);
 
-    assert(result === 5);
+    Test.assert(result === 5);
 
     handle.release();
   }

@@ -1,12 +1,14 @@
-import { promiseOfSequentialActions } from "./promiseOfSequentialActions";
-import { promiseOfRepeatedActions } from "./promiseOfRepeatedActions";
-import { promiseOfResults } from "./promiseOfResults";
-import { promiseOfInfiniteDelay } from "./promiseOfInfiniteDelay";
-import { promiseOfFirstMatchingValue } from "./promiseOfFirstMatchingValue";
+import { promiseOfDelay } from "./_internal/promiseOfDelay";
+import { promiseOfFirstMatchingValue } from "./_internal/promiseOfFirstMatchingValue";
+import { promiseOfInfiniteDelay } from "./_internal/promiseOfInfiniteDelay";
+import { promiseOfRepeatedActions } from "./_internal/promiseOfRepeatedActions";
+import { promiseOfResults } from "./_internal/promiseOfResults";
+import { promiseOfSequentialActions } from "./_internal/promiseOfSequentialActions";
 export declare class PromiseUtil {
-    static promiseOfSequentialActions: typeof promiseOfSequentialActions;
+    static promiseOfDelay: typeof promiseOfDelay;
+    static promiseOfFirstMatchingValue: typeof promiseOfFirstMatchingValue;
+    static promiseOfInfiniteDelay: typeof promiseOfInfiniteDelay;
     static promiseOfRepeatedActions: typeof promiseOfRepeatedActions;
     static promiseOfResults: typeof promiseOfResults;
-    static promiseOfInfiniteDelay: typeof promiseOfInfiniteDelay;
-    static promiseOfFirstMatchingValue: typeof promiseOfFirstMatchingValue;
+    static promiseOfSequentialActions: typeof promiseOfSequentialActions;
 }

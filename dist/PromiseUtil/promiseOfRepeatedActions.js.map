@@ -1,1 +1,0 @@
-{"version":3,"file":"promiseOfRepeatedActions.js","sourceRoot":"","sources":["../../src/PromiseUtil/promiseOfRepeatedActions.ts"],"names":[],"mappings":";;;AAAO,KAAK,UAAU,wBAAwB,CAC5C,KAAa,EACb,EAAkC;IAElC,IAAI,KAAK,GAAG,CAAC,EAAE;QACb,OAAO;KACR;IAED,KAAK,IAAI,KAAK,GAAG,CAAC,EAAE,KAAK,GAAG,KAAK,EAAE,KAAK,EAAE,EAAE;QAC1C,MAAM,EAAE,CAAC,KAAK,CAAC,CAAC;KACjB;AACH,CAAC;AAXD,4DAWC"}

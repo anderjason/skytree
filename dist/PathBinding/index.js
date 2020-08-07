@@ -3,7 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PathBinding = void 0;
 const Observable_1 = require("../Observable");
 const ManagedObject_1 = require("../ManagedObject");
-const __1 = require("..");
+const Handle_1 = require("../Handle");
+const ObservableArray_1 = require("../ObservableArray");
+const ObservableSet_1 = require("../ObservableSet");
 class PathBinding extends ManagedObject_1.ManagedObject {
     constructor(definition) {
         super();
@@ -22,13 +24,13 @@ class PathBinding extends ManagedObject_1.ManagedObject {
             let object = this._input;
             while (object != null && index < length) {
                 if (Observable_1.Observable.isObservable(object) ||
-                    __1.ObservableArray.isObservableArray(object)) {
+                    ObservableArray_1.ObservableArray.isObservableArray(object)) {
                     this._pathHandles.push(object.didChange.subscribe(() => {
                         this.rebuild();
                     }));
                 }
                 const nextPathPart = parts[index++];
-                if (__1.ObservableArray.isObservableArray(object)) {
+                if (ObservableArray_1.ObservableArray.isObservableArray(object)) {
                     if (!Number.isInteger(nextPathPart)) {
                         object = null;
                     }
@@ -36,7 +38,7 @@ class PathBinding extends ManagedObject_1.ManagedObject {
                         object = object.toValues()[nextPathPart];
                     }
                 }
-                else if (__1.ObservableSet.isObservableSet(object)) {
+                else if (ObservableSet_1.ObservableSet.isObservableSet(object)) {
                     object = null;
                 }
                 else if (Observable_1.Observable.isObservable(object)) {
@@ -74,7 +76,7 @@ class PathBinding extends ManagedObject_1.ManagedObject {
     }
     initManagedObject() {
         this.rebuild();
-        this.addHandle(__1.Handle.givenCallback(this.clearPathHandles));
+        this.addHandle(Handle_1.Handle.givenCallback(this.clearPathHandles));
     }
 }
 exports.PathBinding = PathBinding;

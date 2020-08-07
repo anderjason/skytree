@@ -1,5 +1,5 @@
 import { XyzColor, RgbFloatColor } from "..";
-import { numberWithHardLimit } from "../../NumberUtil/numberWithHardLimit";
+import { NumberUtil } from "../../NumberUtil";
 import { Ratio } from "../../Ratio";
 
 export function rgbFloatGivenXyz(xyzColor: XyzColor): RgbFloatColor {
@@ -30,8 +30,8 @@ export function rgbFloatGivenXyz(xyzColor: XyzColor): RgbFloatColor {
   }
 
   return {
-    r: Ratio.givenDecimal(numberWithHardLimit(r, 0, 1)),
-    g: Ratio.givenDecimal(numberWithHardLimit(g, 0, 1)),
-    b: Ratio.givenDecimal(numberWithHardLimit(b, 0, 1)),
+    r: Ratio.givenDecimal(NumberUtil.numberWithHardLimit(r, 0, 1)),
+    g: Ratio.givenDecimal(NumberUtil.numberWithHardLimit(g, 0, 1)),
+    b: Ratio.givenDecimal(NumberUtil.numberWithHardLimit(b, 0, 1)),
   };
 }

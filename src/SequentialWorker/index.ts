@@ -11,6 +11,7 @@ export interface Job {
 }
 
 export type JobCallback = () => Promise<void>;
+export type CancelledJobCallback = () => void;
 
 export class SequentialWorker extends ManagedObject {
   static ofEmpty(): SequentialWorker {
@@ -25,7 +26,7 @@ export class SequentialWorker extends ManagedObject {
     super();
   }
 
-  addWork = (callback: JobCallback): Job => {
+  addWork = (callback: JobCallback, cancelledCallback?: CancelledJobCallback): Job => {
     const state = Observable.givenValue<JobState>("queued");
 
     const handle = this.addHandle(
@@ -36,6 +37,14 @@ export class SequentialWorker extends ManagedObject {
 
         this._jobs = ArrayUtil.arrayWithoutValue(this._jobs, job);
         this._callbackByJob.delete(job);
+
+        if (cancelledCallback != null) {
+          try {
+            cancelledCallback();
+          } catch (err) {
+            console.error(err);
+          }
+        }
       })
     );
 

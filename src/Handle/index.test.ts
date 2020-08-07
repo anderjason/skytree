@@ -1,9 +1,9 @@
-import { Test, assert } from "../Test";
+import { Test } from "../Test";
 import { Handle } from ".";
 
 Test.define("Handle is not released by default", () => {
   const handle = Handle.givenCallback(() => {});
-  assert(!handle.isReleased);
+  Test.assert(!handle.isReleased);
 
   handle.release();
 });
@@ -11,7 +11,7 @@ Test.define("Handle is not released by default", () => {
 Test.define("Handle is released after calling release", () => {
   const handle = Handle.givenCallback(() => {});
   handle.release();
-  assert(handle.isReleased);
+  Test.assert(handle.isReleased);
 });
 
 Test.define("Handle invokes the release function when calling release", () => {
@@ -23,7 +23,7 @@ Test.define("Handle invokes the release function when calling release", () => {
 
   handle.release();
 
-  assert(didRelease === true);
+  Test.assert(didRelease === true);
 });
 
 Test.define("Handle only invokes the release function once", () => {
@@ -37,5 +37,5 @@ Test.define("Handle only invokes the release function once", () => {
   handle.release();
   handle.release();
 
-  assert(releaseCount === 1);
+  Test.assert(releaseCount === 1);
 });

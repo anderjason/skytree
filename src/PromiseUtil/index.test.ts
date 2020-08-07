@@ -1,1 +1,1 @@
-import "./promiseOfSequentialActions.test";
+import "./_internal/promiseOfSequentialActions.test";

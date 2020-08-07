@@ -53,9 +53,6 @@ class Duration {
     toDays() {
         return this.toHours() / 24;
     }
-    toDelay() {
-        return new Promise((resolve) => setTimeout(resolve, this._milliseconds));
-    }
 }
 exports.Duration = Duration;
 //# sourceMappingURL=index.js.map

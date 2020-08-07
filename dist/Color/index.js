@@ -17,9 +17,7 @@ const rgbFloatGivenHex_1 = require("./_internal/rgbFloatGivenHex");
 const Ratio_1 = require("../Ratio");
 const hexGivenRgb_1 = require("./_internal/hexGivenRgb");
 const highContrastColorGivenColor_1 = require("./_internal/highContrastColorGivenColor");
-const numberWithHardLimit_1 = require("../NumberUtil/numberWithHardLimit");
 const distanceGivenColors_1 = require("./_internal/distanceGivenColors");
-const numberWithRangeMap_1 = require("../NumberUtil/numberWithRangeMap");
 const NumberUtil_1 = require("../NumberUtil");
 class Color {
     constructor(labColor, alpha) {
@@ -50,9 +48,9 @@ class Color {
     }
     static givenRgb255(r, g, b, a) {
         return Color.givenRgbFloat({
-            r: Ratio_1.Ratio.givenDecimal(numberWithRangeMap_1.numberWithRangeMap(r, 0, 255, 0, 1)),
-            g: Ratio_1.Ratio.givenDecimal(numberWithRangeMap_1.numberWithRangeMap(g, 0, 255, 0, 1)),
-            b: Ratio_1.Ratio.givenDecimal(numberWithRangeMap_1.numberWithRangeMap(b, 0, 255, 0, 1)),
+            r: Ratio_1.Ratio.givenDecimal(NumberUtil_1.NumberUtil.numberWithRangeMap(r, 0, 255, 0, 1)),
+            g: Ratio_1.Ratio.givenDecimal(NumberUtil_1.NumberUtil.numberWithRangeMap(g, 0, 255, 0, 1)),
+            b: Ratio_1.Ratio.givenDecimal(NumberUtil_1.NumberUtil.numberWithRangeMap(b, 0, 255, 0, 1)),
         }, a);
     }
     static givenColorNumber(intColor, alpha = 1) {
@@ -114,7 +112,7 @@ class Color {
     withRelativeSaturation(relativeSaturation) {
         const hcl = hclGivenLab_1.hclGivenLab(this._labColor);
         let c = hcl.c.toDecimal();
-        c = numberWithHardLimit_1.numberWithHardLimit(c + relativeSaturation.toDecimal(), 0, 1);
+        c = NumberUtil_1.NumberUtil.numberWithHardLimit(c + relativeSaturation.toDecimal(), 0, 1);
         return this.withSaturation(Ratio_1.Ratio.givenDecimal(c));
     }
     withAlpha(absoluteAlpha) {

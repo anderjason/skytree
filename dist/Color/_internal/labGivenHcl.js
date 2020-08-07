@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.labGivenHcl = void 0;
 const DEG2RAD = Math.PI / 180;
 function labGivenHcl(hclColor) {
-    let h = hclColor.h.toDecimal() * 360;
+    let h = hclColor.h.toDecimal() * 359;
     let c = hclColor.c.toDecimal() * 140;
     let l = hclColor.l.toDecimal() * 100;
     h = h * DEG2RAD;

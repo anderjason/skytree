@@ -1,5 +1,5 @@
-import { unionGivenMaps } from "./unionGivenMaps";
-import { differenceGivenMaps } from "./differenceGivenMaps";
+import { unionGivenMaps } from "./_internal/unionGivenMaps";
+import { differenceGivenMaps } from "./_internal/differenceGivenMaps";
 
 export class MapUtil {
   static unionGivenMaps = unionGivenMaps;

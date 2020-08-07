@@ -1,7 +1,8 @@
 import { SequentialWorker } from ".";
 import { Test } from "../Test";
 import { Duration } from "../Duration";
-import { ObjectUtil } from "..";
+import { PromiseUtil } from "../PromiseUtil";
+import { ObjectUtil } from "../ObjectUtil";
 
 Test.define("SequentialWorker can run jobs in sequence", async () => {
   const worker = SequentialWorker.ofEmpty();
@@ -11,19 +12,19 @@ Test.define("SequentialWorker can run jobs in sequence", async () => {
 
   worker.addWork(async () => {
     order.push("A1");
-    await Duration.givenSeconds(0.1).toDelay();
+    await PromiseUtil.promiseOfDelay(Duration.givenSeconds(0.1));
     order.push("A2");
   });
 
   worker.addWork(async () => {
     order.push("B1");
-    await Duration.givenSeconds(0.1).toDelay();
+    await PromiseUtil.promiseOfDelay(Duration.givenSeconds(0.1));
     order.push("B2");
   });
 
   const jobC = worker.addWork(async () => {
     order.push("C1");
-    await Duration.givenSeconds(0.1).toDelay();
+    await PromiseUtil.promiseOfDelay(Duration.givenSeconds(0.1));
     order.push("C2");
   });
 

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.hsbGivenRgbFloat = void 0;
+const __1 = require("../..");
 function hsbGivenRgbFloat(rgbFloatColor) {
     const r = rgbFloatColor.r.toDecimal();
     const g = rgbFloatColor.g.toDecimal();
@@ -27,9 +28,9 @@ function hsbGivenRgbFloat(rgbFloatColor) {
         }
     }
     return {
-        h: h / 360,
-        s: max == 0 ? 0 : (max - min) / max,
-        b: max,
+        h: __1.Ratio.givenDecimal(h / 360),
+        s: __1.Ratio.givenDecimal(max == 0 ? 0 : (max - min) / max),
+        b: __1.Ratio.givenDecimal(max),
     };
 }
 exports.hsbGivenRgbFloat = hsbGivenRgbFloat;
