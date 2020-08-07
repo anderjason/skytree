@@ -37,7 +37,7 @@ export class PathBinding extends ManagedObject {
   initManagedObject() {
     this.rebuild();
 
-    this.addHandle(Handle.givenReleaseFunction(this.clearPathHandles));
+    this.addHandle(Handle.givenCallback(this.clearPathHandles));
   }
 
   private clearPathHandles = () => {

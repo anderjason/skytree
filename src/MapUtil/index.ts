@@ -1,7 +1,7 @@
-import { mergedMapGivenMaps } from "./mergedMapGivenMaps";
+import { unionGivenMaps } from "./unionGivenMaps";
 import { differenceGivenMaps } from "./differenceGivenMaps";
 
 export class MapUtil {
-  static mergedMapGivenMaps = mergedMapGivenMaps;
+  static unionGivenMaps = unionGivenMaps;
   static differenceGivenMaps = differenceGivenMaps;
 }

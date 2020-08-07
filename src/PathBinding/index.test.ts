@@ -17,7 +17,7 @@ Test.define("PathBinding can observe a single value", () => {
 
   handles.push(pathBinding.init());
 
-  Test.assertIsEqual(pathBinding.output.value, "hello");
+  Test.assertIsDeepEqual(pathBinding.output.value, "hello");
 
   let outputValues: unknown[] = [];
 
@@ -45,7 +45,7 @@ Test.define("PathBinding can observe undefined", () => {
 
   pathBinding.init();
 
-  Test.assertIsEqual(pathBinding.output.value, undefined);
+  Test.assertIsDeepEqual(pathBinding.output.value, undefined);
 
   pathBinding.uninit();
 });
@@ -58,7 +58,7 @@ Test.define("PathBinding can observe an empty observable", () => {
 
   pathBinding.init();
 
-  Test.assertIsEqual(pathBinding.output.value, undefined);
+  Test.assertIsDeepEqual(pathBinding.output.value, undefined);
 
   pathBinding.uninit();
 });
@@ -129,7 +129,7 @@ Test.define(
 
     pathBinding.init();
 
-    Test.assertIsEqual(pathBinding.output.value, "hello world");
+    Test.assertIsDeepEqual(pathBinding.output.value, "hello world");
 
     pathBinding.uninit();
   }
@@ -155,7 +155,7 @@ Test.define(
 
     handles.push(pathBinding.init());
 
-    Test.assertIsEqual(pathBinding.output.value, "hello");
+    Test.assertIsDeepEqual(pathBinding.output.value, "hello");
 
     let outputValues: unknown[] = [];
 
@@ -206,7 +206,7 @@ Test.define(
 
     handles.push(pathBinding.init());
 
-    Test.assertIsEqual(pathBinding.output.value, "hello");
+    Test.assertIsDeepEqual(pathBinding.output.value, "hello");
 
     let outputValues: unknown[] = [];
 
@@ -279,7 +279,7 @@ Test.define("PathBinding can observe an observable at a complex path", () => {
 
   handles.push(pathBinding.init());
 
-  Test.assertIsEqual(pathBinding.output.value, "hello");
+  Test.assertIsDeepEqual(pathBinding.output.value, "hello");
 
   let outputValues: unknown[] = [];
 

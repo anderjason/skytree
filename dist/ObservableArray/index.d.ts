@@ -6,7 +6,8 @@ export interface ObservableArrayChange<T> {
     oldIndex?: number;
 }
 export declare class ObservableArray<T> {
-    readonly didChange: SimpleEvent<ObservableArrayChange<T>[]>;
+    readonly didChange: SimpleEvent<T[]>;
+    readonly didChangeSteps: SimpleEvent<ObservableArrayChange<T>[]>;
     static ofEmpty<T>(): ObservableArray<T>;
     static givenValues<T>(values: T[]): ObservableArray<T>;
     static isObservableArray(input: any): input is ObservableArray<unknown>;

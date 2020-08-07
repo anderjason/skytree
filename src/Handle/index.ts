@@ -3,29 +3,29 @@ import { Observable } from "../Observable";
 export class Handle {
   static readonly unreleasedCount = Observable.givenValue<number>(0);
 
-  static givenReleaseFunction(release: () => void): Handle {
+  static givenCallback(callback: () => void): Handle {
     this.unreleasedCount.setValue(this.unreleasedCount.value + 1);
 
-    return new Handle(release);
+    return new Handle(callback);
   }
 
-  private _releaseFn: (() => void) | undefined;
+  private _callback: (() => void) | undefined;
 
-  private constructor(release: () => void) {
-    this._releaseFn = release;
+  private constructor(callback: () => void) {
+    this._callback = callback;
   }
 
   get isReleased(): boolean {
-    return this._releaseFn == null;
+    return this._callback == null;
   }
 
   release = (): void => {
-    if (this._releaseFn == null) {
+    if (this._callback == null) {
       return;
     }
 
-    const fn = this._releaseFn;
-    this._releaseFn = undefined;
+    const fn = this._callback;
+    this._callback = undefined;
 
     fn();
 

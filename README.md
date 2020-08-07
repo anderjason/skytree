@@ -14,10 +14,6 @@
 
 `TODO`
 
-### BooleanInitializer
-
-`TODO`
-
 ### Box2
 
 `TODO`
@@ -31,6 +27,10 @@
 `TODO`
 
 ### ColorGradient
+
+`TODO`
+
+### ConditionalInitializer
 
 `TODO`
 
@@ -54,15 +54,7 @@
 
 `TODO`
 
-### ManagedInterval
-
-`TODO`
-
 ### ManagedObject
-
-`TODO`
-
-### ManagedTimeout
 
 `TODO`
 
@@ -122,6 +114,10 @@
 
 `TODO`
 
+### SequentialWorker
+
+`TODO`
+
 ### SimpleEvent
 
 `TODO`
@@ -135,6 +131,10 @@
 `TODO`
 
 ### Test
+
+`TODO`
+
+### Timer
 
 `TODO`
 

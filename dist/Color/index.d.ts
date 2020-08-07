@@ -35,7 +35,7 @@ export declare class Color {
     private _hexString;
     static isEqual(a: Color, b: Color): boolean;
     static givenHslFloat(hslColor: HslColor, alpha?: Ratio): Color;
-    static givenHex(hexColor: string): Color;
+    static givenHexString(hexColor: string): Color;
     static givenHclFloat(hclColor: HclColor, alpha?: Ratio): Color;
     static givenRgbFloat(rgbColor: RgbFloatColor, alpha?: Ratio): Color;
     static givenRgb255(r: number, g: number, b: number, a?: Ratio): Color;

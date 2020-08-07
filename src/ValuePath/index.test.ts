@@ -10,11 +10,7 @@ Test.define("ValuePath can be created from path parts", () => {
 Test.define("ValuePath can be created from a string", () => {
   const path = ValuePath.givenString("general.image.url");
   Test.assert(
-    ObjectUtil.objectIsDeepEqualToObject(path.toParts(), [
-      "general",
-      "image",
-      "url",
-    ])
+    ObjectUtil.objectIsDeepEqual(path.toParts(), ["general", "image", "url"])
   );
 });
 

@@ -11,7 +11,7 @@ class ManagedObject {
         this._children = [];
         this.init = () => {
             if (!this.isInitialized) {
-                this._thisHandle = Handle_1.Handle.givenReleaseFunction(this.uninit);
+                this._thisHandle = Handle_1.Handle.givenCallback(this.uninit);
                 this._children.forEach((child) => {
                     child.init();
                 });

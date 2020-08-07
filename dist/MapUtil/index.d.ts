@@ -1,6 +1,6 @@
-import { mergedMapGivenMaps } from "./mergedMapGivenMaps";
+import { unionGivenMaps } from "./unionGivenMaps";
 import { differenceGivenMaps } from "./differenceGivenMaps";
 export declare class MapUtil {
-    static mergedMapGivenMaps: typeof mergedMapGivenMaps;
+    static unionGivenMaps: typeof unionGivenMaps;
     static differenceGivenMaps: typeof differenceGivenMaps;
 }

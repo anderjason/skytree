@@ -3,25 +3,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Handle = void 0;
 const Observable_1 = require("../Observable");
 class Handle {
-    constructor(release) {
+    constructor(callback) {
         this.release = () => {
-            if (this._releaseFn == null) {
+            if (this._callback == null) {
                 return;
             }
-            const fn = this._releaseFn;
-            this._releaseFn = undefined;
+            const fn = this._callback;
+            this._callback = undefined;
             fn();
             Handle.unreleasedCount.setValue(Handle.unreleasedCount.value - 1);
             return;
         };
-        this._releaseFn = release;
+        this._callback = callback;
     }
-    static givenReleaseFunction(release) {
+    static givenCallback(callback) {
         this.unreleasedCount.setValue(this.unreleasedCount.value + 1);
-        return new Handle(release);
+        return new Handle(callback);
     }
     get isReleased() {
-        return this._releaseFn == null;
+        return this._callback == null;
     }
 }
 exports.Handle = Handle;

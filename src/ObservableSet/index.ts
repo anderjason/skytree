@@ -6,7 +6,8 @@ export interface ObservableSetChange<T> {
 }
 
 export class ObservableSet<T> {
-  readonly didChange = SimpleEvent.ofEmpty<ObservableSetChange<T>>();
+  readonly didChange = SimpleEvent.ofEmpty<T[]>();
+  readonly didChangeSteps = SimpleEvent.ofEmpty<ObservableSetChange<T>[]>();
 
   static ofEmpty<T>(): ObservableSet<T> {
     return new ObservableSet(new Set());
@@ -41,10 +42,14 @@ export class ObservableSet<T> {
     }
 
     this._set.add(value);
-    this.didChange.emit({
-      type: "add",
-      value,
-    });
+
+    this.didChange.emit(Array.from(this._set));
+    this.didChangeSteps.emit([
+      {
+        type: "add",
+        value,
+      },
+    ]);
 
     return true;
   }
@@ -55,10 +60,13 @@ export class ObservableSet<T> {
     }
 
     this._set.delete(value);
-    this.didChange.emit({
-      type: "remove",
-      value,
-    });
+    this.didChange.emit(Array.from(this._set));
+    this.didChangeSteps.emit([
+      {
+        type: "remove",
+        value,
+      },
+    ]);
 
     return true;
   }
@@ -68,12 +76,17 @@ export class ObservableSet<T> {
 
     this._set.clear();
 
+    const updates: ObservableSetChange<T>[] = [];
+
     values.forEach((value) => {
-      this.didChange.emit({
+      updates.push({
         type: "remove",
         value,
       });
     });
+
+    this.didChange.emit(Array.from(this._set));
+    this.didChangeSteps.emit(updates);
   }
 
   hasValue(value: T): boolean {

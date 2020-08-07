@@ -9,7 +9,8 @@ export interface ObservableArrayChange<T> {
 }
 
 export class ObservableArray<T> {
-  readonly didChange = SimpleEvent.ofEmpty<ObservableArrayChange<T>[]>();
+  readonly didChange = SimpleEvent.ofEmpty<T[]>();
+  readonly didChangeSteps = SimpleEvent.ofEmpty<ObservableArrayChange<T>[]>();
 
   static ofEmpty<T>(): ObservableArray<T> {
     return new ObservableArray([]);
@@ -60,7 +61,8 @@ export class ObservableArray<T> {
       newIndex,
     });
 
-    this.didChange.emit(updates);
+    this.didChange.emit([...this._array]);
+    this.didChangeSteps.emit(updates);
   }
 
   moveValueAtIndex(oldIndex: number, newIndex: number): void {
@@ -112,7 +114,8 @@ export class ObservableArray<T> {
 
     this._internalMove(oldIndex, newIndex);
 
-    this.didChange.emit(changes);
+    this.didChange.emit([...this._array]);
+    this.didChangeSteps.emit(changes);
   }
 
   replaceValueAtIndex = (index: number, value: T): void => {
@@ -140,7 +143,8 @@ export class ObservableArray<T> {
       newIndex: index,
     });
 
-    this.didChange.emit(updates);
+    this.didChange.emit([...this._array]);
+    this.didChangeSteps.emit(updates);
   };
 
   private _internalMove = (oldIndex: number, newIndex: number): void => {
@@ -203,7 +207,8 @@ export class ObservableArray<T> {
       }
     });
 
-    this.didChange.emit(updates);
+    this.didChange.emit([...this._array]);
+    this.didChangeSteps.emit(updates);
   }
 
   clear(): void {
@@ -217,7 +222,8 @@ export class ObservableArray<T> {
 
     this._array = [];
 
-    this.didChange.emit(updates);
+    this.didChange.emit([...this._array]);
+    this.didChangeSteps.emit(updates);
   }
 
   hasValue(value: T): boolean {

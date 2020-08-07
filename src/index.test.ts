@@ -1,9 +1,9 @@
 import { Test } from "./Test";
 import "./ArrayInitializer/index.test";
 import "./ArrayUtil/index.test";
-import "./BooleanInitializer/index.test";
 import "./Box2/index.test";
 import "./Box3/index.test";
+import "./ConditionalInitializer/index.test";
 import "./Duration/index.test";
 import "./Handle/index.test";
 import "./Instant/index.test";

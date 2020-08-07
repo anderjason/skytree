@@ -95,7 +95,7 @@ Test.define("ManagedObject is reset when the handle is released", () => {
   class MySubclass extends ManagedObject {
     initManagedObject() {
       this.addHandle(
-        Handle.givenReleaseFunction(() => {
+        Handle.givenCallback(() => {
           releaseCount += 1;
         })
       );

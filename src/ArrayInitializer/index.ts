@@ -88,7 +88,7 @@ export class ArrayInitializer<
     );
 
     this.addHandle(
-      Handle.givenReleaseFunction(() => {
+      Handle.givenCallback(() => {
         this._objects = [];
       })
     );

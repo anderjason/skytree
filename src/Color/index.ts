@@ -79,7 +79,7 @@ export class Color {
     return Color.givenRgbFloat(rgbFloatGivenHsl(hslColor), alpha);
   }
 
-  static givenHex(hexColor: string): Color {
+  static givenHexString(hexColor: string): Color {
     return Color.givenRgbFloat(rgbFloatGivenHex(hexColor));
   }
 
@@ -123,7 +123,7 @@ export class Color {
     }
 
     const hex = `#${intColor.toString(16).padStart(6, "0")}${alphaString}`;
-    return Color.givenHex(hex);
+    return Color.givenHexString(hex);
   }
 
   private constructor(labColor: LabColor, alpha: Ratio) {

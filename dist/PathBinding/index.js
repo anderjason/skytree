@@ -74,7 +74,7 @@ class PathBinding extends ManagedObject_1.ManagedObject {
     }
     initManagedObject() {
         this.rebuild();
-        this.addHandle(__1.Handle.givenReleaseFunction(this.clearPathHandles));
+        this.addHandle(__1.Handle.givenCallback(this.clearPathHandles));
     }
 }
 exports.PathBinding = PathBinding;

@@ -15,7 +15,7 @@ export function assert(value: boolean, failedMessage?: string): void {
   }
 }
 
-export function assertIsEqual(
+export function assertIsDeepEqual(
   actual: any,
   expected: any,
   failedMessage?: string
@@ -64,7 +64,7 @@ export class Test {
 
   static assert = assert;
   static assertThrows = assertThrows;
-  static assertIsEqual = assertIsEqual;
+  static assertIsDeepEqual = assertIsDeepEqual;
 
   static async runAll(): Promise<void> {
     await PromiseUtil.promiseOfSequentialActions(

@@ -37,7 +37,7 @@ export class SimpleEvent<T = void> {
       handler(this._lastValue);
     }
 
-    return Handle.givenReleaseFunction(() => this.unsubscribe(handler));
+    return Handle.givenCallback(() => this.unsubscribe(handler));
   }
 
   emit = async (newValue: T): Promise<void> => {

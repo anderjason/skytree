@@ -4,7 +4,8 @@ export interface ObservableSetChange<T> {
     value: T;
 }
 export declare class ObservableSet<T> {
-    readonly didChange: SimpleEvent<ObservableSetChange<T>>;
+    readonly didChange: SimpleEvent<T[]>;
+    readonly didChangeSteps: SimpleEvent<ObservableSetChange<T>[]>;
     static ofEmpty<T>(): ObservableSet<T>;
     static givenValues<T>(values: T[] | Set<T>): ObservableSet<T>;
     static isObservableSet(input: any): input is ObservableSet<unknown>;

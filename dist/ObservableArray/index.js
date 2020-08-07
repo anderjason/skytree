@@ -6,6 +6,7 @@ const ArrayUtil_1 = require("../ArrayUtil");
 class ObservableArray {
     constructor(values) {
         this.didChange = SimpleEvent_1.SimpleEvent.ofEmpty();
+        this.didChangeSteps = SimpleEvent_1.SimpleEvent.ofEmpty();
         this._isObservableArray = true;
         this.replaceValueAtIndex = (index, value) => {
             if (index < 0) {
@@ -26,7 +27,8 @@ class ObservableArray {
                 value,
                 newIndex: index,
             });
-            this.didChange.emit(updates);
+            this.didChange.emit([...this._array]);
+            this.didChangeSteps.emit(updates);
         };
         this._internalMove = (oldIndex, newIndex) => {
             while (oldIndex < 0) {
@@ -78,7 +80,8 @@ class ObservableArray {
             value,
             newIndex,
         });
-        this.didChange.emit(updates);
+        this.didChange.emit([...this._array]);
+        this.didChangeSteps.emit(updates);
     }
     moveValueAtIndex(oldIndex, newIndex) {
         if (oldIndex === newIndex) {
@@ -122,7 +125,8 @@ class ObservableArray {
             }
         }
         this._internalMove(oldIndex, newIndex);
-        this.didChange.emit(changes);
+        this.didChange.emit([...this._array]);
+        this.didChangeSteps.emit(changes);
     }
     removeValueAtIndex(index) {
         this.removeAllWhere((v, i) => i === index);
@@ -160,7 +164,8 @@ class ObservableArray {
                 this._array.splice(update.oldIndex, 1);
             }
         });
-        this.didChange.emit(updates);
+        this.didChange.emit([...this._array]);
+        this.didChangeSteps.emit(updates);
     }
     clear() {
         const updates = this._array.map((v, i) => {
@@ -171,7 +176,8 @@ class ObservableArray {
             };
         });
         this._array = [];
-        this.didChange.emit(updates);
+        this.didChange.emit([...this._array]);
+        this.didChangeSteps.emit(updates);
     }
     hasValue(value) {
         return this._array.indexOf(value) !== -1;

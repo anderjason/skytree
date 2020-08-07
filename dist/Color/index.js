@@ -38,7 +38,7 @@ class Color {
     static givenHslFloat(hslColor, alpha = Ratio_1.Ratio.givenDecimal(1)) {
         return Color.givenRgbFloat(rgbFloatGivenHsl_1.rgbFloatGivenHsl(hslColor), alpha);
     }
-    static givenHex(hexColor) {
+    static givenHexString(hexColor) {
         return Color.givenRgbFloat(rgbFloatGivenHex_1.rgbFloatGivenHex(hexColor));
     }
     static givenHclFloat(hclColor, alpha = Ratio_1.Ratio.givenDecimal(1)) {
@@ -66,7 +66,7 @@ class Color {
                 .padStart(2, "0");
         }
         const hex = `#${intColor.toString(16).padStart(6, "0")}${alphaString}`;
-        return Color.givenHex(hex);
+        return Color.givenHexString(hex);
     }
     isEqual(otherColor) {
         if (otherColor == null) {

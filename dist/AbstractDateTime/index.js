@@ -11,8 +11,8 @@ class AbstractDateTime {
         this._calendarMonth = calendarMonth;
         this._calendarDay = calendarDay;
     }
-    static givenDateParts(calendarYear, calendarMonth, calendarDay) {
-        return new AbstractDateTime(calendarYear, calendarMonth, calendarDay);
+    static givenDefinition(definition) {
+        return new AbstractDateTime(definition.calendarYear, definition.calendarMonth, definition.calendarDay);
     }
     withTimeParts(hours24, minutes, seconds = 0, milliseconds = 0) {
         const result = new AbstractDateTime(this._calendarYear, this._calendarMonth, this._calendarDay);

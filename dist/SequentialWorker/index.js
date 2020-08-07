@@ -13,7 +13,7 @@ class SequentialWorker extends ManagedObject_1.ManagedObject {
         this._isBusy = false;
         this.addWork = (callback) => {
             const state = Observable_1.Observable.givenValue("queued");
-            const handle = this.addHandle(Handle_1.Handle.givenReleaseFunction(() => {
+            const handle = this.addHandle(Handle_1.Handle.givenCallback(() => {
                 if (job.state.value === "queued") {
                     job.state.setValue("cancelled");
                 }

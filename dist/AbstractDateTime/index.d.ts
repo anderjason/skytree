@@ -3,6 +3,11 @@ export declare type SortableDateStringFormat = "2019-12-31" | "20191231" | "1912
 export declare type SortableTimeStringFormat = "23:59:59" | "235959";
 export declare type SortableDateTimeStringFormat = "2019-12-31 23:59:59" | "20191231 235959";
 export declare type AbstractDateTimeStringFormat = "sortableDate" | "writtenDate" | "flexibleTime";
+export interface AbstractDateTimeDefinition {
+    calendarYear: number;
+    calendarMonth: number;
+    calendarDay: number;
+}
 export declare class AbstractDateTime {
     private _calendarYear;
     private _calendarMonth;
@@ -11,7 +16,7 @@ export declare class AbstractDateTime {
     private _minutes;
     private _seconds;
     private _milliseconds;
-    static givenDateParts(calendarYear: number, calendarMonth: number, calendarDay: number): AbstractDateTime;
+    static givenDefinition(definition: AbstractDateTimeDefinition): AbstractDateTime;
     private constructor();
     withTimeParts(hours24: number, minutes: number, seconds?: number, milliseconds?: number): AbstractDateTime;
     withDateParts(calendarYear: number, calendarMonth: number, calendarDay: number): AbstractDateTime;

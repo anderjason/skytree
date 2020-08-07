@@ -5,14 +5,17 @@ import { SimpleEvent } from "../SimpleEvent";
 import { Handle } from "../Handle";
 
 export class MultiBinding<T> extends ManagedObject {
-  static givenInputs<T>(inputs: Observable<T>[]): MultiBinding<T> {
-    return new MultiBinding(ObservableSet.givenValues(inputs));
-  }
-
-  static givenObservableInputSet<T>(
-    inputSet: ObservableSet<Observable<T>>
+  static givenInputs<T>(
+    inputs: Observable<T>[] | ObservableSet<Observable<T>>
   ): MultiBinding<T> {
-    return new MultiBinding(inputSet);
+    let observableSet: ObservableSet<Observable<T>>;
+    if (ObservableSet.isObservableSet(inputs)) {
+      observableSet = inputs;
+    } else {
+      observableSet = ObservableSet.givenValues(inputs);
+    }
+
+    return new MultiBinding(observableSet);
   }
 
   readonly didChange = SimpleEvent.ofEmpty<void>();
@@ -30,7 +33,7 @@ export class MultiBinding<T> extends ManagedObject {
   initManagedObject() {
     this.addHandle(this.inputs.didChange.subscribe(this.subscribeInputs, true));
 
-    this.addHandle(Handle.givenReleaseFunction(this.unsubscribeInputs));
+    this.addHandle(Handle.givenCallback(this.unsubscribeInputs));
   }
 
   private subscribeInputs = () => {

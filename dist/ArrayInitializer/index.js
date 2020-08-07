@@ -52,7 +52,7 @@ class ArrayInitializer extends ManagedObject_1.ManagedObject {
             }
             this._previousInput = newInput;
         }, true));
-        this.addHandle(Handle_1.Handle.givenReleaseFunction(() => {
+        this.addHandle(Handle_1.Handle.givenCallback(() => {
             this._objects = [];
         }));
     }

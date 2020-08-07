@@ -54,7 +54,7 @@ export class ExclusiveInitializer<T> extends ManagedObject {
     }
 
     this.addHandle(
-      Handle.givenReleaseFunction(() => {
+      Handle.givenCallback(() => {
         this._object = undefined;
       })
     );

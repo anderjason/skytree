@@ -28,7 +28,7 @@ class ExclusiveInitializer extends ManagedObject_1.ManagedObject {
                 }
             }, true));
         }
-        this.addHandle(Handle_1.Handle.givenReleaseFunction(() => {
+        this.addHandle(Handle_1.Handle.givenCallback(() => {
             this._object = undefined;
         }));
     }

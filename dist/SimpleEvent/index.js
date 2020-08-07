@@ -32,7 +32,7 @@ class SimpleEvent {
         if (includeLast) {
             handler(this._lastValue);
         }
-        return Handle_1.Handle.givenReleaseFunction(() => this.unsubscribe(handler));
+        return Handle_1.Handle.givenCallback(() => this.unsubscribe(handler));
     }
     unsubscribe(handler) {
         if (this._handlers == null) {

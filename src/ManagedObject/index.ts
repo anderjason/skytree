@@ -31,7 +31,7 @@ export class ManagedObject {
 
   init = (): Handle => {
     if (!this.isInitialized) {
-      this._thisHandle = Handle.givenReleaseFunction(this.uninit);
+      this._thisHandle = Handle.givenCallback(this.uninit);
 
       this._children.forEach((child) => {
         child.init();

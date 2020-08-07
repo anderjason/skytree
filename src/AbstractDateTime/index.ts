@@ -15,6 +15,12 @@ export type AbstractDateTimeStringFormat =
   | "writtenDate"
   | "flexibleTime";
 
+export interface AbstractDateTimeDefinition {
+  calendarYear: number;
+  calendarMonth: number;
+  calendarDay: number;
+}
+
 export class AbstractDateTime {
   private _calendarYear: number;
   private _calendarMonth: number;
@@ -24,12 +30,14 @@ export class AbstractDateTime {
   private _seconds: number;
   private _milliseconds: number;
 
-  static givenDateParts(
-    calendarYear: number,
-    calendarMonth: number,
-    calendarDay: number
+  static givenDefinition(
+    definition: AbstractDateTimeDefinition
   ): AbstractDateTime {
-    return new AbstractDateTime(calendarYear, calendarMonth, calendarDay);
+    return new AbstractDateTime(
+      definition.calendarYear,
+      definition.calendarMonth,
+      definition.calendarDay
+    );
   }
 
   private constructor(

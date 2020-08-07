@@ -21,7 +21,7 @@ function assertArrayChange<T>(
   return new Promise((resolve, reject) => {
     let actualChanges: ObservableArrayChange<T>[];
 
-    const handle = array.didChange.subscribe((c) => {
+    const handle = array.didChangeSteps.subscribe((c) => {
       actualChanges = c;
     });
 
@@ -38,7 +38,7 @@ function assertArrayChange<T>(
         ObjectUtil.objectIsDeepEqual(actualChanges, expectedChanges),
         JSON.stringify(actualChanges, null, 2)
       );
-      Test.assertIsEqual(
+      Test.assertIsDeepEqual(
         array.toValues(),
         expectedValue,
         JSON.stringify(array.toValues(), null, 2)

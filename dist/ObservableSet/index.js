@@ -5,6 +5,7 @@ const SimpleEvent_1 = require("../SimpleEvent");
 class ObservableSet {
     constructor(values) {
         this.didChange = SimpleEvent_1.SimpleEvent.ofEmpty();
+        this.didChangeSteps = SimpleEvent_1.SimpleEvent.ofEmpty();
         this._isObservableSet = true;
         this._set = values;
     }
@@ -28,10 +29,13 @@ class ObservableSet {
             return false;
         }
         this._set.add(value);
-        this.didChange.emit({
-            type: "add",
-            value,
-        });
+        this.didChange.emit(Array.from(this._set));
+        this.didChangeSteps.emit([
+            {
+                type: "add",
+                value,
+            },
+        ]);
         return true;
     }
     removeValue(value) {
@@ -39,21 +43,27 @@ class ObservableSet {
             return false;
         }
         this._set.delete(value);
-        this.didChange.emit({
-            type: "remove",
-            value,
-        });
+        this.didChange.emit(Array.from(this._set));
+        this.didChangeSteps.emit([
+            {
+                type: "remove",
+                value,
+            },
+        ]);
         return true;
     }
     clear() {
         const values = this.toValues();
         this._set.clear();
+        const updates = [];
         values.forEach((value) => {
-            this.didChange.emit({
+            updates.push({
                 type: "remove",
                 value,
             });
         });
+        this.didChange.emit(Array.from(this._set));
+        this.didChangeSteps.emit(updates);
     }
     hasValue(value) {
         return this._set.has(value);
