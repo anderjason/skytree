@@ -56,4 +56,8 @@ export class Percent {
   toNumber(denominator: number): number {
     return this._value * denominator;
   }
+
+  withAddedPercent(other: Percent): Percent {
+    return new Percent(this._value + other._value);
+  }
 }

@@ -46,6 +46,9 @@ class Percent {
     toNumber(denominator) {
         return this._value * denominator;
     }
+    withAddedPercent(other) {
+        return new Percent(this._value + other._value);
+    }
 }
 exports.Percent = Percent;
 //# sourceMappingURL=index.js.map
