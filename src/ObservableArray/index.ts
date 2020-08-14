@@ -226,12 +226,16 @@ export class ObservableArray<T> {
     this.didChangeSteps.emit(updates);
   }
 
-  hasValue(value: T): boolean {
-    return this._array.indexOf(value) !== -1;
+  hasValue(value: T, fromIndex?: number): boolean {
+    return this._array.indexOf(value, fromIndex) !== -1;
   }
 
-  toValueGivenIndex(index: number): T {
+  toOptionalValueGivenIndex(index: number): T | undefined {
     return this._array[index];
+  }
+
+  toIndexOfValue(value: T, fromIndex?: number): number {
+    return this._array.indexOf(value, fromIndex);
   }
 
   toValues(): T[] {

@@ -32,6 +32,12 @@ class Duration {
     static givenInstantRange(start, end) {
         return new Duration(end.toEpochMilliseconds() - start.toEpochMilliseconds());
     }
+    static ofMinimum() {
+        return new Duration(1);
+    }
+    get isMinimum() {
+        return this._milliseconds === 1;
+    }
     isEqual(other) {
         if (other == null) {
             return false;

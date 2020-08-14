@@ -41,8 +41,16 @@ export class Duration {
     );
   }
 
+  static ofMinimum(): Duration {
+    return new Duration(1);
+  }
+
   private constructor(milliseconds: number) {
     this._milliseconds = milliseconds;
+  }
+
+  get isMinimum(): boolean {
+    return this._milliseconds === 1;
   }
 
   isEqual(other: Duration): boolean {

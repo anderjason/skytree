@@ -179,11 +179,14 @@ class ObservableArray {
         this.didChange.emit([...this._array]);
         this.didChangeSteps.emit(updates);
     }
-    hasValue(value) {
-        return this._array.indexOf(value) !== -1;
+    hasValue(value, fromIndex) {
+        return this._array.indexOf(value, fromIndex) !== -1;
     }
-    toValueGivenIndex(index) {
+    toOptionalValueGivenIndex(index) {
         return this._array[index];
+    }
+    toIndexOfValue(value, fromIndex) {
+        return this._array.indexOf(value, fromIndex);
     }
     toValues() {
         return Array.from(this._array);
