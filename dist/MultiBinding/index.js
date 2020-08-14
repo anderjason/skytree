@@ -23,14 +23,7 @@ class MultiBinding extends ManagedObject_1.ManagedObject {
             this._inputHandles = [];
         };
         this.onChange = () => {
-            if (this._willNotifyChange) {
-                return;
-            }
-            this._willNotifyChange = true;
-            setTimeout(() => {
-                this._willNotifyChange = false;
-                this.didChange.emit();
-            }, 1);
+            this.didChange.emit();
         };
         this.inputs = inputs;
     }

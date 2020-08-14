@@ -22,7 +22,6 @@ export class MultiBinding<T> extends ManagedObject {
   readonly inputs: ObservableSet<Observable<T>>;
 
   private _inputHandles: Handle[] = [];
-  private _willNotifyChange: boolean;
 
   private constructor(inputs: ObservableSet<Observable<T>>) {
     super();
@@ -52,15 +51,6 @@ export class MultiBinding<T> extends ManagedObject {
   };
 
   private onChange = () => {
-    if (this._willNotifyChange) {
-      return;
-    }
-
-    this._willNotifyChange = true;
-
-    setTimeout(() => {
-      this._willNotifyChange = false;
-      this.didChange.emit();
-    }, 1);
+    this.didChange.emit();
   };
 }

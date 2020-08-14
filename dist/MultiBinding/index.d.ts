@@ -7,7 +7,6 @@ export declare class MultiBinding<T> extends ManagedObject {
     readonly didChange: SimpleEvent<void>;
     readonly inputs: ObservableSet<Observable<T>>;
     private _inputHandles;
-    private _willNotifyChange;
     private constructor();
     initManagedObject(): void;
     private subscribeInputs;
