@@ -1,15 +1,11 @@
 import { Test } from "./Test";
 import "./ArrayInitializer/index.test";
 import "./ArrayUtil/index.test";
-import "./Box2/index.test";
-import "./Box3/index.test";
 import "./ConditionalInitializer/index.test";
 import "./Duration/index.test";
 import "./Handle/index.test";
 import "./Instant/index.test";
 import "./ManagedObject/index.test";
-import "./MutablePoint2/index.test";
-import "./MutablePoint3/index.test";
 import "./NumberUtil/index.test";
 import "./Observable/index.test";
 import "./ObservableArray/index.test";
@@ -19,8 +15,6 @@ import "./PromiseUtil/index.test";
 import "./Ratio/index.test";
 import "./SequentialWorker/index.test";
 import "./SimpleEvent/index.test";
-import "./Size2/index.test";
-import "./Size3/index.test";
 import "./StringUtil/index.test";
 import "./ValuePath/index.test";
 

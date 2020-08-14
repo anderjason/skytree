@@ -6,35 +6,11 @@
 
 ## API Reference
 
-### AbstractDateTime
-
-`TODO`
-
 ### ArrayInitializer
 
 `TODO`
 
-### Box2
-
-`TODO`
-
-### Box3
-
-`TODO`
-
-### Color
-
-`TODO`
-
-### ColorGradient
-
-`TODO`
-
 ### ConditionalInitializer
-
-`TODO`
-
-### DataSize
 
 `TODO`
 
@@ -62,22 +38,6 @@
 
 `TODO`
 
-### MutablePoint2
-
-`TODO`
-
-### MutablePoint3
-
-`TODO`
-
-### MutableSize2
-
-`TODO`
-
-### MutableSize3
-
-`TODO`
-
 ### Observable
 
 `TODO`
@@ -90,19 +50,11 @@
 
 `TODO`
 
-### Palette
+### PathBinding
 
 `TODO`
 
 ### Percent
-
-`TODO`
-
-### Point2
-
-`TODO`
-
-### Point3
 
 `TODO`
 
@@ -122,14 +74,6 @@
 
 `TODO`
 
-### Size2
-
-`TODO`
-
-### Size3
-
-`TODO`
-
 ### Test
 
 `TODO`
@@ -142,9 +86,17 @@
 
 `TODO`
 
+### ValuePath
+
+`TODO`
+
 ## Helper classes
 
 ### ArrayUtil
+
+`TODO`
+
+### MapUtil
 
 `TODO`
 
