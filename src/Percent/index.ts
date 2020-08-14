@@ -1,8 +1,4 @@
-import { Ratio } from "../Ratio";
-
 export class Percent {
-  private _value: number;
-
   static isEqual(a: Percent, b: Percent): boolean {
     if (a == null && b == null) {
       return true;
@@ -15,21 +11,31 @@ export class Percent {
     return a.isEqual(b);
   }
 
-  static givenNumber(value: number): Percent {
-    return new Percent(value);
-  }
-
-  static givenRatio(ratio: Ratio): Percent {
-    return new Percent(ratio.toDecimal() * 100);
-  }
-
   static givenString(value: string): Percent {
-    return new Percent(parseFloat(value));
+    if (value == null) {
+      throw new Error("Value is required");
+    }
+
+    if (value.includes("%")) {
+      return Percent.givenFraction(parseFloat(value), 100);
+    } else {
+      return Percent.givenFraction(parseFloat(value), 1);
+    }
+  }
+
+  static givenFraction(numerator: number, denominator: number): Percent {
+    if (denominator == 0) {
+      throw new Error("Denominator must not be 0");
+    }
+
+    return new Percent(numerator / denominator);
   }
 
   static ofZero(): Percent {
     return new Percent(0);
   }
+
+  private _value: number;
 
   private constructor(value: number) {
     this._value = value;
@@ -44,14 +50,10 @@ export class Percent {
   }
 
   toString(fractionDigits?: number): string {
-    return `${this._value.toFixed(fractionDigits)}%`;
+    return `${this.toNumber(100).toFixed(fractionDigits)}%`;
   }
 
-  toRatio(): Ratio {
-    return Ratio.givenPercent(this);
-  }
-
-  toNumber(): number {
-    return this._value;
+  toNumber(denominator: number): number {
+    return this._value * denominator;
   }
 }

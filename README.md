@@ -62,10 +62,6 @@
 
 `TODO`
 
-### Ratio
-
-`TODO`
-
 ### SequentialWorker
 
 `TODO`

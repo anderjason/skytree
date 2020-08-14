@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Percent = void 0;
-const Ratio_1 = require("../Ratio");
 class Percent {
     constructor(value) {
         this._value = value;
@@ -15,14 +14,22 @@ class Percent {
         }
         return a.isEqual(b);
     }
-    static givenNumber(value) {
-        return new Percent(value);
-    }
-    static givenRatio(ratio) {
-        return new Percent(ratio.toDecimal() * 100);
-    }
     static givenString(value) {
-        return new Percent(parseFloat(value));
+        if (value == null) {
+            throw new Error("Value is required");
+        }
+        if (value.includes("%")) {
+            return Percent.givenFraction(parseFloat(value), 100);
+        }
+        else {
+            return Percent.givenFraction(parseFloat(value), 1);
+        }
+    }
+    static givenFraction(numerator, denominator) {
+        if (denominator == 0) {
+            throw new Error("Denominator must not be 0");
+        }
+        return new Percent(numerator / denominator);
     }
     static ofZero() {
         return new Percent(0);
@@ -34,13 +41,10 @@ class Percent {
         return this._value === other._value;
     }
     toString(fractionDigits) {
-        return `${this._value.toFixed(fractionDigits)}%`;
+        return `${this.toNumber(100).toFixed(fractionDigits)}%`;
     }
-    toRatio() {
-        return Ratio_1.Ratio.givenPercent(this);
-    }
-    toNumber() {
-        return this._value;
+    toNumber(denominator) {
+        return this._value * denominator;
     }
 }
 exports.Percent = Percent;

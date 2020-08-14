@@ -12,7 +12,6 @@ import "./ObservableArray/index.test";
 import "./PathBinding/index.test";
 import "./Percent/index.test";
 import "./PromiseUtil/index.test";
-import "./Ratio/index.test";
 import "./SequentialWorker/index.test";
 import "./SimpleEvent/index.test";
 import "./StringUtil/index.test";

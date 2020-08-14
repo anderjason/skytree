@@ -17,7 +17,6 @@ import { PathBinding } from "./PathBinding";
 import { Percent } from "./Percent";
 import { PromiseUtil } from "./PromiseUtil";
 import { RateLimitedFunction } from "./RateLimitedFunction";
-import { Ratio } from "./Ratio";
 import { SequentialWorker } from "./SequentialWorker";
 import { SetUtil } from "./SetUtil";
 import { SimpleEvent } from "./SimpleEvent";
@@ -47,7 +46,6 @@ export {
   Percent,
   PromiseUtil,
   RateLimitedFunction,
-  Ratio,
   SequentialWorker,
   SetUtil,
   SimpleEvent,

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ValuePath = exports.Transformer = exports.Timer = exports.Test = exports.StringUtil = exports.SimpleEvent = exports.SetUtil = exports.SequentialWorker = exports.Ratio = exports.RateLimitedFunction = exports.PromiseUtil = exports.Percent = exports.PathBinding = exports.ObservableSet = exports.ObservableArray = exports.Observable = exports.ObjectUtil = exports.NumberUtil = exports.MultiBinding = exports.MapUtil = exports.ManagedObject = exports.Instant = exports.Handle = exports.ExclusiveInitializer = exports.Duration = exports.ConditionalInitializer = exports.ArrayUtil = exports.ArrayInitializer = void 0;
+exports.ValuePath = exports.Transformer = exports.Timer = exports.Test = exports.StringUtil = exports.SimpleEvent = exports.SetUtil = exports.SequentialWorker = exports.RateLimitedFunction = exports.PromiseUtil = exports.Percent = exports.PathBinding = exports.ObservableSet = exports.ObservableArray = exports.Observable = exports.ObjectUtil = exports.NumberUtil = exports.MultiBinding = exports.MapUtil = exports.ManagedObject = exports.Instant = exports.Handle = exports.ExclusiveInitializer = exports.Duration = exports.ConditionalInitializer = exports.ArrayUtil = exports.ArrayInitializer = void 0;
 const ArrayInitializer_1 = require("./ArrayInitializer");
 Object.defineProperty(exports, "ArrayInitializer", { enumerable: true, get: function () { return ArrayInitializer_1.ArrayInitializer; } });
 const ArrayUtil_1 = require("./ArrayUtil");
@@ -39,8 +39,6 @@ const PromiseUtil_1 = require("./PromiseUtil");
 Object.defineProperty(exports, "PromiseUtil", { enumerable: true, get: function () { return PromiseUtil_1.PromiseUtil; } });
 const RateLimitedFunction_1 = require("./RateLimitedFunction");
 Object.defineProperty(exports, "RateLimitedFunction", { enumerable: true, get: function () { return RateLimitedFunction_1.RateLimitedFunction; } });
-const Ratio_1 = require("./Ratio");
-Object.defineProperty(exports, "Ratio", { enumerable: true, get: function () { return Ratio_1.Ratio; } });
 const SequentialWorker_1 = require("./SequentialWorker");
 Object.defineProperty(exports, "SequentialWorker", { enumerable: true, get: function () { return SequentialWorker_1.SequentialWorker; } });
 const SetUtil_1 = require("./SetUtil");

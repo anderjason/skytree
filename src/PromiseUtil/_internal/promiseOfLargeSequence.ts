@@ -1,7 +1,6 @@
 import { promiseOfRepeatedActions } from "./promiseOfRepeatedActions";
 import { Instant } from "../../Instant";
 import { Percent } from "../../Percent";
-import { Ratio } from "../../Ratio";
 import { Duration } from "../../Duration";
 
 export async function promiseOfLargeSequence(
@@ -25,11 +24,9 @@ export async function promiseOfLargeSequence(
 
     processedRowCount += limit;
 
-    const percent = Percent.givenRatio(
-      Ratio.givenFraction(
-        processedRowCount,
-        Math.max(processedRowCount, totalCount)
-      )
+    const percent = Percent.givenFraction(
+      processedRowCount,
+      Math.max(processedRowCount, totalCount)
     );
 
     const duration = Duration.givenInstantRange(startedAt, Instant.ofNow());
