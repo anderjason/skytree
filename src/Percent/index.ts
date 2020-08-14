@@ -1,3 +1,5 @@
+import { NumberUtil } from "..";
+
 export class Percent {
   static isEqual(a: Percent, b: Percent): boolean {
     if (a == null && b == null) {
@@ -35,10 +37,22 @@ export class Percent {
     return new Percent(0);
   }
 
+  static ofFull(): Percent {
+    return new Percent(1);
+  }
+
   private _value: number;
 
   private constructor(value: number) {
     this._value = value;
+  }
+
+  get isZero(): boolean {
+    return this._value === 0;
+  }
+
+  get isFull(): boolean {
+    return this._value === 1;
   }
 
   isEqual(other: Percent): boolean {
@@ -59,5 +73,9 @@ export class Percent {
 
   withAddedPercent(other: Percent): Percent {
     return new Percent(this._value + other._value);
+  }
+
+  withHardLimit(): Percent {
+    return new Percent(NumberUtil.numberWithHardLimit(this._value, 0, 1));
   }
 }

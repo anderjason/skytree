@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Percent = void 0;
+const __1 = require("..");
 class Percent {
     constructor(value) {
         this._value = value;
@@ -34,6 +35,15 @@ class Percent {
     static ofZero() {
         return new Percent(0);
     }
+    static ofFull() {
+        return new Percent(1);
+    }
+    get isZero() {
+        return this._value === 0;
+    }
+    get isFull() {
+        return this._value === 1;
+    }
     isEqual(other) {
         if (other == null) {
             return false;
@@ -48,6 +58,9 @@ class Percent {
     }
     withAddedPercent(other) {
         return new Percent(this._value + other._value);
+    }
+    withHardLimit() {
+        return new Percent(__1.NumberUtil.numberWithHardLimit(this._value, 0, 1));
     }
 }
 exports.Percent = Percent;
