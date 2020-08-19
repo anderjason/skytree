@@ -1,1 +1,1 @@
-import "./_internal/promiseOfSequentialActions.test";
+import "./_internal/asyncSequenceGivenCountAndCallback.test";

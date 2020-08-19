@@ -1,6 +1,6 @@
 import { ManagedObject } from "../ManagedObject";
-import { SimpleEvent } from "../SimpleEvent";
 import { Handle } from "../Handle";
+import { Observable } from "../Observable";
 
 export type ExclusiveInitializerCallback<T> = (
   newValue: T,
@@ -9,8 +9,8 @@ export type ExclusiveInitializerCallback<T> = (
 ) => ManagedObject | undefined;
 
 export interface ExclusiveInitializerDefinition<T> {
-  input: SimpleEvent<T>;
-  callback: ExclusiveInitializerCallback<T>;
+  input: Observable<T>;
+  fn: ExclusiveInitializerCallback<T>;
 }
 
 export class ExclusiveInitializer<T> extends ManagedObject {
@@ -20,7 +20,7 @@ export class ExclusiveInitializer<T> extends ManagedObject {
     return new ExclusiveInitializer(definition);
   }
 
-  private _input: SimpleEvent<T>;
+  private _input: Observable<T>;
   private _callback: ExclusiveInitializerCallback<T>;
   private _object: ManagedObject;
 
@@ -28,13 +28,13 @@ export class ExclusiveInitializer<T> extends ManagedObject {
     super();
 
     this._input = definition.input;
-    this._callback = definition.callback;
+    this._callback = definition.fn;
   }
 
   initManagedObject() {
     if (this._input != null && this._callback != null) {
       this.addHandle(
-        this._input.subscribe((newValue: any, oldValue: any) => {
+        this._input.didChange.subscribe((newValue: any, oldValue: any) => {
           const newObject = this._callback(newValue, oldValue, this._object);
 
           if (newObject === this._object) {

@@ -69,7 +69,9 @@ Test.define("Duration can create a promise of a delay", async () => {
 
   const delayMs = 50;
 
-  await PromiseUtil.promiseOfDelay(Duration.givenMilliseconds(delayMs));
+  await PromiseUtil.asyncDelayGivenDuration(
+    Duration.givenMilliseconds(delayMs)
+  );
 
   const end = Instant.ofNow();
 

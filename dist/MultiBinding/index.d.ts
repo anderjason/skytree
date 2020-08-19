@@ -2,10 +2,10 @@ import { ManagedObject } from "../ManagedObject";
 import { Observable } from "../Observable";
 import { ObservableSet } from "../ObservableSet";
 import { SimpleEvent } from "../SimpleEvent";
-export declare class MultiBinding<T> extends ManagedObject {
-    static givenInputs<T>(inputs: Observable<T>[] | ObservableSet<Observable<T>>): MultiBinding<T>;
-    readonly didChange: SimpleEvent<void>;
-    readonly inputs: ObservableSet<Observable<T>>;
+export declare class MultiBinding extends ManagedObject {
+    static givenInputs(inputs: Observable<any>[] | ObservableSet<Observable<any>>): MultiBinding;
+    readonly didInvalidate: SimpleEvent<void>;
+    readonly inputs: ObservableSet<Observable<any>>;
     private _inputHandles;
     private constructor();
     initManagedObject(): void;

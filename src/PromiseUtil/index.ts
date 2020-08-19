@@ -1,15 +1,17 @@
-import { promiseOfDelay } from "./_internal/promiseOfDelay";
-import { promiseOfFirstMatchingValue } from "./_internal/promiseOfFirstMatchingValue";
-import { promiseOfInfiniteDelay } from "./_internal/promiseOfInfiniteDelay";
-import { promiseOfRepeatedActions } from "./_internal/promiseOfRepeatedActions";
-import { promiseOfResults } from "./_internal/promiseOfResults";
-import { promiseOfSequentialActions } from "./_internal/promiseOfSequentialActions";
+import { asyncDelayGivenDuration } from "./_internal/asyncDelayGivenDuration";
+import { asyncDelayOfForever } from "./_internal/asyncDelayOfForever";
+import { asyncLargeSequenceGivenDefinition } from "./_internal/asyncLargeSequenceGivenDefinition";
+import { asyncSequenceGivenArrayAndCallback } from "./_internal/asyncSequenceGivenArrayAndCallback";
+import { asyncSequenceGivenCountAndCallback } from "./_internal/asyncSequenceGivenCountAndCallback";
+import { asyncValueGivenArrayAndFilter } from "./_internal/asyncValueGivenArrayAndFilter";
+import { asyncValuesGivenArrayAndConverter } from "./_internal/asyncValuesGivenArrayAndConverter";
 
 export class PromiseUtil {
-  static promiseOfDelay = promiseOfDelay;
-  static promiseOfFirstMatchingValue = promiseOfFirstMatchingValue;
-  static promiseOfInfiniteDelay = promiseOfInfiniteDelay;
-  static promiseOfRepeatedActions = promiseOfRepeatedActions;
-  static promiseOfResults = promiseOfResults;
-  static promiseOfSequentialActions = promiseOfSequentialActions;
+  static asyncDelayGivenDuration = asyncDelayGivenDuration;
+  static asyncDelayOfForever = asyncDelayOfForever;
+  static asyncLargeSequenceGivenDefinition = asyncLargeSequenceGivenDefinition;
+  static asyncSequenceGivenArrayAndCallback = asyncSequenceGivenArrayAndCallback;
+  static asyncSequenceGivenCountAndCallback = asyncSequenceGivenCountAndCallback;
+  static asyncValueGivenArrayAndFilter = asyncValueGivenArrayAndFilter;
+  static asyncValuesGivenArrayAndConverter = asyncValuesGivenArrayAndConverter;
 }

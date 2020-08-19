@@ -4,7 +4,7 @@ export type RateLimitedFunctionMode = "trailing" | "leading" | "both";
 
 interface RateLimitedFunctionDefinition<T> {
   fn: (args?: T) => Promise<void>;
-  waitDuration: Duration;
+  duration: Duration;
 
   mode?: RateLimitedFunctionMode;
 }
@@ -30,7 +30,7 @@ export class RateLimitedFunction<T> {
     const mode = definition.mode || "trailing";
 
     this._fn = definition.fn;
-    this._waitDuration = definition.waitDuration;
+    this._waitDuration = definition.duration;
     this._leading = mode === "leading" || mode === "both";
     this._trailing = mode === "trailing" || mode === "both";
     this._isRunning = false;

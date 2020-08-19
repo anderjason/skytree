@@ -1,30 +1,30 @@
 import { arrayIsEmptyOrNull } from "./_internal/arrayIsEmptyOrNull";
+import { arrayWithEqualSizeGroups } from "./_internal/arrayWithEqualSizeGroups";
 import { arrayWithOrderFromValue } from "./_internal/arrayWithOrderFromValue";
 import { arrayWithoutDuplicateValues } from "./_internal/arrayWithoutDuplicateValues";
 import { arrayWithoutValue } from "./_internal/arrayWithoutValue";
+import { arrayWithPageSubset } from "./_internal/arrayWithPageSubset";
 import { arrayWithReversedOrder } from "./_internal/arrayWithReversedOrder";
 import { arrayWithValue } from "./_internal/arrayWithValue";
-import { equalSizeGroupsGivenArray } from "./_internal/equalSizeGroupsGivenArray";
 import { numberArrayGivenRange } from "./_internal/numberArrayGivenRange";
 import { optionalIndexOfFirstMatchGivenArray } from "./_internal/optionalIndexOfFirstMatchGivenArray";
 import { optionalLastValueGivenArray } from "./_internal/optionalLastValueGivenArray";
 import { optionalNthValueGivenArray } from "./_internal/optionalNthValueGivenArray";
 import { optionalRandomValueGivenArray } from "./_internal/optionalRandomValueGivenArray";
-import { pageItemsGivenArray } from "./_internal/pageItemsGivenArray";
 import { valueGivenArray } from "./_internal/valueGivenArray";
 export declare class ArrayUtil {
     static arrayIsEmptyOrNull: typeof arrayIsEmptyOrNull;
+    static arrayWithEqualSizeGroups: typeof arrayWithEqualSizeGroups;
     static arrayWithOrderFromValue: typeof arrayWithOrderFromValue;
     static arrayWithoutDuplicateValues: typeof arrayWithoutDuplicateValues;
     static arrayWithoutValue: typeof arrayWithoutValue;
+    static arrayWithPageSubset: typeof arrayWithPageSubset;
     static arrayWithReversedOrder: typeof arrayWithReversedOrder;
     static arrayWithValue: typeof arrayWithValue;
-    static equalSizeGroupsGivenArray: typeof equalSizeGroupsGivenArray;
     static numberArrayGivenRange: typeof numberArrayGivenRange;
     static optionalIndexOfFirstMatchGivenArray: typeof optionalIndexOfFirstMatchGivenArray;
     static optionalLastValueGivenArray: typeof optionalLastValueGivenArray;
     static optionalNthValueGivenArray: typeof optionalNthValueGivenArray;
     static optionalRandomValueGivenArray: typeof optionalRandomValueGivenArray;
-    static pageItemsGivenArray: typeof pageItemsGivenArray;
     static valueGivenArray: typeof valueGivenArray;
 }

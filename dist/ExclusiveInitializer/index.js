@@ -7,14 +7,14 @@ class ExclusiveInitializer extends ManagedObject_1.ManagedObject {
     constructor(definition) {
         super();
         this._input = definition.input;
-        this._callback = definition.callback;
+        this._callback = definition.fn;
     }
     static givenDefinition(definition) {
         return new ExclusiveInitializer(definition);
     }
     initManagedObject() {
         if (this._input != null && this._callback != null) {
-            this.addHandle(this._input.subscribe((newValue, oldValue) => {
+            this.addHandle(this._input.didChange.subscribe((newValue, oldValue) => {
                 const newObject = this._callback(newValue, oldValue, this._object);
                 if (newObject === this._object) {
                     return;

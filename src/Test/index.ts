@@ -67,7 +67,7 @@ export class Test {
   static assertIsDeepEqual = assertIsDeepEqual;
 
   static async runAll(): Promise<void> {
-    await PromiseUtil.promiseOfSequentialActions(
+    await PromiseUtil.asyncSequenceGivenArrayAndCallback(
       Test._allTests,
       async (test) => {
         const unreleasedHandlesBefore = Handle.unreleasedCount.value;

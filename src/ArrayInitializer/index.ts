@@ -10,7 +10,7 @@ export type ArrayInitializerCallback<TI, TO> = (
 
 export interface ArrayInitializerDefinition<TI, TO> {
   input: ObservableArray<TI>;
-  callback: ArrayInitializerCallback<TI, TO>;
+  fn: ArrayInitializerCallback<TI, TO>;
 }
 
 export class ArrayInitializer<
@@ -32,7 +32,7 @@ export class ArrayInitializer<
     super();
 
     this._input = definition.input;
-    this._callback = definition.callback;
+    this._callback = definition.fn;
   }
 
   initManagedObject() {

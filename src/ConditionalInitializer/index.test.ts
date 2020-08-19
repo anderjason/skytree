@@ -13,7 +13,7 @@ Test.define("ConditionalInitializer can be created with a condition", () => {
 
   const initializer = ConditionalInitializer.givenDefinition({
     input,
-    shouldInitialize: (value: string) => {
+    fn: (value: string) => {
       return value === "B";
     },
     instance: expectedInstance,

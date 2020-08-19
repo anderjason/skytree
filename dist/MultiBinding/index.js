@@ -8,7 +8,7 @@ const Handle_1 = require("../Handle");
 class MultiBinding extends ManagedObject_1.ManagedObject {
     constructor(inputs) {
         super();
-        this.didChange = SimpleEvent_1.SimpleEvent.ofEmpty();
+        this.didInvalidate = SimpleEvent_1.SimpleEvent.ofEmpty();
         this._inputHandles = [];
         this.subscribeInputs = () => {
             this.unsubscribeInputs();
@@ -23,7 +23,7 @@ class MultiBinding extends ManagedObject_1.ManagedObject {
             this._inputHandles = [];
         };
         this.onChange = () => {
-            this.didChange.emit();
+            this.didInvalidate.emit();
         };
         this.inputs = inputs;
     }

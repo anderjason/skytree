@@ -44,7 +44,7 @@ class Test {
         Test._allTests.push(new Test(label, fn));
     }
     static async runAll() {
-        await PromiseUtil_1.PromiseUtil.promiseOfSequentialActions(Test._allTests, async (test) => {
+        await PromiseUtil_1.PromiseUtil.asyncSequenceGivenArrayAndCallback(Test._allTests, async (test) => {
             const unreleasedHandlesBefore = Handle_1.Handle.unreleasedCount.value;
             const managedObjectsBefore = ManagedObject_1.ManagedObject.initializedCount.value;
             await test.toPromise();

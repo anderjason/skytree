@@ -9,7 +9,7 @@ class ArrayInitializer extends ManagedObject_1.ManagedObject {
         this._previousInput = [];
         this._objects = [];
         this._input = definition.input;
-        this._callback = definition.callback;
+        this._callback = definition.fn;
     }
     static givenDefinition(definition) {
         return new ArrayInitializer(definition);

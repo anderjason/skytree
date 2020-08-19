@@ -45,7 +45,7 @@ export class SimpleEvent<T = void> {
     this._lastValue = newValue;
 
     if (this._handlers != null) {
-      await PromiseUtil.promiseOfSequentialActions(
+      await PromiseUtil.asyncSequenceGivenArrayAndCallback(
         this._handlers,
         async (handler) => {
           await handler(newValue, previousValue);

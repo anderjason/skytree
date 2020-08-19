@@ -14,9 +14,17 @@ class Transformer extends ManagedObject_1.ManagedObject {
         return new Transformer(definition);
     }
     initManagedObject() {
-        this.addHandle(this.input.didChange.subscribe((value) => {
-            const convertedValue = this._converter(value);
-            this.output.setValue(convertedValue);
+        let latestChangeId = 0;
+        this.addHandle(this.input.didChange.subscribe(async (value) => {
+            latestChangeId += 1;
+            if (latestChangeId > 10000) {
+                latestChangeId = 0;
+            }
+            let thisChangeId = latestChangeId;
+            const convertedValue = await this._converter(value);
+            if (thisChangeId === latestChangeId) {
+                this.output.setValue(convertedValue);
+            }
         }, true));
     }
 }

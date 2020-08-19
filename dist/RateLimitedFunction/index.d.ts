@@ -2,7 +2,7 @@ import { Duration } from "../Duration";
 export declare type RateLimitedFunctionMode = "trailing" | "leading" | "both";
 interface RateLimitedFunctionDefinition<T> {
     fn: (args?: T) => Promise<void>;
-    waitDuration: Duration;
+    duration: Duration;
     mode?: RateLimitedFunctionMode;
 }
 export declare class RateLimitedFunction<T> {

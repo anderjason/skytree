@@ -11,7 +11,7 @@ Test.define("ArrayInitializer can be created", () => {
   const input = ObservableArray.ofEmpty<string>();
   const arrayInitializer = ArrayInitializer.givenDefinition({
     input,
-    callback: (value: string, index: number, currentObject?: TestObject) => {
+    fn: (value: string, index: number, currentObject?: TestObject) => {
       if (value === "skip this one") {
         return undefined;
       }

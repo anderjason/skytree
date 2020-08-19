@@ -2,7 +2,7 @@ import { ManagedObject } from "../ManagedObject";
 import { Observable } from "../Observable";
 export interface TransformerDefinition<TI, TO> {
     input: Observable<TI>;
-    converter: (value: TI) => TO;
+    converter: (value: TI) => TO | Promise<TO>;
     output?: Observable<TO>;
 }
 export declare class Transformer<TI, TO> extends ManagedObject {

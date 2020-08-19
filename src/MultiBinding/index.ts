@@ -4,11 +4,11 @@ import { ObservableSet } from "../ObservableSet";
 import { SimpleEvent } from "../SimpleEvent";
 import { Handle } from "../Handle";
 
-export class MultiBinding<T> extends ManagedObject {
-  static givenInputs<T>(
-    inputs: Observable<T>[] | ObservableSet<Observable<T>>
-  ): MultiBinding<T> {
-    let observableSet: ObservableSet<Observable<T>>;
+export class MultiBinding extends ManagedObject {
+  static givenInputs(
+    inputs: Observable<any>[] | ObservableSet<Observable<any>>
+  ): MultiBinding {
+    let observableSet: ObservableSet<Observable<any>>;
     if (ObservableSet.isObservableSet(inputs)) {
       observableSet = inputs;
     } else {
@@ -18,12 +18,12 @@ export class MultiBinding<T> extends ManagedObject {
     return new MultiBinding(observableSet);
   }
 
-  readonly didChange = SimpleEvent.ofEmpty<void>();
-  readonly inputs: ObservableSet<Observable<T>>;
+  readonly didInvalidate = SimpleEvent.ofEmpty<void>();
+  readonly inputs: ObservableSet<Observable<any>>;
 
   private _inputHandles: Handle[] = [];
 
-  private constructor(inputs: ObservableSet<Observable<T>>) {
+  private constructor(inputs: ObservableSet<Observable<any>>) {
     super();
 
     this.inputs = inputs;
@@ -51,6 +51,6 @@ export class MultiBinding<T> extends ManagedObject {
   };
 
   private onChange = () => {
-    this.didChange.emit();
+    this.didInvalidate.emit();
   };
 }

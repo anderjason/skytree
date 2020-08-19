@@ -15,6 +15,7 @@ import "./PromiseUtil/index.test";
 import "./SequentialWorker/index.test";
 import "./SimpleEvent/index.test";
 import "./StringUtil/index.test";
+import "./Transformer/index.test";
 import "./ValuePath/index.test";
 
 Test.runAll()

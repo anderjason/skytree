@@ -6,7 +6,7 @@ class ConditionalInitializer extends ManagedObject_1.ManagedObject {
     constructor(definition) {
         super();
         this._input = definition.input;
-        this._shouldInitialize = definition.shouldInitialize;
+        this._shouldInitialize = definition.fn;
         this._instance = definition.instance;
     }
     static givenDefinition(definition) {

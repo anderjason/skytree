@@ -5,7 +5,7 @@ import { objectWithDeepMerge } from "./_internal/objectWithDeepMerge";
 import { objectWithoutBlankValues } from "./_internal/objectWithoutBlankValues";
 import { objectWithValueAtPath } from "./_internal/objectWithValueAtPath";
 import { unionGivenObjects } from "./_internal/unionGivenObjects";
-import { valueAtPathGivenObject } from "./_internal/valueAtPathGivenObject";
+import { optionalValueAtPathGivenObject } from "./_internal/optionalValueAtPathGivenObject";
 
 export class ObjectUtil {
   static objectIsDeepEqual = objectIsDeepEqual;
@@ -15,5 +15,5 @@ export class ObjectUtil {
   static objectWithoutBlankValues = objectWithoutBlankValues;
   static objectWithValueAtPath = objectWithValueAtPath;
   static unionGivenObjects = unionGivenObjects;
-  static valueAtPathGivenObject = valueAtPathGivenObject;
+  static optionalValueAtPathGivenObject = optionalValueAtPathGivenObject;
 }

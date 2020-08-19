@@ -1,14 +1,16 @@
-import { promiseOfDelay } from "./_internal/promiseOfDelay";
-import { promiseOfFirstMatchingValue } from "./_internal/promiseOfFirstMatchingValue";
-import { promiseOfInfiniteDelay } from "./_internal/promiseOfInfiniteDelay";
-import { promiseOfRepeatedActions } from "./_internal/promiseOfRepeatedActions";
-import { promiseOfResults } from "./_internal/promiseOfResults";
-import { promiseOfSequentialActions } from "./_internal/promiseOfSequentialActions";
+import { asyncDelayGivenDuration } from "./_internal/asyncDelayGivenDuration";
+import { asyncDelayOfForever } from "./_internal/asyncDelayOfForever";
+import { asyncLargeSequenceGivenDefinition } from "./_internal/asyncLargeSequenceGivenDefinition";
+import { asyncSequenceGivenArrayAndCallback } from "./_internal/asyncSequenceGivenArrayAndCallback";
+import { asyncSequenceGivenCountAndCallback } from "./_internal/asyncSequenceGivenCountAndCallback";
+import { asyncValueGivenArrayAndFilter } from "./_internal/asyncValueGivenArrayAndFilter";
+import { asyncValuesGivenArrayAndConverter } from "./_internal/asyncValuesGivenArrayAndConverter";
 export declare class PromiseUtil {
-    static promiseOfDelay: typeof promiseOfDelay;
-    static promiseOfFirstMatchingValue: typeof promiseOfFirstMatchingValue;
-    static promiseOfInfiniteDelay: typeof promiseOfInfiniteDelay;
-    static promiseOfRepeatedActions: typeof promiseOfRepeatedActions;
-    static promiseOfResults: typeof promiseOfResults;
-    static promiseOfSequentialActions: typeof promiseOfSequentialActions;
+    static asyncDelayGivenDuration: typeof asyncDelayGivenDuration;
+    static asyncDelayOfForever: typeof asyncDelayOfForever;
+    static asyncLargeSequenceGivenDefinition: typeof asyncLargeSequenceGivenDefinition;
+    static asyncSequenceGivenArrayAndCallback: typeof asyncSequenceGivenArrayAndCallback;
+    static asyncSequenceGivenCountAndCallback: typeof asyncSequenceGivenCountAndCallback;
+    static asyncValueGivenArrayAndFilter: typeof asyncValueGivenArrayAndFilter;
+    static asyncValuesGivenArrayAndConverter: typeof asyncValuesGivenArrayAndConverter;
 }

@@ -11,7 +11,7 @@ class SimpleEvent {
             const previousValue = this._lastValue;
             this._lastValue = newValue;
             if (this._handlers != null) {
-                await PromiseUtil_1.PromiseUtil.promiseOfSequentialActions(this._handlers, async (handler) => {
+                await PromiseUtil_1.PromiseUtil.asyncSequenceGivenArrayAndCallback(this._handlers, async (handler) => {
                     await handler(newValue, previousValue);
                 });
             }

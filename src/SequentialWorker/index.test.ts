@@ -12,19 +12,19 @@ Test.define("SequentialWorker can run jobs in sequence", async () => {
 
   worker.addWork(async () => {
     order.push("A1");
-    await PromiseUtil.promiseOfDelay(Duration.givenSeconds(0.1));
+    await PromiseUtil.asyncDelayGivenDuration(Duration.givenSeconds(0.1));
     order.push("A2");
   });
 
   worker.addWork(async () => {
     order.push("B1");
-    await PromiseUtil.promiseOfDelay(Duration.givenSeconds(0.1));
+    await PromiseUtil.asyncDelayGivenDuration(Duration.givenSeconds(0.1));
     order.push("B2");
   });
 
   const jobC = worker.addWork(async () => {
     order.push("C1");
-    await PromiseUtil.promiseOfDelay(Duration.givenSeconds(0.1));
+    await PromiseUtil.asyncDelayGivenDuration(Duration.givenSeconds(0.1));
     order.push("C2");
   });
 

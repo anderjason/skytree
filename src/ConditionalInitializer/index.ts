@@ -3,7 +3,7 @@ import { Observable } from "../Observable";
 
 export interface ConditionalInitializerDefinition<TI, TO> {
   input: Observable<TI>;
-  shouldInitialize: (input: TI) => boolean;
+  fn: (input: TI) => boolean;
   instance: TO;
 }
 
@@ -26,7 +26,7 @@ export class ConditionalInitializer<
     super();
 
     this._input = definition.input;
-    this._shouldInitialize = definition.shouldInitialize;
+    this._shouldInitialize = definition.fn;
     this._instance = definition.instance;
   }
 

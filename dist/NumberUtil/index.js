@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NumberUtil = void 0;
-const numberOfRandomValue_1 = require("./_internal/numberOfRandomValue");
+const randomNumberGivenRange_1 = require("./_internal/randomNumberGivenRange");
 const numberWithDecimalPlaceLimit_1 = require("./_internal/numberWithDecimalPlaceLimit");
 const numberWithEasing_1 = require("./_internal/numberWithEasing");
 const numberWithHardLimit_1 = require("./_internal/numberWithHardLimit");
@@ -10,7 +10,7 @@ const numberWithRangeMap_1 = require("./_internal/numberWithRangeMap");
 class NumberUtil {
 }
 exports.NumberUtil = NumberUtil;
-NumberUtil.numberOfRandomValue = numberOfRandomValue_1.numberOfRandomValue;
+NumberUtil.randomNumberGivenRange = randomNumberGivenRange_1.randomNumberGivenRange;
 NumberUtil.numberWithDecimalPlaceLimit = numberWithDecimalPlaceLimit_1.numberWithDecimalPlaceLimit;
 NumberUtil.numberWithEasing = numberWithEasing_1.numberWithEasing;
 NumberUtil.numberWithHardLimit = numberWithHardLimit_1.numberWithHardLimit;

@@ -2,7 +2,7 @@ import { ManagedObject } from "../ManagedObject";
 import { Observable } from "../Observable";
 export interface ConditionalInitializerDefinition<TI, TO> {
     input: Observable<TI>;
-    shouldInitialize: (input: TI) => boolean;
+    fn: (input: TI) => boolean;
     instance: TO;
 }
 export declare class ConditionalInitializer<TI, TO extends ManagedObject> extends ManagedObject {
