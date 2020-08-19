@@ -97,7 +97,7 @@ export class ManagedObject {
 
   removeManagedObject = (child: ManagedObject): void => {
     if (this._children.indexOf(child) === -1) {
-      throw new Error("Object was not found as a child of this object");
+      return;
     }
 
     child.uninit();
@@ -107,7 +107,7 @@ export class ManagedObject {
 
   removeHandle = (handle: Handle): void => {
     if (this._handles.indexOf(handle) === -1) {
-      throw new Error("Handle was not found on this object");
+      return;
     }
 
     this._handles = ArrayUtil.arrayWithoutValue(this._handles, handle);

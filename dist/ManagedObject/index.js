@@ -56,7 +56,7 @@ class ManagedObject {
         };
         this.removeManagedObject = (child) => {
             if (this._children.indexOf(child) === -1) {
-                throw new Error("Object was not found as a child of this object");
+                return;
             }
             child.uninit();
             this._children = ArrayUtil_1.ArrayUtil.arrayWithoutValue(this._children, child);
@@ -64,7 +64,7 @@ class ManagedObject {
         };
         this.removeHandle = (handle) => {
             if (this._handles.indexOf(handle) === -1) {
-                throw new Error("Handle was not found on this object");
+                return;
             }
             this._handles = ArrayUtil_1.ArrayUtil.arrayWithoutValue(this._handles, handle);
         };
