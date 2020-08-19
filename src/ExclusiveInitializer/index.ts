@@ -59,4 +59,8 @@ export class ExclusiveInitializer<T> extends ManagedObject {
       })
     );
   }
+
+  toOptionalObject(): ManagedObject | undefined {
+    return this._object;
+  }
 }

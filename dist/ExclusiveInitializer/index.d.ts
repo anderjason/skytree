@@ -12,4 +12,5 @@ export declare class ExclusiveInitializer<T> extends ManagedObject {
     private _object;
     private constructor();
     initManagedObject(): void;
+    toOptionalObject(): ManagedObject | undefined;
 }

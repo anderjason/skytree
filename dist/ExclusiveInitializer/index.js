@@ -32,6 +32,9 @@ class ExclusiveInitializer extends ManagedObject_1.ManagedObject {
             this._object = undefined;
         }));
     }
+    toOptionalObject() {
+        return this._object;
+    }
 }
 exports.ExclusiveInitializer = ExclusiveInitializer;
 //# sourceMappingURL=index.js.map
