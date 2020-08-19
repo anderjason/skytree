@@ -8,7 +8,7 @@ class Transformer extends ManagedObject_1.ManagedObject {
         super();
         this.input = definition.input;
         this.output = definition.output || Observable_1.Observable.ofEmpty();
-        this._converter = definition.converter;
+        this._converter = definition.fn;
     }
     static givenDefinition(definition) {
         return new Transformer(definition);

@@ -3,7 +3,7 @@ import { Observable } from "../Observable";
 
 export interface TransformerDefinition<TI, TO> {
   input: Observable<TI>;
-  converter: (value: TI) => TO | Promise<TO>;
+  fn: (value: TI) => TO | Promise<TO>;
 
   output?: Observable<TO>;
 }
@@ -25,7 +25,7 @@ export class Transformer<TI, TO> extends ManagedObject {
 
     this.input = definition.input;
     this.output = definition.output || Observable.ofEmpty<TO>();
-    this._converter = definition.converter;
+    this._converter = definition.fn;
   }
 
   initManagedObject() {

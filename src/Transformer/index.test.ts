@@ -21,7 +21,7 @@ Test.define(
     const async = mo.addManagedObject(
       Transformer.givenDefinition({
         input,
-        converter: async (lower) => {
+        fn: async (lower) => {
           if (lower == null) {
             return null;
           }
