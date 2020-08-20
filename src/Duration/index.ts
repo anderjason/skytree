@@ -1,4 +1,9 @@
 import { Instant } from "../Instant";
+import { StringUtil } from "../StringUtil";
+
+interface PortableDuration {
+  ms: number;
+}
 
 export class Duration {
   private _milliseconds: number;
@@ -41,16 +46,43 @@ export class Duration {
     );
   }
 
+  static givenPortableString(input: string, fallbackValue: Duration): Duration {
+    if (StringUtil.stringIsEmpty(input)) {
+      return fallbackValue;
+    }
+
+    try {
+      const obj = JSON.parse(input) as PortableDuration;
+      if (typeof obj !== "object") {
+        return fallbackValue;
+      }
+
+      const { ms } = obj;
+      if (ms == null) {
+        return fallbackValue;
+      }
+
+      return new Duration(ms);
+    } catch (err) {
+      console.warn(err);
+      return fallbackValue;
+    }
+  }
+
   static ofMinimum(): Duration {
-    return new Duration(1);
+    return new Duration(0);
   }
 
   private constructor(milliseconds: number) {
+    if (milliseconds < 0) {
+      throw new Error("Duration must not be negative");
+    }
+
     this._milliseconds = milliseconds;
   }
 
   get isMinimum(): boolean {
-    return this._milliseconds === 1;
+    return this._milliseconds === 0;
   }
 
   isEqual(other: Duration): boolean {
@@ -79,5 +111,13 @@ export class Duration {
 
   toDays(): number {
     return this.toHours() / 24;
+  }
+
+  toPortableString(): string {
+    const obj: PortableDuration = {
+      ms: this._milliseconds,
+    };
+
+    return JSON.stringify(obj);
   }
 }

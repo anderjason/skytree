@@ -8,6 +8,7 @@ export declare class Duration {
     static givenHours(hours: number): Duration;
     static givenDays(days: number): Duration;
     static givenInstantRange(start: Instant, end: Instant): Duration;
+    static givenPortableString(input: string, fallbackValue: Duration): Duration;
     static ofMinimum(): Duration;
     private constructor();
     get isMinimum(): boolean;
@@ -17,4 +18,5 @@ export declare class Duration {
     toMinutes(): number;
     toHours(): number;
     toDays(): number;
+    toPortableString(): string;
 }

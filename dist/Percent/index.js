@@ -38,6 +38,26 @@ class Percent {
     static ofFull() {
         return new Percent(1);
     }
+    static givenPortableString(input, fallbackValue) {
+        if (__1.StringUtil.stringIsEmpty(input)) {
+            return fallbackValue;
+        }
+        try {
+            const obj = JSON.parse(input);
+            if (typeof obj !== "object") {
+                return fallbackValue;
+            }
+            const { value } = obj;
+            if (value == null) {
+                return fallbackValue;
+            }
+            return new Percent(value);
+        }
+        catch (err) {
+            console.warn(err);
+            return fallbackValue;
+        }
+    }
     get isZero() {
         return this._value === 0;
     }
@@ -55,6 +75,12 @@ class Percent {
     }
     toNumber(denominator) {
         return this._value * denominator;
+    }
+    toPortableString() {
+        const obj = {
+            value: this._value,
+        };
+        return JSON.stringify(obj);
     }
     withAddedPercent(other) {
         return new Percent(this._value + other._value);

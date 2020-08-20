@@ -1,4 +1,8 @@
-import { NumberUtil } from "..";
+import { NumberUtil, StringUtil } from "..";
+
+interface PortablePercent {
+  value: number;
+}
 
 export class Percent {
   static isEqual(a: Percent, b: Percent): boolean {
@@ -41,6 +45,29 @@ export class Percent {
     return new Percent(1);
   }
 
+  static givenPortableString(input: string, fallbackValue: Percent): Percent {
+    if (StringUtil.stringIsEmpty(input)) {
+      return fallbackValue;
+    }
+
+    try {
+      const obj = JSON.parse(input) as PortablePercent;
+      if (typeof obj !== "object") {
+        return fallbackValue;
+      }
+
+      const { value } = obj;
+      if (value == null) {
+        return fallbackValue;
+      }
+
+      return new Percent(value);
+    } catch (err) {
+      console.warn(err);
+      return fallbackValue;
+    }
+  }
+
   private _value: number;
 
   private constructor(value: number) {
@@ -69,6 +96,14 @@ export class Percent {
 
   toNumber(denominator: number): number {
     return this._value * denominator;
+  }
+
+  toPortableString(): string {
+    const obj = {
+      value: this._value,
+    };
+
+    return JSON.stringify(obj);
   }
 
   withAddedPercent(other: Percent): Percent {

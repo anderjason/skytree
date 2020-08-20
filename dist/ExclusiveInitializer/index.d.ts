@@ -7,10 +7,9 @@ export interface ExclusiveInitializerDefinition<T> {
 }
 export declare class ExclusiveInitializer<T> extends ManagedObject {
     static givenDefinition<T>(definition: ExclusiveInitializerDefinition<T>): ExclusiveInitializer<T>;
+    readonly object: Observable<ManagedObject>;
     private _input;
     private _callback;
-    private _object;
     private constructor();
     initManagedObject(): void;
-    toOptionalObject(): ManagedObject | undefined;
 }

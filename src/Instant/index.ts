@@ -1,4 +1,9 @@
 import { Duration } from "../Duration";
+import { StringUtil } from "..";
+
+interface PortableInstant {
+  epochMs: number;
+}
 
 export class Instant {
   static isEqual(a: Instant, b: Instant): boolean {
@@ -22,6 +27,29 @@ export class Instant {
       return new Instant(parseInt(epochMilliseconds));
     } else {
       return new Instant(epochMilliseconds);
+    }
+  }
+
+  static givenPortableString(input: string, fallbackValue: Instant): Instant {
+    if (StringUtil.stringIsEmpty(input)) {
+      return fallbackValue;
+    }
+
+    try {
+      const obj = JSON.parse(input) as PortableInstant;
+      if (typeof obj !== "object") {
+        return fallbackValue;
+      }
+
+      const { epochMs } = obj;
+      if (epochMs == null) {
+        return fallbackValue;
+      }
+
+      return new Instant(epochMs);
+    } catch (err) {
+      console.warn(err);
+      return fallbackValue;
     }
   }
 
@@ -49,6 +77,14 @@ export class Instant {
 
   toString(): string {
     return this.toEpochMilliseconds().toString();
+  }
+
+  toPortableString(): string {
+    const obj: PortableInstant = {
+      epochMs: this._epochMilliseconds,
+    };
+
+    return JSON.stringify(obj);
   }
 
   withAddedDuration(duration: Duration): Instant {

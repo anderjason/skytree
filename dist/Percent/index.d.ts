@@ -4,6 +4,7 @@ export declare class Percent {
     static givenFraction(numerator: number, denominator: number): Percent;
     static ofZero(): Percent;
     static ofFull(): Percent;
+    static givenPortableString(input: string, fallbackValue: Percent): Percent;
     private _value;
     private constructor();
     get isZero(): boolean;
@@ -11,6 +12,7 @@ export declare class Percent {
     isEqual(other: Percent): boolean;
     toString(fractionDigits?: number): string;
     toNumber(denominator: number): number;
+    toPortableString(): string;
     withAddedPercent(other: Percent): Percent;
     withHardLimit(): Percent;
 }

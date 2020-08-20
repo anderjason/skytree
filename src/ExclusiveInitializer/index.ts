@@ -20,9 +20,10 @@ export class ExclusiveInitializer<T> extends ManagedObject {
     return new ExclusiveInitializer(definition);
   }
 
+  readonly object = Observable.ofEmpty<ManagedObject>(Observable.isStrictEqual);
+
   private _input: Observable<T>;
   private _callback: ExclusiveInitializerCallback<T>;
-  private _object: ManagedObject;
 
   private constructor(definition: ExclusiveInitializerDefinition<T>) {
     super();
@@ -35,19 +36,23 @@ export class ExclusiveInitializer<T> extends ManagedObject {
     if (this._input != null && this._callback != null) {
       this.addHandle(
         this._input.didChange.subscribe((newValue: any, oldValue: any) => {
-          const newObject = this._callback(newValue, oldValue, this._object);
+          const newObject = this._callback(
+            newValue,
+            oldValue,
+            this.object.value
+          );
 
-          if (newObject === this._object) {
+          if (newObject === this.object.value) {
             return;
           }
 
-          if (this._object != null) {
-            this.removeManagedObject(this._object);
-            this._object = undefined;
+          if (this.object.value != null) {
+            this.removeManagedObject(this.object.value);
+            this.object.setValue(undefined);
           }
 
           if (newObject != null) {
-            this._object = this.addManagedObject(newObject);
+            this.object.setValue(this.addManagedObject(newObject));
           }
         }, true)
       );
@@ -55,12 +60,8 @@ export class ExclusiveInitializer<T> extends ManagedObject {
 
     this.addHandle(
       Handle.givenCallback(() => {
-        this._object = undefined;
+        this.object.setValue(undefined);
       })
     );
-  }
-
-  toOptionalObject(): ManagedObject | undefined {
-    return this._object;
   }
 }

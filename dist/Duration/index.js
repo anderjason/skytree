@@ -1,8 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Duration = void 0;
+const StringUtil_1 = require("../StringUtil");
 class Duration {
     constructor(milliseconds) {
+        if (milliseconds < 0) {
+            throw new Error("Duration must not be negative");
+        }
         this._milliseconds = milliseconds;
     }
     static isEqual(a, b) {
@@ -32,11 +36,31 @@ class Duration {
     static givenInstantRange(start, end) {
         return new Duration(end.toEpochMilliseconds() - start.toEpochMilliseconds());
     }
+    static givenPortableString(input, fallbackValue) {
+        if (StringUtil_1.StringUtil.stringIsEmpty(input)) {
+            return fallbackValue;
+        }
+        try {
+            const obj = JSON.parse(input);
+            if (typeof obj !== "object") {
+                return fallbackValue;
+            }
+            const { ms } = obj;
+            if (ms == null) {
+                return fallbackValue;
+            }
+            return new Duration(ms);
+        }
+        catch (err) {
+            console.warn(err);
+            return fallbackValue;
+        }
+    }
     static ofMinimum() {
-        return new Duration(1);
+        return new Duration(0);
     }
     get isMinimum() {
-        return this._milliseconds === 1;
+        return this._milliseconds === 0;
     }
     isEqual(other) {
         if (other == null) {
@@ -58,6 +82,12 @@ class Duration {
     }
     toDays() {
         return this.toHours() / 24;
+    }
+    toPortableString() {
+        const obj = {
+            ms: this._milliseconds,
+        };
+        return JSON.stringify(obj);
     }
 }
 exports.Duration = Duration;
