@@ -26,7 +26,6 @@ class ArrayInitializer extends ManagedObject_1.ManagedObject {
                     const newValue = newInput[i];
                     const previousObject = this.objects.toOptionalValueGivenIndex(i);
                     const newObject = this._callback(newValue, i, previousObject);
-                    this.objects.replaceValueAtIndex(i, newObject);
                     if (previousObject !== newObject) {
                         if (previousObject != null) {
                             this.removeManagedObject(previousObject);
@@ -35,6 +34,9 @@ class ArrayInitializer extends ManagedObject_1.ManagedObject {
                             this.addManagedObject(newObject);
                         }
                     }
+                    // this needs to happen after adding the new object,
+                    // so the object is initialized by the time this observable updates
+                    this.objects.replaceValueAtIndex(i, newObject);
                 }
             }
             if (this._previousInput.length > newInput.length) {

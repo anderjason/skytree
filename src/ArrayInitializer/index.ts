@@ -51,7 +51,6 @@ export class ArrayInitializer<
             const previousObject = this.objects.toOptionalValueGivenIndex(i);
 
             const newObject = this._callback(newValue, i, previousObject);
-            this.objects.replaceValueAtIndex(i, newObject);
 
             if (previousObject !== newObject) {
               if (previousObject != null) {
@@ -62,6 +61,10 @@ export class ArrayInitializer<
                 this.addManagedObject(newObject);
               }
             }
+
+            // this needs to happen after adding the new object above,
+            // so the object is initialized by the time this observable updates
+            this.objects.replaceValueAtIndex(i, newObject);
           }
         }
 
