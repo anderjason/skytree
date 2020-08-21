@@ -21,16 +21,16 @@ Test.define("ConditionalInitializer can be created with a condition", () => {
 
   const handle = initializer.init();
 
-  Test.assert(initializer.instance == null);
+  Test.assert(initializer.output.value == null);
 
   input.setValue("B");
-  Test.assert(initializer.instance === expectedInstance);
+  Test.assert(initializer.output.value === expectedInstance);
 
   input.setValue("C");
-  Test.assert(initializer.instance == null);
+  Test.assert(initializer.output.value == null);
 
   input.setValue("B");
-  Test.assert(initializer.instance === expectedInstance);
+  Test.assert(initializer.output.value === expectedInstance);
 
   handle.release();
 });

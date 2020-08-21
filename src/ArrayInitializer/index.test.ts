@@ -33,7 +33,7 @@ Test.define("ArrayInitializer can be created", () => {
   input.addValue("hello");
   input.addValue("world");
 
-  const objects = arrayInitializer.toManagedObjects();
+  const objects = arrayInitializer.objects.toValues();
   Test.assert(objects.length === 2);
   Test.assert(objects[0].testValue === "hello");
   Test.assert(objects[1].testValue === "world");
@@ -45,7 +45,7 @@ Test.define("ArrayInitializer can be created", () => {
 
   input.addValue("message", 0);
 
-  const objects2 = arrayInitializer.toManagedObjects();
+  const objects2 = arrayInitializer.objects.toValues();
   Test.assert(objects2.length === 3);
   Test.assert(objects2[0].testValue === "message");
   Test.assert(objects2[1].testValue === "hello");
@@ -58,7 +58,7 @@ Test.define("ArrayInitializer can be created", () => {
 
   input.removeAllWhere((str) => str === "hello");
 
-  const objects3 = arrayInitializer.toManagedObjects();
+  const objects3 = arrayInitializer.objects.toValues();
   Test.assert(objects3.length === 2);
   Test.assert(objects3[0].testValue === "message");
   Test.assert(objects3[1].testValue === "world");
@@ -69,7 +69,7 @@ Test.define("ArrayInitializer can be created", () => {
 
   input.addValue("skip this one", 1);
 
-  const objects4 = arrayInitializer.toManagedObjects();
+  const objects4 = arrayInitializer.objects.toValues();
   Test.assert(objects4.length === 3, "Expected length 3 in objects4");
   Test.assert(
     objects4[0].testValue === "message",
@@ -83,7 +83,7 @@ Test.define("ArrayInitializer can be created", () => {
 
   input.removeValueAtIndex(1);
 
-  const objects5 = arrayInitializer.toManagedObjects();
+  const objects5 = arrayInitializer.objects.toValues();
   Test.assert(objects5.length === 2);
   Test.assert(objects5[0].testValue === "message");
   Test.assert(objects5[1].testValue === "world");

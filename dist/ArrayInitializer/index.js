@@ -3,11 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArrayInitializer = void 0;
 const ManagedObject_1 = require("../ManagedObject");
 const Handle_1 = require("../Handle");
+const ObservableArray_1 = require("../ObservableArray");
 class ArrayInitializer extends ManagedObject_1.ManagedObject {
     constructor(definition) {
         super();
+        this.objects = ObservableArray_1.ObservableArray.ofEmpty();
         this._previousInput = [];
-        this._objects = [];
         this._input = definition.input;
         this._callback = definition.fn;
     }
@@ -23,14 +24,9 @@ class ArrayInitializer extends ManagedObject_1.ManagedObject {
             for (let i = 0; i < newInput.length; i++) {
                 if (this._previousInput[i] !== newInput[i]) {
                     const newValue = newInput[i];
-                    const previousObject = this._objects[i];
+                    const previousObject = this.objects.toOptionalValueGivenIndex(i);
                     const newObject = this._callback(newValue, i, previousObject);
-                    if (newObject != null) {
-                        this._objects[i] = newObject;
-                    }
-                    else {
-                        delete this._objects[i];
-                    }
+                    this.objects.replaceValueAtIndex(i, newObject);
                     if (previousObject !== newObject) {
                         if (previousObject != null) {
                             this.removeManagedObject(previousObject);
@@ -43,21 +39,24 @@ class ArrayInitializer extends ManagedObject_1.ManagedObject {
             }
             if (this._previousInput.length > newInput.length) {
                 for (let i = newInput.length; i < this._previousInput.length; i++) {
-                    const object = this._objects[i];
+                    const object = this.objects.toOptionalValueGivenIndex(i);
                     if (object != null) {
                         this.removeManagedObject(object);
                     }
                 }
-                this._objects.splice(newInput.length, this._previousInput.length - newInput.length);
+                console.log("before", newInput.length, this.objects.toValues().map((o) => o.testValue));
+                this.objects.removeAllWhere((v, i) => {
+                    const remove = i >= newInput.length;
+                    console.log("remove", v.testValue, remove);
+                    return remove;
+                });
+                console.log("after", this.objects.toValues().map((o) => o.testValue));
             }
             this._previousInput = newInput;
         }, true));
         this.addHandle(Handle_1.Handle.givenCallback(() => {
-            this._objects = [];
+            this.objects.clear();
         }));
-    }
-    toManagedObjects() {
-        return [...this._objects];
     }
 }
 exports.ArrayInitializer = ArrayInitializer;

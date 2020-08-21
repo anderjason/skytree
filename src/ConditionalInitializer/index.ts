@@ -17,10 +17,11 @@ export class ConditionalInitializer<
     return new ConditionalInitializer(definition);
   }
 
+  readonly output = Observable.ofEmpty<TO>();
+
   private _input: Observable<TI>;
   private _shouldInitialize: (input: TI) => boolean;
   private _instance: TO;
-  private _activeInstance: TO;
 
   private constructor(definition: ConditionalInitializerDefinition<TI, TO>) {
     super();
@@ -30,23 +31,19 @@ export class ConditionalInitializer<
     this._instance = definition.instance;
   }
 
-  get instance(): TO | undefined {
-    return this._activeInstance;
-  }
-
   initManagedObject() {
     this.addHandle(
       this._input.didChange.subscribe((input) => {
         const isActive = this._shouldInitialize(input);
 
         if (isActive) {
-          if (this._activeInstance == null) {
-            this._activeInstance = this.addManagedObject(this._instance);
+          if (this.output.value == null) {
+            this.output.setValue(this.addManagedObject(this._instance));
           }
         } else {
-          if (this._activeInstance != null) {
-            this.removeManagedObject(this._activeInstance);
-            this._activeInstance = undefined;
+          if (this.output.value != null) {
+            this.removeManagedObject(this.output.value);
+            this.output.setValue(undefined);
           }
         }
       }, true)
