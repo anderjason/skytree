@@ -61,7 +61,10 @@ class Test {
     async toPromise() {
         currentAssertionIndex = 0;
         console.log(this.label);
-        await this._fn();
+        const emptyObject = new ManagedObject_1.ManagedObject();
+        emptyObject.init();
+        await this._fn(emptyObject);
+        emptyObject.uninit();
     }
 }
 exports.Test = Test;

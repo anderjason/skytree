@@ -44,13 +44,7 @@ class ArrayInitializer extends ManagedObject_1.ManagedObject {
                         this.removeManagedObject(object);
                     }
                 }
-                console.log("before", newInput.length, this.objects.toValues().map((o) => o.testValue));
-                this.objects.removeAllWhere((v, i) => {
-                    const remove = i >= newInput.length;
-                    console.log("remove", v.testValue, remove);
-                    return remove;
-                });
-                console.log("after", this.objects.toValues().map((o) => o.testValue));
+                this.objects.removeAllWhere((v, i) => i >= newInput.length);
             }
             this._previousInput = newInput;
         }, true));

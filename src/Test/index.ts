@@ -95,9 +95,12 @@ export class Test {
 
   readonly label: string;
 
-  private _fn: () => Promise<any> | void;
+  private _fn: (emptyObject: ManagedObject) => Promise<any> | void;
 
-  private constructor(label: string, fn: () => Promise<any> | void) {
+  private constructor(
+    label: string,
+    fn: (emptyObject: ManagedObject) => Promise<any> | void
+  ) {
     this.label = label;
     this._fn = fn;
   }
@@ -106,6 +109,12 @@ export class Test {
     currentAssertionIndex = 0;
 
     console.log(this.label);
-    await this._fn();
+
+    const emptyObject = new ManagedObject();
+    emptyObject.init();
+
+    await this._fn(emptyObject);
+
+    emptyObject.uninit();
   }
 }
