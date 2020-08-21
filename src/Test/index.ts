@@ -50,7 +50,10 @@ async function assertThrows(
 export class Test {
   private static _allTests: Test[] = [];
 
-  static define(label: string, fn: () => Promise<any> | void): void {
+  static define(
+    label: string,
+    fn: (emptyObject: ManagedObject) => Promise<any> | void
+  ): void {
     if (label == null) {
       throw new Error("label is required");
     }

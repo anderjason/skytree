@@ -1,13 +1,12 @@
 import { Transformer } from ".";
 import { Test } from "../Test";
 import { Observable } from "../Observable";
-import { ManagedObject } from "../ManagedObject";
 import { PromiseUtil } from "../PromiseUtil";
 import { Duration } from "../Duration";
 
 Test.define(
   "Transformer returns the expected results with a callback returning a promise",
-  async () => {
+  async (obj) => {
     const delays = [300, 50, 200, 75];
 
     const input = Observable.ofEmpty<string>();
@@ -15,10 +14,7 @@ Test.define(
 
     let i = 0;
 
-    const mo = new ManagedObject();
-    mo.init();
-
-    const async = mo.addManagedObject(
+    const async = obj.addManagedObject(
       Transformer.givenDefinition({
         input,
         fn: async (lower) => {
@@ -36,7 +32,7 @@ Test.define(
       })
     );
 
-    mo.addHandle(
+    obj.addHandle(
       async.output.didChange.subscribe((upper) => {
         if (upper == null) {
           return null;
@@ -59,7 +55,5 @@ Test.define(
     await PromiseUtil.asyncDelayGivenDuration(Duration.givenMilliseconds(100));
 
     Test.assertIsDeepEqual(outputs, ["B", "D"]);
-
-    mo.uninit();
   }
 );
