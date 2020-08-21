@@ -73,20 +73,7 @@ export class ArrayInitializer<
             }
           }
 
-          console.log(
-            "before",
-            newInput.length,
-            this.objects.toValues().map((o: any) => o.testValue)
-          );
-          this.objects.removeAllWhere((v, i) => {
-            const remove = i >= newInput.length;
-            console.log("remove", (v as any).testValue, remove);
-            return remove;
-          });
-          console.log(
-            "after",
-            this.objects.toValues().map((o: any) => o.testValue)
-          );
+          this.objects.removeAllWhere((v, i) => i >= newInput.length);
         }
 
         this._previousInput = newInput;
