@@ -34,7 +34,7 @@ class ArrayInitializer extends ManagedObject_1.ManagedObject {
                             this.addManagedObject(newObject);
                         }
                     }
-                    // this needs to happen after adding the new object,
+                    // this needs to happen after adding the new object above,
                     // so the object is initialized by the time this observable updates
                     this.objects.replaceValueAtIndex(i, newObject);
                 }

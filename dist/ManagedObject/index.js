@@ -37,7 +37,9 @@ class ManagedObject {
             this._children = [];
             const handle = this._thisHandle;
             this._thisHandle = undefined;
-            handle.release();
+            if (handle != null) {
+                handle.release();
+            }
         };
         this.addManagedObject = (child) => {
             if (child.parent != null) {

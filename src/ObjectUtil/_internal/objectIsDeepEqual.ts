@@ -1,16 +1,12 @@
-export function objectIsDeepEqual(actual: any, expected: any): boolean {
-  if (actual === expected) {
+export function objectIsDeepEqual(a: any, b: any): boolean {
+  if (a === b) {
     return true;
-  } else if (actual instanceof Date && expected instanceof Date) {
-    return actual.getTime() === expected.getTime();
-  } else if (
-    !actual ||
-    !expected ||
-    (typeof actual !== "object" && typeof expected !== "object")
-  ) {
-    return actual === expected;
+  } else if (a instanceof Date && b instanceof Date) {
+    return a.getTime() === b.getTime();
+  } else if (!a || !b || (typeof a !== "object" && typeof b !== "object")) {
+    return a === b;
   } else {
-    return objEquiv(actual, expected);
+    return objEquiv(a, b);
   }
 }
 

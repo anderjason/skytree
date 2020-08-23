@@ -1,20 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.objectIsDeepEqual = void 0;
-function objectIsDeepEqual(actual, expected) {
-    if (actual === expected) {
+function objectIsDeepEqual(a, b) {
+    if (a === b) {
         return true;
     }
-    else if (actual instanceof Date && expected instanceof Date) {
-        return actual.getTime() === expected.getTime();
+    else if (a instanceof Date && b instanceof Date) {
+        return a.getTime() === b.getTime();
     }
-    else if (!actual ||
-        !expected ||
-        (typeof actual !== "object" && typeof expected !== "object")) {
-        return actual === expected;
+    else if (!a || !b || (typeof a !== "object" && typeof b !== "object")) {
+        return a === b;
     }
     else {
-        return objEquiv(actual, expected);
+        return objEquiv(a, b);
     }
 }
 exports.objectIsDeepEqual = objectIsDeepEqual;

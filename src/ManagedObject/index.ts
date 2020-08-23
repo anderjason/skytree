@@ -71,7 +71,9 @@ export class ManagedObject {
     const handle = this._thisHandle;
     this._thisHandle = undefined;
 
-    handle.release();
+    if (handle != null) {
+      handle.release();
+    }
   };
 
   addManagedObject = <T extends ManagedObject>(child: T): T => {

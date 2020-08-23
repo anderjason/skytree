@@ -1,1 +1,1 @@
-export declare function objectIsDeepEqual(actual: any, expected: any): boolean;
+export declare function objectIsDeepEqual(a: any, b: any): boolean;
