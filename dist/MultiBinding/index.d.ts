@@ -2,11 +2,18 @@ import { ManagedObject } from "../ManagedObject";
 import { Observable } from "../Observable";
 import { ObservableSet } from "../ObservableSet";
 import { SimpleEvent } from "../SimpleEvent";
+export declare type MultiBindingInvalidateMode = "immediate" | "nextFrame";
+export interface MultiBindingDefinition {
+    inputs: Observable<any>[] | ObservableSet<Observable<any>>;
+    invalidateMode: MultiBindingInvalidateMode;
+}
 export declare class MultiBinding extends ManagedObject {
-    static givenInputs(inputs: Observable<any>[] | ObservableSet<Observable<any>>): MultiBinding;
+    static givenDefinition(definition: MultiBindingDefinition): MultiBinding;
     readonly didInvalidate: SimpleEvent<void>;
     readonly inputs: ObservableSet<Observable<any>>;
     private _inputHandles;
+    private _invalidateMode;
+    private _isInvalidating;
     private constructor();
     initManagedObject(): void;
     private subscribeInputs;

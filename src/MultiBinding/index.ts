@@ -4,29 +4,35 @@ import { ObservableSet } from "../ObservableSet";
 import { SimpleEvent } from "../SimpleEvent";
 import { Handle } from "../Handle";
 
-export class MultiBinding extends ManagedObject {
-  static givenInputs(
-    inputs: Observable<any>[] | ObservableSet<Observable<any>>
-  ): MultiBinding {
-    let observableSet: ObservableSet<Observable<any>>;
-    if (ObservableSet.isObservableSet(inputs)) {
-      observableSet = inputs;
-    } else {
-      observableSet = ObservableSet.givenValues(inputs);
-    }
+export type MultiBindingInvalidateMode = "immediate" | "nextFrame";
 
-    return new MultiBinding(observableSet);
+export interface MultiBindingDefinition {
+  inputs: Observable<any>[] | ObservableSet<Observable<any>>;
+  invalidateMode: MultiBindingInvalidateMode;
+}
+
+export class MultiBinding extends ManagedObject {
+  static givenDefinition(definition: MultiBindingDefinition): MultiBinding {
+    return new MultiBinding(definition);
   }
 
   readonly didInvalidate = SimpleEvent.ofEmpty<void>();
   readonly inputs: ObservableSet<Observable<any>>;
 
   private _inputHandles: Handle[] = [];
+  private _invalidateMode: MultiBindingInvalidateMode;
+  private _isInvalidating: boolean = false;
 
-  private constructor(inputs: ObservableSet<Observable<any>>) {
+  private constructor(definition: MultiBindingDefinition) {
     super();
 
-    this.inputs = inputs;
+    if (ObservableSet.isObservableSet(definition.inputs)) {
+      this.inputs = definition.inputs;
+    } else {
+      this.inputs = ObservableSet.givenValues(definition.inputs);
+    }
+
+    this._invalidateMode = definition.invalidateMode;
   }
 
   initManagedObject() {
@@ -51,6 +57,22 @@ export class MultiBinding extends ManagedObject {
   };
 
   private onChange = () => {
-    this.didInvalidate.emit();
+    if (this._invalidateMode === "immediate") {
+      this.didInvalidate.emit();
+      return;
+    }
+
+    if (this._isInvalidating) {
+      return;
+    }
+
+    this._isInvalidating = true;
+
+    requestAnimationFrame(() => {
+      if (this._isInvalidating) {
+        this.didInvalidate.emit();
+        this._isInvalidating = false;
+      }
+    });
   };
 }

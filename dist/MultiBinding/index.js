@@ -6,10 +6,11 @@ const ObservableSet_1 = require("../ObservableSet");
 const SimpleEvent_1 = require("../SimpleEvent");
 const Handle_1 = require("../Handle");
 class MultiBinding extends ManagedObject_1.ManagedObject {
-    constructor(inputs) {
+    constructor(definition) {
         super();
         this.didInvalidate = SimpleEvent_1.SimpleEvent.ofEmpty();
         this._inputHandles = [];
+        this._isInvalidating = false;
         this.subscribeInputs = () => {
             this.unsubscribeInputs();
             this.inputs.toValues().forEach((input) => {
@@ -23,19 +24,31 @@ class MultiBinding extends ManagedObject_1.ManagedObject {
             this._inputHandles = [];
         };
         this.onChange = () => {
-            this.didInvalidate.emit();
+            if (this._invalidateMode === "immediate") {
+                this.didInvalidate.emit();
+                return;
+            }
+            if (this._isInvalidating) {
+                return;
+            }
+            this._isInvalidating = true;
+            requestAnimationFrame(() => {
+                if (this._isInvalidating) {
+                    this.didInvalidate.emit();
+                    this._isInvalidating = false;
+                }
+            });
         };
-        this.inputs = inputs;
-    }
-    static givenInputs(inputs) {
-        let observableSet;
-        if (ObservableSet_1.ObservableSet.isObservableSet(inputs)) {
-            observableSet = inputs;
+        if (ObservableSet_1.ObservableSet.isObservableSet(definition.inputs)) {
+            this.inputs = definition.inputs;
         }
         else {
-            observableSet = ObservableSet_1.ObservableSet.givenValues(inputs);
+            this.inputs = ObservableSet_1.ObservableSet.givenValues(definition.inputs);
         }
-        return new MultiBinding(observableSet);
+        this._invalidateMode = definition.invalidateMode;
+    }
+    static givenDefinition(definition) {
+        return new MultiBinding(definition);
     }
     initManagedObject() {
         this.addHandle(this.inputs.didChange.subscribe(this.subscribeInputs, true));
