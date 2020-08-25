@@ -41,7 +41,7 @@ class SequentialWorker extends ManagedObject_1.ManagedObject {
             if (this._isBusy) {
                 return;
             }
-            if (!this.isInitialized) {
+            if (this.isInitialized.value === false) {
                 return;
             }
             const nextJob = this._jobs.shift();

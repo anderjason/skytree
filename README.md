@@ -14,6 +14,10 @@
 
 `TODO`
 
+### Connector
+
+`TODO`
+
 ### Duration
 
 `TODO`
@@ -59,6 +63,18 @@
 `TODO`
 
 ### RateLimitedFunction
+
+`TODO`
+
+### ReadOnlyObservable
+
+`TODO`
+
+### ReadOnlyObservableArray
+
+`TODO`
+
+### ReadOnlyObservableSet
 
 `TODO`
 

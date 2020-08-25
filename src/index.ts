@@ -1,6 +1,7 @@
 import { ArrayInitializer } from "./ArrayInitializer";
 import { ArrayUtil } from "./ArrayUtil";
 import { ConditionalInitializer } from "./ConditionalInitializer";
+import { Connector } from "./Connector";
 import { Duration } from "./Duration";
 import { ExclusiveInitializer } from "./ExclusiveInitializer";
 import { Handle } from "./Handle";
@@ -17,6 +18,9 @@ import { PathBinding } from "./PathBinding";
 import { Percent } from "./Percent";
 import { PromiseUtil } from "./PromiseUtil";
 import { RateLimitedFunction } from "./RateLimitedFunction";
+import { ReadOnlyObservable } from "./ReadOnlyObservable";
+import { ReadOnlyObservableArray } from "./ReadOnlyObservableArray";
+import { ReadOnlyObservableSet } from "./ReadOnlyObservableSet";
 import { SequentialWorker } from "./SequentialWorker";
 import { SetUtil } from "./SetUtil";
 import { SimpleEvent } from "./SimpleEvent";
@@ -30,6 +34,7 @@ export {
   ArrayInitializer,
   ArrayUtil,
   ConditionalInitializer,
+  Connector,
   Duration,
   ExclusiveInitializer,
   Handle,
@@ -46,6 +51,9 @@ export {
   Percent,
   PromiseUtil,
   RateLimitedFunction,
+  ReadOnlyObservable,
+  ReadOnlyObservableArray,
+  ReadOnlyObservableSet,
   SequentialWorker,
   SetUtil,
   SimpleEvent,

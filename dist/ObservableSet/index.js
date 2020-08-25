@@ -24,6 +24,9 @@ class ObservableSet {
         }
         return input._isObservableSet === true;
     }
+    get count() {
+        return this._set.size;
+    }
     addValue(value) {
         if (this._set.has(value)) {
             return false;
@@ -70,9 +73,6 @@ class ObservableSet {
     }
     toValues() {
         return Array.from(this._set);
-    }
-    toCount() {
-        return this._set.size;
     }
 }
 exports.ObservableSet = ObservableSet;

@@ -36,6 +36,10 @@ export class ObservableSet<T> {
     this._set = values;
   }
 
+  get count(): number {
+    return this._set.size;
+  }
+
   addValue(value: T): boolean {
     if (this._set.has(value)) {
       return false;
@@ -95,9 +99,5 @@ export class ObservableSet<T> {
 
   toValues(): T[] {
     return Array.from(this._set);
-  }
-
-  toCount(): number {
-    return this._set.size;
   }
 }

@@ -46,11 +46,14 @@ class Test {
     static async runAll() {
         await PromiseUtil_1.PromiseUtil.asyncSequenceGivenArrayAndCallback(Test._allTests, async (test) => {
             const unreleasedHandlesBefore = Handle_1.Handle.unreleasedCount.value;
-            const managedObjectsBefore = ManagedObject_1.ManagedObject.initializedCount.value;
+            const managedObjectsBefore = ManagedObject_1.ManagedObject.initializedSet.count;
             await test.toPromise();
             const unreleasedHandlesAfter = Handle_1.Handle.unreleasedCount.value;
-            const managedObjectsAfter = ManagedObject_1.ManagedObject.initializedCount.value;
+            const managedObjectsAfter = ManagedObject_1.ManagedObject.initializedSet.count;
             if (managedObjectsBefore !== managedObjectsAfter) {
+                console.log(ManagedObject_1.ManagedObject.initializedSet
+                    .toValues()
+                    .map((o) => o.constructor.name));
                 throw new Error(`Some managed objects are still initialized after test '${test.label}' (before ${managedObjectsBefore}, after ${managedObjectsAfter})`);
             }
             if (unreleasedHandlesBefore !== unreleasedHandlesAfter) {

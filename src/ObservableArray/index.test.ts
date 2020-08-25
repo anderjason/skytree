@@ -4,12 +4,12 @@ import { ObservableArray, ObservableArrayChange } from ".";
 
 Test.define("ObservableArray can be created empty", () => {
   const oa = ObservableArray.ofEmpty();
-  Test.assert(oa.toCount() === 0);
+  Test.assert(oa.count === 0);
 });
 
 Test.define("ObservableArray can be created from an array", () => {
   const oa = ObservableArray.givenValues(["a", "b", "c", "d"]);
-  Test.assert(oa.toCount() === 4);
+  Test.assert(oa.count === 4);
 });
 
 function assertArrayChange<T>(

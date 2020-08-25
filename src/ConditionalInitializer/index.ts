@@ -1,5 +1,6 @@
 import { ManagedObject } from "../ManagedObject";
 import { Observable } from "../Observable";
+import { ReadOnlyObservable } from "..";
 
 export interface ConditionalInitializerDefinition<TI, TO> {
   input: Observable<TI>;
@@ -17,7 +18,8 @@ export class ConditionalInitializer<
     return new ConditionalInitializer(definition);
   }
 
-  readonly output = Observable.ofEmpty<TO>();
+  private _output = Observable.ofEmpty<TO>();
+  readonly output = ReadOnlyObservable.givenObservable(this._output);
 
   private _input: Observable<TI>;
   private _shouldInitialize: (input: TI) => boolean;
@@ -37,13 +39,13 @@ export class ConditionalInitializer<
         const isActive = this._shouldInitialize(input);
 
         if (isActive) {
-          if (this.output.value == null) {
-            this.output.setValue(this.addManagedObject(this._instance));
+          if (this._output.value == null) {
+            this._output.setValue(this.addManagedObject(this._instance));
           }
         } else {
-          if (this.output.value != null) {
-            this.removeManagedObject(this.output.value);
-            this.output.setValue(undefined);
+          if (this._output.value != null) {
+            this.removeManagedObject(this._output.value);
+            this._output.setValue(undefined);
           }
         }
       }, true)

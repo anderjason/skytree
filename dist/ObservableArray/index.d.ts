@@ -14,10 +14,12 @@ export declare class ObservableArray<T> {
     private _array;
     private _isObservableArray;
     private constructor();
+    get count(): number;
     addValue(value: T, index?: number): void;
     moveValueAtIndex(oldIndex: number, newIndex: number): void;
     replaceValueAtIndex: (index: number, value: T) => void;
     private _internalMove;
+    removeValue(value: T): void;
     removeValueAtIndex(index: number): void;
     removeAllWhere(filter: (value: T, index: number) => boolean): void;
     clear(): void;
@@ -25,5 +27,4 @@ export declare class ObservableArray<T> {
     toOptionalValueGivenIndex(index: number): T | undefined;
     toIndexOfValue(value: T, fromIndex?: number): number;
     toValues(): T[];
-    toCount(): number;
 }

@@ -4,10 +4,12 @@ exports.ExclusiveInitializer = void 0;
 const ManagedObject_1 = require("../ManagedObject");
 const Handle_1 = require("../Handle");
 const Observable_1 = require("../Observable");
+const __1 = require("..");
 class ExclusiveInitializer extends ManagedObject_1.ManagedObject {
     constructor(definition) {
         super();
-        this.object = Observable_1.Observable.ofEmpty(Observable_1.Observable.isStrictEqual);
+        this._output = Observable_1.Observable.ofEmpty(Observable_1.Observable.isStrictEqual);
+        this.output = __1.ReadOnlyObservable.givenObservable(this._output);
         this._input = definition.input;
         this._callback = definition.fn;
     }
@@ -17,21 +19,21 @@ class ExclusiveInitializer extends ManagedObject_1.ManagedObject {
     initManagedObject() {
         if (this._input != null && this._callback != null) {
             this.addHandle(this._input.didChange.subscribe((newValue, oldValue) => {
-                const newObject = this._callback(newValue, oldValue, this.object.value);
-                if (newObject === this.object.value) {
+                const newObject = this._callback(newValue, oldValue, this._output.value);
+                if (newObject === this._output.value) {
                     return;
                 }
-                if (this.object.value != null) {
-                    this.removeManagedObject(this.object.value);
-                    this.object.setValue(undefined);
+                if (this._output.value != null) {
+                    this.removeManagedObject(this._output.value);
+                    this._output.setValue(undefined);
                 }
                 if (newObject != null) {
-                    this.object.setValue(this.addManagedObject(newObject));
+                    this._output.setValue(this.addManagedObject(newObject));
                 }
             }, true));
         }
         this.addHandle(Handle_1.Handle.givenCallback(() => {
-            this.object.setValue(undefined);
+            this._output.setValue(undefined);
         }));
     }
 }

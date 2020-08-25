@@ -74,14 +74,20 @@ export class Test {
       Test._allTests,
       async (test) => {
         const unreleasedHandlesBefore = Handle.unreleasedCount.value;
-        const managedObjectsBefore = ManagedObject.initializedCount.value;
+        const managedObjectsBefore = ManagedObject.initializedSet.count;
 
         await test.toPromise();
 
         const unreleasedHandlesAfter = Handle.unreleasedCount.value;
-        const managedObjectsAfter = ManagedObject.initializedCount.value;
+        const managedObjectsAfter = ManagedObject.initializedSet.count;
 
         if (managedObjectsBefore !== managedObjectsAfter) {
+          console.log(
+            ManagedObject.initializedSet
+              .toValues()
+              .map((o) => o.constructor.name)
+          );
+
           throw new Error(
             `Some managed objects are still initialized after test '${test.label}' (before ${managedObjectsBefore}, after ${managedObjectsAfter})`
           );

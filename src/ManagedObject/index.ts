@@ -1,47 +1,56 @@
 import { Handle } from "../Handle";
 import { StringUtil } from "../StringUtil";
+import { ObservableSet } from "../ObservableSet";
 import { Observable } from "../Observable";
-import { ArrayUtil } from "../ArrayUtil";
+import { ReadOnlyObservable } from "../ReadOnlyObservable";
+import { ReadOnlyObservableSet } from "../ReadOnlyObservableSet";
+import { ObservableArray } from "../ObservableArray";
+import { ReadOnlyObservableArray } from "../ReadOnlyObservableArray";
 
 export class ManagedObject {
-  static readonly initializedCount = Observable.givenValue<number>(0);
+  private static _initializedSet = ObservableSet.ofEmpty<ManagedObject>();
+  static readonly initializedSet = ReadOnlyObservableSet.givenObservableSet(
+    ManagedObject._initializedSet
+  );
 
   readonly id: string;
 
-  private _handles: Handle[] = [];
+  private _handles = ObservableSet.ofEmpty<Handle>();
+  readonly handles = ReadOnlyObservableSet.givenObservableSet(this._handles);
+
+  private _parentObject = Observable.ofEmpty<ManagedObject>();
+  readonly parentObject = ReadOnlyObservable.givenObservable(
+    this._parentObject
+  );
+
   private _thisHandle: Handle | undefined;
-  private _parent?: ManagedObject;
-  private _children: ManagedObject[] = [];
+
+  private _childObjects = ObservableArray.ofEmpty<ManagedObject>();
+  readonly childObjects = ReadOnlyObservableArray.givenObservableArray(
+    this._childObjects
+  );
+
+  private _isInitialized = Observable.givenValue(false);
+  readonly isInitialized = ReadOnlyObservable.givenObservable(
+    this._isInitialized
+  );
 
   constructor() {
     this.id = StringUtil.stringOfRandomCharacters(8);
   }
 
-  get isInitialized(): boolean {
-    return this._thisHandle != null && !this._thisHandle.isReleased;
-  }
-
-  get parent(): ManagedObject | undefined {
-    return this._parent;
-  }
-
-  get children(): ManagedObject[] {
-    return Array.from(this._children);
-  }
-
   init = (): Handle => {
-    if (!this.isInitialized) {
+    if (this.isInitialized.value === false) {
       this._thisHandle = Handle.givenCallback(this.uninit);
 
-      this._children.forEach((child) => {
+      this._childObjects.toValues().forEach((child) => {
         child.init();
       });
 
-      ManagedObject.initializedCount.setValue(
-        ManagedObject.initializedCount.value + 1
-      );
-
       this.initManagedObject();
+
+      ManagedObject._initializedSet.addValue(this);
+      this._isInitialized.setValue(true);
     }
 
     return this._thisHandle;
@@ -52,21 +61,16 @@ export class ManagedObject {
       return;
     }
 
-    ManagedObject.initializedCount.setValue(
-      ManagedObject.initializedCount.value - 1
-    );
+    this._handles.toValues().forEach((handle) => {
+      handle.release();
+    });
+    this._handles.clear();
 
-    if (this._handles != null) {
-      this._handles.reverse().forEach((handle) => {
-        handle.release();
-      });
-      this._handles = [];
-    }
-
-    this._children.forEach((child) => {
+    this._childObjects.toValues().forEach((child) => {
       child.uninit();
     });
-    this._children = [];
+
+    this._childObjects.clear();
 
     const handle = this._thisHandle;
     this._thisHandle = undefined;
@@ -74,45 +78,65 @@ export class ManagedObject {
     if (handle != null) {
       handle.release();
     }
+
+    ManagedObject._initializedSet.removeValue(this);
+    this._isInitialized.setValue(false);
   };
 
-  addManagedObject = <T extends ManagedObject>(child: T): T => {
-    if (child.parent != null) {
-      child.parent.removeManagedObject(child);
+  addManagedObject = <T extends ManagedObject>(childObject: T): T => {
+    if (childObject == null) {
+      return undefined;
     }
 
-    this._children.push(child);
-    child._parent = this;
-
-    if (this.isInitialized) {
-      child.init();
+    if (childObject.parentObject.value != null) {
+      childObject.parentObject.value.removeManagedObject(childObject);
     }
 
-    return child;
+    this._childObjects.addValue(childObject);
+    childObject._parentObject.setValue(this);
+
+    if (this.isInitialized.value === true) {
+      childObject.init();
+    }
+
+    return childObject;
   };
 
   addHandle = (handle: Handle): Handle => {
-    this._handles.push(handle);
+    if (handle == null) {
+      return undefined;
+    }
+
+    this._handles.addValue(handle);
 
     return handle;
   };
 
   removeManagedObject = (child: ManagedObject): void => {
-    if (this._children.indexOf(child) === -1) {
+    if (child == null) {
       return;
     }
 
-    child.uninit();
-    this._children = ArrayUtil.arrayWithoutValue(this._children, child);
-    child._parent = undefined;
+    if (this._childObjects.toIndexOfValue(child) === -1) {
+      return;
+    }
+
+    try {
+      child.uninit();
+    } catch (err) {
+      console.error(err);
+    }
+
+    this._childObjects.removeValue(child);
+    child._parentObject.setValue(undefined);
   };
 
   removeHandle = (handle: Handle): void => {
-    if (this._handles.indexOf(handle) === -1) {
+    if (handle == null) {
       return;
     }
 
-    this._handles = ArrayUtil.arrayWithoutValue(this._handles, handle);
+    this._handles.removeValue(handle);
   };
 
   protected initManagedObject(): void {}

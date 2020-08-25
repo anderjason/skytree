@@ -62,6 +62,9 @@ class ObservableArray {
         }
         return input._isObservableArray === true;
     }
+    get count() {
+        return this._array.length;
+    }
     addValue(value, index) {
         const newIndex = index != null ? index : this._array.length;
         const updates = this._array
@@ -128,6 +131,9 @@ class ObservableArray {
         this.didChange.emit([...this._array]);
         this.didChangeSteps.emit(changes);
     }
+    removeValue(value) {
+        this.removeAllWhere((v) => v === value);
+    }
     removeValueAtIndex(index) {
         this.removeAllWhere((v, i) => i === index);
     }
@@ -190,9 +196,6 @@ class ObservableArray {
     }
     toValues() {
         return Array.from(this._array);
-    }
-    toCount() {
-        return this._array.length;
     }
 }
 exports.ObservableArray = ObservableArray;

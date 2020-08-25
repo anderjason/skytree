@@ -26,7 +26,10 @@ export class SequentialWorker extends ManagedObject {
     super();
   }
 
-  addWork = (callback: JobCallback, cancelledCallback?: CancelledJobCallback): Job => {
+  addWork = (
+    callback: JobCallback,
+    cancelledCallback?: CancelledJobCallback
+  ): Job => {
     const state = Observable.givenValue<JobState>("queued");
 
     const handle = this.addHandle(
@@ -70,7 +73,7 @@ export class SequentialWorker extends ManagedObject {
       return;
     }
 
-    if (!this.isInitialized) {
+    if (this.isInitialized.value === false) {
       return;
     }
 

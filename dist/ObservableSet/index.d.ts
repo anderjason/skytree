@@ -12,10 +12,10 @@ export declare class ObservableSet<T> {
     private _set;
     private _isObservableSet;
     private constructor();
+    get count(): number;
     addValue(value: T): boolean;
     removeValue(value: T): boolean;
     clear(): void;
     hasValue(value: T): boolean;
     toValues(): T[];
-    toCount(): number;
 }

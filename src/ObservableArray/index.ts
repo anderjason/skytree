@@ -39,6 +39,10 @@ export class ObservableArray<T> {
     this._array = values;
   }
 
+  get count(): number {
+    return this._array.length;
+  }
+
   addValue(value: T, index?: number): void {
     const newIndex: number = index != null ? index : this._array.length;
 
@@ -166,6 +170,10 @@ export class ObservableArray<T> {
     this._array.splice(newIndex, 0, this._array.splice(oldIndex, 1)[0]);
   };
 
+  removeValue(value: T): void {
+    this.removeAllWhere((v) => v === value);
+  }
+
   removeValueAtIndex(index: number): void {
     this.removeAllWhere((v, i) => i === index);
   }
@@ -240,9 +248,5 @@ export class ObservableArray<T> {
 
   toValues(): T[] {
     return Array.from(this._array);
-  }
-
-  toCount(): number {
-    return this._array.length;
   }
 }

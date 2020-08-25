@@ -1,6 +1,7 @@
 import { ManagedObject } from "../ManagedObject";
 import { Handle } from "../Handle";
 import { ObservableArray } from "../ObservableArray";
+import { ReadOnlyObservableArray } from "..";
 
 export type ArrayInitializerCallback<TI, TO> = (
   value: TI,
@@ -23,7 +24,10 @@ export class ArrayInitializer<
     return new ArrayInitializer(definition);
   }
 
-  readonly objects = ObservableArray.ofEmpty<TO>();
+  private _objects = ObservableArray.ofEmpty<TO>();
+  readonly objects = ReadOnlyObservableArray.givenObservableArray(
+    this._objects
+  );
 
   private _input: ObservableArray<TI>;
   private _callback: ArrayInitializerCallback<TI, TO>;
@@ -48,7 +52,7 @@ export class ArrayInitializer<
         for (let i = 0; i < newInput.length; i++) {
           if (this._previousInput[i] !== newInput[i]) {
             const newValue = newInput[i];
-            const previousObject = this.objects.toOptionalValueGivenIndex(i);
+            const previousObject = this._objects.toOptionalValueGivenIndex(i);
 
             const newObject = this._callback(newValue, i, previousObject);
 
@@ -64,19 +68,19 @@ export class ArrayInitializer<
 
             // this needs to happen after adding the new object above,
             // so the object is initialized by the time this observable updates
-            this.objects.replaceValueAtIndex(i, newObject);
+            this._objects.replaceValueAtIndex(i, newObject);
           }
         }
 
         if (this._previousInput.length > newInput.length) {
           for (let i = newInput.length; i < this._previousInput.length; i++) {
-            const object = this.objects.toOptionalValueGivenIndex(i);
+            const object = this._objects.toOptionalValueGivenIndex(i);
             if (object != null) {
               this.removeManagedObject(object);
             }
           }
 
-          this.objects.removeAllWhere((v, i) => i >= newInput.length);
+          this._objects.removeAllWhere((v, i) => i >= newInput.length);
         }
 
         this._previousInput = newInput;
@@ -85,7 +89,7 @@ export class ArrayInitializer<
 
     this.addHandle(
       Handle.givenCallback(() => {
-        this.objects.clear();
+        this._objects.clear();
       })
     );
   }

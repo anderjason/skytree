@@ -37,8 +37,8 @@ Test.define("ArrayInitializer can be created", () => {
   Test.assert(objects.length === 2);
   Test.assert(objects[0].testValue === "hello");
   Test.assert(objects[1].testValue === "world");
-  Test.assert(objects[0].isInitialized);
-  Test.assert(objects[1].isInitialized);
+  Test.assert(objects[0].isInitialized.value);
+  Test.assert(objects[1].isInitialized.value);
 
   const originalFirstObject = objects[0];
   const originalSecondObject = objects[1];
@@ -50,9 +50,9 @@ Test.define("ArrayInitializer can be created", () => {
   Test.assert(objects2[0].testValue === "message");
   Test.assert(objects2[1].testValue === "hello");
   Test.assert(objects2[2].testValue === "world");
-  Test.assert(objects2[0].isInitialized);
-  Test.assert(objects2[1].isInitialized);
-  Test.assert(objects2[2].isInitialized);
+  Test.assert(objects2[0].isInitialized.value);
+  Test.assert(objects2[1].isInitialized.value);
+  Test.assert(objects2[2].isInitialized.value);
   Test.assert(objects2[0] === originalFirstObject);
   Test.assert(objects2[1] === originalSecondObject);
 
@@ -62,8 +62,8 @@ Test.define("ArrayInitializer can be created", () => {
   Test.assert(objects3.length === 2);
   Test.assert(objects3[0].testValue === "message");
   Test.assert(objects3[1].testValue === "world");
-  Test.assert(objects3[0].isInitialized);
-  Test.assert(objects3[1].isInitialized);
+  Test.assert(objects3[0].isInitialized.value);
+  Test.assert(objects3[1].isInitialized.value);
   Test.assert(objects3[0] === originalFirstObject);
   Test.assert(objects3[1] === originalSecondObject);
 
@@ -77,8 +77,14 @@ Test.define("ArrayInitializer can be created", () => {
   );
   Test.assert(objects4[1] == null, "Expected null in objects4");
   Test.assert(objects4[2].testValue === "world", "Expected world in objects4");
-  Test.assert(objects4[0].isInitialized, "Expected 0 initialized in objects4");
-  Test.assert(objects4[2].isInitialized, "Expected 2 initialized in objects4");
+  Test.assert(
+    objects4[0].isInitialized.value,
+    "Expected 0 initialized in objects4"
+  );
+  Test.assert(
+    objects4[2].isInitialized.value,
+    "Expected 2 initialized in objects4"
+  );
   Test.assert(objects4[0] === originalFirstObject);
 
   input.removeValueAtIndex(1);
@@ -87,8 +93,8 @@ Test.define("ArrayInitializer can be created", () => {
   Test.assert(objects5.length === 2);
   Test.assert(objects5[0].testValue === "message");
   Test.assert(objects5[1].testValue === "world");
-  Test.assert(objects5[0].isInitialized);
-  Test.assert(objects5[1].isInitialized);
+  Test.assert(objects5[0].isInitialized.value);
+  Test.assert(objects5[1].isInitialized.value);
   Test.assert(objects5[0] === originalFirstObject);
 
   handle.release();

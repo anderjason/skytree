@@ -1,6 +1,7 @@
 import { ManagedObject } from "../ManagedObject";
 import { Handle } from "../Handle";
 import { Observable } from "../Observable";
+import { ReadOnlyObservable } from "..";
 
 export type ExclusiveInitializerCallback<T> = (
   newValue: T,
@@ -20,7 +21,8 @@ export class ExclusiveInitializer<T> extends ManagedObject {
     return new ExclusiveInitializer(definition);
   }
 
-  readonly object = Observable.ofEmpty<ManagedObject>(Observable.isStrictEqual);
+  private _output = Observable.ofEmpty<ManagedObject>(Observable.isStrictEqual);
+  readonly output = ReadOnlyObservable.givenObservable(this._output);
 
   private _input: Observable<T>;
   private _callback: ExclusiveInitializerCallback<T>;
@@ -39,20 +41,20 @@ export class ExclusiveInitializer<T> extends ManagedObject {
           const newObject = this._callback(
             newValue,
             oldValue,
-            this.object.value
+            this._output.value
           );
 
-          if (newObject === this.object.value) {
+          if (newObject === this._output.value) {
             return;
           }
 
-          if (this.object.value != null) {
-            this.removeManagedObject(this.object.value);
-            this.object.setValue(undefined);
+          if (this._output.value != null) {
+            this.removeManagedObject(this._output.value);
+            this._output.setValue(undefined);
           }
 
           if (newObject != null) {
-            this.object.setValue(this.addManagedObject(newObject));
+            this._output.setValue(this.addManagedObject(newObject));
           }
         }, true)
       );
@@ -60,7 +62,7 @@ export class ExclusiveInitializer<T> extends ManagedObject {
 
     this.addHandle(
       Handle.givenCallback(() => {
-        this.object.setValue(undefined);
+        this._output.setValue(undefined);
       })
     );
   }
