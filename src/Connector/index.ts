@@ -1,9 +1,9 @@
 import { ManagedObject } from "../ManagedObject";
-import { Observable } from "../Observable";
+import { Observable, ObservableBase } from "../Observable";
 import { Handle } from "../Handle";
 
 export interface ConnectorDefinition<T> {
-  source?: Observable<T>;
+  source?: ObservableBase<T>;
   target?: Observable<T>;
 }
 
@@ -12,7 +12,10 @@ export class Connector<T> extends ManagedObject {
     return new Connector<T>(definition);
   }
 
-  readonly source = Observable.ofEmpty<Observable<T>>(Observable.isStrictEqual);
+  readonly source = Observable.ofEmpty<ObservableBase<T>>(
+    Observable.isStrictEqual
+  );
+
   readonly target = Observable.ofEmpty<Observable<T>>(Observable.isStrictEqual);
 
   private _sourceValueHandle: Handle;

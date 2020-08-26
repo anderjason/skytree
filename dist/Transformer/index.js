@@ -3,11 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Transformer = void 0;
 const ManagedObject_1 = require("../ManagedObject");
 const Observable_1 = require("../Observable");
+const __1 = require("..");
 class Transformer extends ManagedObject_1.ManagedObject {
     constructor(definition) {
         super();
         this.input = definition.input;
-        this.output = definition.output || Observable_1.Observable.ofEmpty();
+        this._output = definition.output || Observable_1.Observable.ofEmpty();
+        this.output = __1.ReadOnlyObservable.givenObservable(this._output);
         this._converter = definition.fn;
     }
     static givenDefinition(definition) {
@@ -23,7 +25,7 @@ class Transformer extends ManagedObject_1.ManagedObject {
             let thisChangeId = latestChangeId;
             const convertedValue = await this._converter(value);
             if (thisChangeId === latestChangeId) {
-                this.output.setValue(convertedValue);
+                this._output.setValue(convertedValue);
             }
         }, true));
     }

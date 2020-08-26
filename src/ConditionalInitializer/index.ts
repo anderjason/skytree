@@ -1,9 +1,9 @@
 import { ManagedObject } from "../ManagedObject";
-import { Observable } from "../Observable";
+import { Observable, ObservableBase } from "../Observable";
 import { ReadOnlyObservable } from "..";
 
 export interface ConditionalInitializerDefinition<TI, TO> {
-  input: Observable<TI>;
+  input: ObservableBase<TI>;
   fn: (input: TI) => boolean;
   instance: TO;
 }
@@ -21,7 +21,7 @@ export class ConditionalInitializer<
   private _output = Observable.ofEmpty<TO>();
   readonly output = ReadOnlyObservable.givenObservable(this._output);
 
-  private _input: Observable<TI>;
+  private _input: ObservableBase<TI>;
   private _shouldInitialize: (input: TI) => boolean;
   private _instance: TO;
 

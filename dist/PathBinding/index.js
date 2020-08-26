@@ -6,6 +6,7 @@ const ManagedObject_1 = require("../ManagedObject");
 const Handle_1 = require("../Handle");
 const ObservableArray_1 = require("../ObservableArray");
 const ObservableSet_1 = require("../ObservableSet");
+const ReadOnlyObservable_1 = require("../ReadOnlyObservable");
 class PathBinding extends ManagedObject_1.ManagedObject {
     constructor(definition) {
         super();
@@ -54,22 +55,23 @@ class PathBinding extends ManagedObject_1.ManagedObject {
             }
             if (Observable_1.Observable.isObservable(object)) {
                 this._pathHandles.push(object.didChange.subscribe((targetValue) => {
-                    this.output.setValue(targetValue);
+                    this._output.setValue(targetValue);
                 }, true));
             }
             else {
-                this.output.setValue(object);
+                this._output.setValue(object);
             }
             return index && index == length ? object : undefined;
         };
         this._input = definition.input;
         this._path = definition.path;
         if (Observable_1.Observable.isObservable(definition.output)) {
-            this.output = definition.output;
+            this._output = definition.output;
         }
         else {
-            this.output = Observable_1.Observable.ofEmpty(Observable_1.Observable.isStrictEqual);
+            this._output = Observable_1.Observable.ofEmpty(Observable_1.Observable.isStrictEqual);
         }
+        this.output = ReadOnlyObservable_1.ReadOnlyObservable.givenObservable(this._output);
     }
     static givenDefinition(definition) {
         return new PathBinding(definition);

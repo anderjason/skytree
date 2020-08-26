@@ -1,9 +1,9 @@
 import { ManagedObject } from "../ManagedObject";
-import { Observable } from "../Observable";
+import { ObservableBase } from "../Observable";
 import { ReadOnlyObservable } from "..";
 export declare type ExclusiveInitializerCallback<T> = (newValue: T, oldValue: T, currentObject?: ManagedObject) => ManagedObject | undefined;
 export interface ExclusiveInitializerDefinition<T> {
-    input: Observable<T>;
+    input: ObservableBase<T>;
     fn: ExclusiveInitializerCallback<T>;
 }
 export declare class ExclusiveInitializer<T> extends ManagedObject {

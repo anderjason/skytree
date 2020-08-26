@@ -4,6 +4,7 @@ import { ManagedObject } from "../ManagedObject";
 import { Handle } from "../Handle";
 import { ObservableArray } from "../ObservableArray";
 import { ObservableSet } from "../ObservableSet";
+import { ReadOnlyObservable } from "../ReadOnlyObservable";
 
 export interface PathBindingDefinition {
   input: any;
@@ -17,7 +18,8 @@ export class PathBinding extends ManagedObject {
     return new PathBinding(definition);
   }
 
-  readonly output: Observable<unknown>;
+  private _output: Observable<unknown>;
+  readonly output: ReadOnlyObservable<unknown>;
 
   private _input: any;
   private _path: ValuePath;
@@ -30,10 +32,12 @@ export class PathBinding extends ManagedObject {
     this._path = definition.path;
 
     if (Observable.isObservable(definition.output)) {
-      this.output = definition.output;
+      this._output = definition.output;
     } else {
-      this.output = Observable.ofEmpty(Observable.isStrictEqual);
+      this._output = Observable.ofEmpty(Observable.isStrictEqual);
     }
+
+    this.output = ReadOnlyObservable.givenObservable(this._output);
   }
 
   initManagedObject() {
@@ -95,11 +99,11 @@ export class PathBinding extends ManagedObject {
     if (Observable.isObservable(object)) {
       this._pathHandles.push(
         object.didChange.subscribe((targetValue) => {
-          this.output.setValue(targetValue);
+          this._output.setValue(targetValue);
         }, true)
       );
     } else {
-      this.output.setValue(object);
+      this._output.setValue(object);
     }
 
     return index && index == length ? object : undefined;

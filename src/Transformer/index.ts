@@ -1,18 +1,20 @@
 import { ManagedObject } from "../ManagedObject";
-import { Observable } from "../Observable";
+import { Observable, ObservableBase } from "../Observable";
+import { ReadOnlyObservable } from "..";
 
 export interface TransformerDefinition<TI, TO> {
-  input: Observable<TI>;
+  input: ObservableBase<TI>;
   fn: (value: TI) => TO | Promise<TO>;
 
   output?: Observable<TO>;
 }
 
 export class Transformer<TI, TO> extends ManagedObject {
-  readonly input: Observable<TI>;
-  readonly output: Observable<TO>;
+  readonly input: ObservableBase<TI>;
+  readonly output: ObservableBase<TO>;
 
   private _converter: (value: TI) => TO | Promise<TO>;
+  private _output: Observable<TO>;
 
   static givenDefinition<TI, TO>(
     definition: TransformerDefinition<TI, TO>
@@ -24,7 +26,10 @@ export class Transformer<TI, TO> extends ManagedObject {
     super();
 
     this.input = definition.input;
-    this.output = definition.output || Observable.ofEmpty<TO>();
+
+    this._output = definition.output || Observable.ofEmpty<TO>();
+    this.output = ReadOnlyObservable.givenObservable(this._output);
+
     this._converter = definition.fn;
   }
 
@@ -43,7 +48,7 @@ export class Transformer<TI, TO> extends ManagedObject {
         const convertedValue = await this._converter(value);
 
         if (thisChangeId === latestChangeId) {
-          this.output.setValue(convertedValue);
+          this._output.setValue(convertedValue);
         }
       }, true)
     );

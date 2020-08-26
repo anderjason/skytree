@@ -1,6 +1,6 @@
 import { ManagedObject } from "../ManagedObject";
 import { Handle } from "../Handle";
-import { ObservableArray } from "../ObservableArray";
+import { ObservableArray, ObservableArrayBase } from "../ObservableArray";
 import { ReadOnlyObservableArray } from "..";
 
 export type ArrayInitializerCallback<TI, TO> = (
@@ -10,7 +10,7 @@ export type ArrayInitializerCallback<TI, TO> = (
 ) => TO | undefined;
 
 export interface ArrayInitializerDefinition<TI, TO> {
-  input: ObservableArray<TI>;
+  input: ObservableArrayBase<TI>;
   fn: ArrayInitializerCallback<TI, TO>;
 }
 
@@ -29,7 +29,7 @@ export class ArrayInitializer<
     this._objects
   );
 
-  private _input: ObservableArray<TI>;
+  private _input: ObservableArrayBase<TI>;
   private _callback: ArrayInitializerCallback<TI, TO>;
   private _previousInput: TI[] = [];
 

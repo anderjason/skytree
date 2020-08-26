@@ -1,6 +1,6 @@
 import { ManagedObject } from "../ManagedObject";
 import { Handle } from "../Handle";
-import { Observable } from "../Observable";
+import { Observable, ObservableBase } from "../Observable";
 import { ReadOnlyObservable } from "..";
 
 export type ExclusiveInitializerCallback<T> = (
@@ -10,7 +10,7 @@ export type ExclusiveInitializerCallback<T> = (
 ) => ManagedObject | undefined;
 
 export interface ExclusiveInitializerDefinition<T> {
-  input: Observable<T>;
+  input: ObservableBase<T>;
   fn: ExclusiveInitializerCallback<T>;
 }
 
@@ -24,7 +24,7 @@ export class ExclusiveInitializer<T> extends ManagedObject {
   private _output = Observable.ofEmpty<ManagedObject>(Observable.isStrictEqual);
   readonly output = ReadOnlyObservable.givenObservable(this._output);
 
-  private _input: Observable<T>;
+  private _input: ObservableBase<T>;
   private _callback: ExclusiveInitializerCallback<T>;
 
   private constructor(definition: ExclusiveInitializerDefinition<T>) {
