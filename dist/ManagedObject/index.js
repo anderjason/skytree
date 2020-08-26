@@ -26,12 +26,12 @@ class ManagedObject {
             this._thisHandle = Handle_1.Handle.givenCallback(() => {
                 this.uninit();
             });
+            ManagedObject._initializedSet.addValue(this);
+            this._isInitialized.setValue(true);
             this._childObjects.toValues().forEach((child) => {
                 child.init();
             });
             this.initManagedObject();
-            ManagedObject._initializedSet.addValue(this);
-            this._isInitialized.setValue(true);
         }
         return this._thisHandle;
     }
@@ -39,6 +39,8 @@ class ManagedObject {
         if (this._thisHandle == null) {
             return;
         }
+        ManagedObject._initializedSet.removeValue(this);
+        this._isInitialized.setValue(false);
         this._handles.toValues().forEach((handle) => {
             handle.release();
         });
@@ -52,8 +54,6 @@ class ManagedObject {
         if (handle != null) {
             handle.release();
         }
-        ManagedObject._initializedSet.removeValue(this);
-        this._isInitialized.setValue(false);
     }
     addManagedObject(childObject) {
         if (childObject == null) {
