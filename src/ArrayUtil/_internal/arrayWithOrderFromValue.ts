@@ -1,11 +1,13 @@
+export type ArrayOrderDirection = "ascending" | "descending";
+
 export function arrayWithOrderFromValue<T, TV>(
   input: T[],
   getSortableValue: (value: T) => TV,
-  descending: boolean = false
+  direction: ArrayOrderDirection
 ): T[] {
   const result = [...input];
 
-  if (descending) {
+  if (direction === "descending") {
     result.sort((a, b) => {
       const valueA = getSortableValue(a);
       const valueB = getSortableValue(b);

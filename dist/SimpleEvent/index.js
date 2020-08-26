@@ -6,7 +6,7 @@ const ArrayUtil_1 = require("../ArrayUtil");
 const PromiseUtil_1 = require("../PromiseUtil");
 class SimpleEvent {
     constructor(lastValue) {
-        this._handlers = undefined;
+        this._subscriptions = undefined;
         this._lastValue = lastValue;
     }
     static ofEmpty() {
@@ -15,32 +15,32 @@ class SimpleEvent {
     static givenLastValue(lastValue) {
         return new SimpleEvent(lastValue);
     }
-    subscribe(handler, includeLast = false) {
-        if (this._handlers == null) {
-            this._handlers = [];
+    subscribe(subscription, includeLast = false) {
+        if (this._subscriptions == null) {
+            this._subscriptions = [];
         }
-        this._handlers.push(handler);
+        this._subscriptions.push(subscription);
         if (includeLast) {
-            handler(this._lastValue);
+            subscription(this._lastValue);
         }
-        return Handle_1.Handle.givenCallback(() => this.unsubscribe(handler));
+        return Handle_1.Handle.givenCallback(() => this.unsubscribe(subscription));
     }
     async emit(newValue) {
         const previousValue = this._lastValue;
         this._lastValue = newValue;
-        if (this._handlers != null) {
-            await PromiseUtil_1.PromiseUtil.asyncSequenceGivenArrayAndCallback(this._handlers, async (handler) => {
+        if (this._subscriptions != null) {
+            await PromiseUtil_1.PromiseUtil.asyncSequenceGivenArrayAndCallback(this._subscriptions, async (handler) => {
                 await handler(newValue, previousValue);
             });
         }
     }
     unsubscribe(handler) {
-        if (this._handlers == null) {
+        if (this._subscriptions == null) {
             return;
         }
-        this._handlers = ArrayUtil_1.ArrayUtil.arrayWithoutValue(this._handlers, handler);
-        if (this._handlers.length === 0) {
-            this._handlers = undefined;
+        this._subscriptions = ArrayUtil_1.ArrayUtil.arrayWithoutValue(this._subscriptions, handler);
+        if (this._subscriptions.length === 0) {
+            this._subscriptions = undefined;
         }
     }
 }

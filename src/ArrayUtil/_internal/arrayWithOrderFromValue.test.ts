@@ -10,7 +10,11 @@ Test.define(
       { player: "first", score: 1 },
     ];
 
-    const result = arrayWithOrderFromValue(input, (item) => item.score);
+    const result = arrayWithOrderFromValue(
+      input,
+      (item) => item.score,
+      "ascending"
+    );
 
     Test.assert(result[0].player === "first");
     Test.assert(result[1].player === "second");
@@ -25,7 +29,11 @@ Test.define("arrayWithOrderFromValue can return descending results", () => {
     { player: "first", score: 1 },
   ];
 
-  const result = arrayWithOrderFromValue(input, (item) => item.score, true);
+  const result = arrayWithOrderFromValue(
+    input,
+    (item) => item.score,
+    "descending"
+  );
 
   Test.assert(result[0].player === "third");
   Test.assert(result[1].player === "second");
@@ -34,7 +42,7 @@ Test.define("arrayWithOrderFromValue can return descending results", () => {
 
 Test.define("arrayWithOrderFromValue handles an empty array", () => {
   const input: any[] = [];
-  const result = arrayWithOrderFromValue(input, (x) => 1);
+  const result = arrayWithOrderFromValue(input, (x) => 1, "ascending");
 
   Test.assert(result != null);
   Test.assert(result.length === 0);

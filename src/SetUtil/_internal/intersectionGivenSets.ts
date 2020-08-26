@@ -15,7 +15,11 @@ export function intersectionGivenSets<T>(sets: Set<T>[]): Set<T> {
 
   const result = new Set<T>();
 
-  const smallestSet = ArrayUtil.arrayWithOrderFromValue(sets, (s) => s.size)[0];
+  const smallestSet = ArrayUtil.arrayWithOrderFromValue(
+    sets,
+    (s) => s.size,
+    "ascending"
+  )[0];
   const otherSets: Set<T>[] = ArrayUtil.arrayWithoutValue(sets, smallestSet);
 
   smallestSet.forEach((item) => {

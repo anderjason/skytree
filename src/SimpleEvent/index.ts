@@ -2,13 +2,13 @@ import { Handle } from "../Handle";
 import { ArrayUtil } from "../ArrayUtil";
 import { PromiseUtil } from "../PromiseUtil";
 
-export type SimpleEventHandler<T> = (
+export type SimpleEventSubscription<T> = (
   newValue: T,
   oldValue?: T
 ) => void | Promise<void>;
 
 export class SimpleEvent<T = void> {
-  private _handlers: SimpleEventHandler<T>[] | undefined = undefined;
+  private _subscriptions: SimpleEventSubscription<T>[] | undefined = undefined;
   private _lastValue?: T;
 
   static ofEmpty<T = void>(): SimpleEvent<T> {
@@ -24,29 +24,29 @@ export class SimpleEvent<T = void> {
   }
 
   subscribe(
-    handler: SimpleEventHandler<T>,
+    subscription: SimpleEventSubscription<T>,
     includeLast: boolean = false
   ): Handle {
-    if (this._handlers == null) {
-      this._handlers = [];
+    if (this._subscriptions == null) {
+      this._subscriptions = [];
     }
 
-    this._handlers.push(handler);
+    this._subscriptions.push(subscription);
 
     if (includeLast) {
-      handler(this._lastValue);
+      subscription(this._lastValue);
     }
 
-    return Handle.givenCallback(() => this.unsubscribe(handler));
+    return Handle.givenCallback(() => this.unsubscribe(subscription));
   }
 
   async emit(newValue: T): Promise<void> {
     const previousValue = this._lastValue;
     this._lastValue = newValue;
 
-    if (this._handlers != null) {
+    if (this._subscriptions != null) {
       await PromiseUtil.asyncSequenceGivenArrayAndCallback(
-        this._handlers,
+        this._subscriptions,
         async (handler) => {
           await handler(newValue, previousValue);
         }
@@ -54,15 +54,18 @@ export class SimpleEvent<T = void> {
     }
   }
 
-  private unsubscribe(handler: SimpleEventHandler<T>): void {
-    if (this._handlers == null) {
+  private unsubscribe(handler: SimpleEventSubscription<T>): void {
+    if (this._subscriptions == null) {
       return;
     }
 
-    this._handlers = ArrayUtil.arrayWithoutValue(this._handlers, handler);
+    this._subscriptions = ArrayUtil.arrayWithoutValue(
+      this._subscriptions,
+      handler
+    );
 
-    if (this._handlers.length === 0) {
-      this._handlers = undefined;
+    if (this._subscriptions.length === 0) {
+      this._subscriptions = undefined;
     }
   }
 }

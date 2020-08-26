@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.arrayWithOrderFromValue = void 0;
-function arrayWithOrderFromValue(input, getSortableValue, descending = false) {
+function arrayWithOrderFromValue(input, getSortableValue, direction) {
     const result = [...input];
-    if (descending) {
+    if (direction === "descending") {
         result.sort((a, b) => {
             const valueA = getSortableValue(a);
             const valueB = getSortableValue(b);
