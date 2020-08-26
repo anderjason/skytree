@@ -55,7 +55,7 @@ export class MultiBinding extends ManagedObject {
     this.inputs.toValues().forEach((input) => {
       this._inputHandles.push(
         input.didChange.subscribe(() => {
-          this.onChange;
+          this.onChange();
         })
       );
     });
