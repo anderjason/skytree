@@ -41,22 +41,22 @@ export class MultiBinding extends ManagedObject {
     this.addHandle(Handle.givenCallback(this.unsubscribeInputs));
   }
 
-  private subscribeInputs = () => {
+  private subscribeInputs() {
     this.unsubscribeInputs();
 
     this.inputs.toValues().forEach((input) => {
       this._inputHandles.push(input.didChange.subscribe(this.onChange));
     });
-  };
+  }
 
-  private unsubscribeInputs = () => {
+  private unsubscribeInputs() {
     this._inputHandles.forEach((handle) => {
       handle.release();
     });
     this._inputHandles = [];
-  };
+  }
 
-  private onChange = () => {
+  private onChange() {
     if (this._invalidateMode === "immediate") {
       this.didInvalidate.emit();
       return;
@@ -74,5 +74,5 @@ export class MultiBinding extends ManagedObject {
         this._isInvalidating = false;
       }
     });
-  };
+  }
 }

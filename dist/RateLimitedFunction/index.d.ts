@@ -17,7 +17,7 @@ export declare class RateLimitedFunction<T> {
     private _isRunning;
     private _wasInvokedWhileRunning;
     private constructor();
-    invoke: (args?: T) => void;
-    clear: () => void;
+    invoke(args?: T): void;
+    clear(): void;
 }
 export {};

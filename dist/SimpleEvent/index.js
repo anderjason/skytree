@@ -7,15 +7,6 @@ const PromiseUtil_1 = require("../PromiseUtil");
 class SimpleEvent {
     constructor(lastValue) {
         this._handlers = undefined;
-        this.emit = async (newValue) => {
-            const previousValue = this._lastValue;
-            this._lastValue = newValue;
-            if (this._handlers != null) {
-                await PromiseUtil_1.PromiseUtil.asyncSequenceGivenArrayAndCallback(this._handlers, async (handler) => {
-                    await handler(newValue, previousValue);
-                });
-            }
-        };
         this._lastValue = lastValue;
     }
     static ofEmpty() {
@@ -33,6 +24,15 @@ class SimpleEvent {
             handler(this._lastValue);
         }
         return Handle_1.Handle.givenCallback(() => this.unsubscribe(handler));
+    }
+    async emit(newValue) {
+        const previousValue = this._lastValue;
+        this._lastValue = newValue;
+        if (this._handlers != null) {
+            await PromiseUtil_1.PromiseUtil.asyncSequenceGivenArrayAndCallback(this._handlers, async (handler) => {
+                await handler(newValue, previousValue);
+            });
+        }
     }
     unsubscribe(handler) {
         if (this._handlers == null) {

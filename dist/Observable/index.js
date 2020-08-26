@@ -6,10 +6,6 @@ class Observable {
     constructor(value, filter) {
         this.didChange = SimpleEvent_1.SimpleEvent.ofEmpty();
         this._isObservable = true;
-        this.mutate = (fn) => {
-            fn(this.value);
-            this.didChange.emit(this.value);
-        };
         this.discardFilter = filter;
         if (value != null) {
             this.setValue(value);
@@ -51,6 +47,10 @@ class Observable {
         }
         this._value = newValue;
         this.didChange.emit(newValue);
+    }
+    mutate(fn) {
+        fn(this.value);
+        this.didChange.emit(this.value);
     }
 }
 exports.Observable = Observable;

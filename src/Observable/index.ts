@@ -67,8 +67,8 @@ export class Observable<T = number> {
     this.didChange.emit(newValue);
   }
 
-  mutate = (fn: (value: T) => void): void => {
+  mutate(fn: (value: T) => void): void {
     fn(this.value);
     this.didChange.emit(this.value);
-  };
+  }
 }

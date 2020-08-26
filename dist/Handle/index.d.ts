@@ -5,5 +5,5 @@ export declare class Handle {
     private _callback;
     private constructor();
     get isReleased(): boolean;
-    release: () => void;
+    release(): void;
 }

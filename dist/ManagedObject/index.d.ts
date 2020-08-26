@@ -16,11 +16,11 @@ export declare class ManagedObject {
     private _isInitialized;
     readonly isInitialized: ReadOnlyObservable<boolean>;
     constructor();
-    init: () => Handle;
-    uninit: () => void;
-    addManagedObject: <T extends ManagedObject>(childObject: T) => T;
-    addHandle: (handle: Handle) => Handle;
-    removeManagedObject: (child: ManagedObject) => void;
-    removeHandle: (handle: Handle) => void;
+    init(): Handle;
+    uninit(): void;
+    addManagedObject<T extends ManagedObject>(childObject: T): T;
+    addHandle(handle: Handle): Handle;
+    removeManagedObject(child: ManagedObject): void;
+    removeHandle(handle: Handle): void;
     protected initManagedObject(): void;
 }

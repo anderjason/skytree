@@ -54,7 +54,7 @@ export class Connector<T> extends ManagedObject {
     );
   }
 
-  private updateTarget = (): void => {
+  private updateTarget(): void {
     const source = this.source.value;
     const target = this.target.value;
     if (source == null || target == null) {
@@ -62,5 +62,5 @@ export class Connector<T> extends ManagedObject {
     }
 
     target.setValue(source.value);
-  };
+  }
 }

@@ -26,10 +26,14 @@ export class SequentialWorker extends ManagedObject {
     super();
   }
 
-  addWork = (
+  initManagedObject() {
+    this.startNextJob();
+  }
+
+  addWork(
     callback: JobCallback,
     cancelledCallback?: CancelledJobCallback
-  ): Job => {
+  ): Job {
     const state = Observable.givenValue<JobState>("queued");
 
     const handle = this.addHandle(
@@ -59,16 +63,14 @@ export class SequentialWorker extends ManagedObject {
     this._jobs.push(job);
     this._callbackByJob.set(job, callback);
 
-    setTimeout(this.startNextJob, 1);
+    setTimeout(() => {
+      this.startNextJob();
+    }, 1);
 
     return job;
-  };
-
-  initManagedObject() {
-    this.startNextJob();
   }
 
-  private startNextJob = () => {
+  private startNextJob() {
     if (this._isBusy) {
       return;
     }
@@ -88,9 +90,9 @@ export class SequentialWorker extends ManagedObject {
       this._isBusy = false;
       this.startNextJob();
     });
-  };
+  }
 
-  private runJob = async (job: Job) => {
+  private async runJob(job: Job) {
     if (job == null) {
       return;
     }
@@ -111,5 +113,5 @@ export class SequentialWorker extends ManagedObject {
     }
 
     job.state.setValue("finished");
-  };
+  }
 }

@@ -37,7 +37,7 @@ export class RateLimitedFunction<T> {
     this._wasInvokedWhileRunning = false;
   }
 
-  invoke = (args?: T) => {
+  invoke(args?: T): void {
     this._count += 1;
     this._lastArgs = args;
 
@@ -100,12 +100,12 @@ export class RateLimitedFunction<T> {
       finishedWaiting,
       this._waitDuration.toMilliseconds()
     );
-  };
+  }
 
-  clear = () => {
+  clear(): void {
     if (this._timeout != null) {
       clearTimeout(this._timeout);
       this._timeout = null;
     }
-  };
+  }
 }

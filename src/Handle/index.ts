@@ -19,7 +19,7 @@ export class Handle {
     return this._callback == null;
   }
 
-  release = (): void => {
+  release(): void {
     if (this._callback == null) {
       return;
     }
@@ -32,5 +32,5 @@ export class Handle {
     Handle.unreleasedCount.setValue(Handle.unreleasedCount.value - 1);
 
     return;
-  };
+  }
 }

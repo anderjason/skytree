@@ -14,8 +14,8 @@ export declare class SequentialWorker extends ManagedObject {
     private _callbackByJob;
     private _isBusy;
     private constructor();
-    addWork: (callback: JobCallback, cancelledCallback?: CancelledJobCallback) => Job;
     initManagedObject(): void;
+    addWork(callback: JobCallback, cancelledCallback?: CancelledJobCallback): Job;
     private startNextJob;
     private runJob;
 }

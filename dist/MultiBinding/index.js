@@ -11,34 +11,6 @@ class MultiBinding extends ManagedObject_1.ManagedObject {
         this.didInvalidate = SimpleEvent_1.SimpleEvent.ofEmpty();
         this._inputHandles = [];
         this._isInvalidating = false;
-        this.subscribeInputs = () => {
-            this.unsubscribeInputs();
-            this.inputs.toValues().forEach((input) => {
-                this._inputHandles.push(input.didChange.subscribe(this.onChange));
-            });
-        };
-        this.unsubscribeInputs = () => {
-            this._inputHandles.forEach((handle) => {
-                handle.release();
-            });
-            this._inputHandles = [];
-        };
-        this.onChange = () => {
-            if (this._invalidateMode === "immediate") {
-                this.didInvalidate.emit();
-                return;
-            }
-            if (this._isInvalidating) {
-                return;
-            }
-            this._isInvalidating = true;
-            requestAnimationFrame(() => {
-                if (this._isInvalidating) {
-                    this.didInvalidate.emit();
-                    this._isInvalidating = false;
-                }
-            });
-        };
         if (ObservableSet_1.ObservableSet.isObservableSet(definition.inputs)) {
             this.inputs = definition.inputs;
         }
@@ -53,6 +25,34 @@ class MultiBinding extends ManagedObject_1.ManagedObject {
     initManagedObject() {
         this.addHandle(this.inputs.didChange.subscribe(this.subscribeInputs, true));
         this.addHandle(Handle_1.Handle.givenCallback(this.unsubscribeInputs));
+    }
+    subscribeInputs() {
+        this.unsubscribeInputs();
+        this.inputs.toValues().forEach((input) => {
+            this._inputHandles.push(input.didChange.subscribe(this.onChange));
+        });
+    }
+    unsubscribeInputs() {
+        this._inputHandles.forEach((handle) => {
+            handle.release();
+        });
+        this._inputHandles = [];
+    }
+    onChange() {
+        if (this._invalidateMode === "immediate") {
+            this.didInvalidate.emit();
+            return;
+        }
+        if (this._isInvalidating) {
+            return;
+        }
+        this._isInvalidating = true;
+        requestAnimationFrame(() => {
+            if (this._isInvalidating) {
+                this.didInvalidate.emit();
+                this._isInvalidating = false;
+            }
+        });
     }
 }
 exports.MultiBinding = MultiBinding;

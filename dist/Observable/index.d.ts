@@ -12,5 +12,5 @@ export declare class Observable<T = number> {
     private constructor();
     get value(): T;
     setValue(newValue: T): void;
-    mutate: (fn: (value: T) => void) => void;
+    mutate(fn: (value: T) => void): void;
 }

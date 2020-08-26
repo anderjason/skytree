@@ -39,9 +39,11 @@ export class ManagedObject {
     this.id = StringUtil.stringOfRandomCharacters(8);
   }
 
-  init = (): Handle => {
+  init(): Handle {
     if (this.isInitialized.value === false) {
-      this._thisHandle = Handle.givenCallback(this.uninit);
+      this._thisHandle = Handle.givenCallback(() => {
+        this.uninit();
+      });
 
       this._childObjects.toValues().forEach((child) => {
         child.init();
@@ -54,9 +56,9 @@ export class ManagedObject {
     }
 
     return this._thisHandle;
-  };
+  }
 
-  uninit = (): void => {
+  uninit(): void {
     if (this._thisHandle == null) {
       return;
     }
@@ -81,9 +83,9 @@ export class ManagedObject {
 
     ManagedObject._initializedSet.removeValue(this);
     this._isInitialized.setValue(false);
-  };
+  }
 
-  addManagedObject = <T extends ManagedObject>(childObject: T): T => {
+  addManagedObject<T extends ManagedObject>(childObject: T): T {
     if (childObject == null) {
       return undefined;
     }
@@ -100,9 +102,9 @@ export class ManagedObject {
     }
 
     return childObject;
-  };
+  }
 
-  addHandle = (handle: Handle): Handle => {
+  addHandle(handle: Handle): Handle {
     if (handle == null) {
       return undefined;
     }
@@ -110,9 +112,9 @@ export class ManagedObject {
     this._handles.addValue(handle);
 
     return handle;
-  };
+  }
 
-  removeManagedObject = (child: ManagedObject): void => {
+  removeManagedObject(child: ManagedObject): void {
     if (child == null) {
       return;
     }
@@ -129,15 +131,15 @@ export class ManagedObject {
 
     this._childObjects.removeValue(child);
     child._parentObject.setValue(undefined);
-  };
+  }
 
-  removeHandle = (handle: Handle): void => {
+  removeHandle(handle: Handle): void {
     if (handle == null) {
       return;
     }
 
     this._handles.removeValue(handle);
-  };
+  }
 
   protected initManagedObject(): void {}
 }

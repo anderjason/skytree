@@ -9,14 +9,6 @@ class Connector extends ManagedObject_1.ManagedObject {
         super();
         this.source = Observable_1.Observable.ofEmpty(Observable_1.Observable.isStrictEqual);
         this.target = Observable_1.Observable.ofEmpty(Observable_1.Observable.isStrictEqual);
-        this.updateTarget = () => {
-            const source = this.source.value;
-            const target = this.target.value;
-            if (source == null || target == null) {
-                return;
-            }
-            target.setValue(source.value);
-        };
         this.source.setValue(definition.source);
         this.target.setValue(definition.target);
     }
@@ -42,6 +34,14 @@ class Connector extends ManagedObject_1.ManagedObject {
                 this._sourceValueHandle = undefined;
             }
         }));
+    }
+    updateTarget() {
+        const source = this.source.value;
+        const target = this.target.value;
+        if (source == null || target == null) {
+            return;
+        }
+        target.setValue(source.value);
     }
 }
 exports.Connector = Connector;

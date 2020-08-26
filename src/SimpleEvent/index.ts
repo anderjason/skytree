@@ -40,7 +40,7 @@ export class SimpleEvent<T = void> {
     return Handle.givenCallback(() => this.unsubscribe(handler));
   }
 
-  emit = async (newValue: T): Promise<void> => {
+  async emit(newValue: T): Promise<void> {
     const previousValue = this._lastValue;
     this._lastValue = newValue;
 
@@ -52,7 +52,7 @@ export class SimpleEvent<T = void> {
         }
       );
     }
-  };
+  }
 
   private unsubscribe(handler: SimpleEventHandler<T>): void {
     if (this._handlers == null) {
