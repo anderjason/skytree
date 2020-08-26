@@ -36,16 +36,28 @@ export class MultiBinding extends ManagedObject {
   }
 
   initManagedObject() {
-    this.addHandle(this.inputs.didChange.subscribe(this.subscribeInputs, true));
+    this.addHandle(
+      this.inputs.didChange.subscribe(() => {
+        this.subscribeInputs();
+      }, true)
+    );
 
-    this.addHandle(Handle.givenCallback(this.unsubscribeInputs));
+    this.addHandle(
+      Handle.givenCallback(() => {
+        this.unsubscribeInputs();
+      })
+    );
   }
 
   private subscribeInputs() {
     this.unsubscribeInputs();
 
     this.inputs.toValues().forEach((input) => {
-      this._inputHandles.push(input.didChange.subscribe(this.onChange));
+      this._inputHandles.push(
+        input.didChange.subscribe(() => {
+          this.onChange;
+        })
+      );
     });
   }
 

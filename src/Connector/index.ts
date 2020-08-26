@@ -38,13 +38,19 @@ export class Connector<T> extends ManagedObject {
 
         if (source != null) {
           this._sourceValueHandle = this.addHandle(
-            source.didChange.subscribe(this.updateTarget, true)
+            source.didChange.subscribe(() => {
+              this.updateTarget();
+            }, true)
           );
         }
       })
     );
 
-    this.addHandle(this.target.didChange.subscribe(this.updateTarget));
+    this.addHandle(
+      this.target.didChange.subscribe(() => {
+        this.updateTarget();
+      })
+    );
 
     this.addHandle(
       Handle.givenCallback(() => {

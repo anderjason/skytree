@@ -23,10 +23,14 @@ class Connector extends ManagedObject_1.ManagedObject {
                 this._sourceValueHandle = undefined;
             }
             if (source != null) {
-                this._sourceValueHandle = this.addHandle(source.didChange.subscribe(this.updateTarget, true));
+                this._sourceValueHandle = this.addHandle(source.didChange.subscribe(() => {
+                    this.updateTarget();
+                }, true));
             }
         }));
-        this.addHandle(this.target.didChange.subscribe(this.updateTarget));
+        this.addHandle(this.target.didChange.subscribe(() => {
+            this.updateTarget();
+        }));
         this.addHandle(Handle_1.Handle.givenCallback(() => {
             if (this._sourceValueHandle != null) {
                 this._sourceValueHandle.release();
