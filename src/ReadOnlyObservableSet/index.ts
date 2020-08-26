@@ -1,7 +1,11 @@
 import { SimpleEvent } from "../SimpleEvent";
-import { ObservableSet, ObservableSetChange } from "../ObservableSet";
+import {
+  ObservableSet,
+  ObservableSetChange,
+  ObservableSetBase,
+} from "../ObservableSet";
 
-export class ReadOnlyObservableSet<T> {
+export class ReadOnlyObservableSet<T> implements ObservableSetBase<T> {
   static givenObservableSet<T>(
     observableSet: ObservableSet<T>
   ): ReadOnlyObservableSet<T> {

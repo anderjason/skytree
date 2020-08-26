@@ -8,7 +8,17 @@ export interface ObservableArrayChange<T> {
   oldIndex?: number;
 }
 
-export class ObservableArray<T> {
+export interface ObservableArrayBase<T> {
+  readonly didChange: SimpleEvent<T[]>;
+  readonly didChangeSteps: SimpleEvent<ObservableArrayChange<T>[]>;
+
+  hasValue(value: T, fromIndex?: number): boolean;
+  toOptionalValueGivenIndex(index: number): T | undefined;
+  toIndexOfValue(value: T, fromIndex?: number): number;
+  toValues(): T[];
+}
+
+export class ObservableArray<T> implements ObservableArrayBase<T> {
   readonly didChange = SimpleEvent.ofEmpty<T[]>();
   readonly didChangeSteps = SimpleEvent.ofEmpty<ObservableArrayChange<T>[]>();
 
@@ -20,7 +30,7 @@ export class ObservableArray<T> {
     return new ObservableArray([...values]);
   }
 
-  static isObservableArray(input: any): input is ObservableArray<unknown> {
+  static isObservableArray(input: any): input is ObservableArrayBase<unknown> {
     if (input == null) {
       return false;
     }

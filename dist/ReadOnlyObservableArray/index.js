@@ -12,6 +12,12 @@ class ReadOnlyObservableArray {
     get count() {
         return this._observableArray.count;
     }
+    get didChange() {
+        return this._observableArray.didChange;
+    }
+    get didChangeSteps() {
+        return this._observableArray.didChangeSteps;
+    }
     hasValue(value) {
         return this._observableArray.hasValue(value);
     }
@@ -23,12 +29,6 @@ class ReadOnlyObservableArray {
     }
     toValues() {
         return this._observableArray.toValues();
-    }
-    get didChange() {
-        return this._observableArray.didChange;
-    }
-    get didChangeSteps() {
-        return this._observableArray.didChangeSteps;
     }
 }
 exports.ReadOnlyObservableArray = ReadOnlyObservableArray;

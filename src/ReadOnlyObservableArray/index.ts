@@ -1,7 +1,11 @@
 import { SimpleEvent } from "../SimpleEvent";
-import { ObservableArray, ObservableArrayChange } from "../ObservableArray";
+import {
+  ObservableArray,
+  ObservableArrayChange,
+  ObservableArrayBase,
+} from "../ObservableArray";
 
-export class ReadOnlyObservableArray<T> {
+export class ReadOnlyObservableArray<T> implements ObservableArrayBase<T> {
   static givenObservableArray<T>(
     observableArray: ObservableArray<T>
   ): ReadOnlyObservableArray<T> {
@@ -19,6 +23,14 @@ export class ReadOnlyObservableArray<T> {
     return this._observableArray.count;
   }
 
+  get didChange(): SimpleEvent<T[]> {
+    return this._observableArray.didChange;
+  }
+
+  get didChangeSteps(): SimpleEvent<ObservableArrayChange<T>[]> {
+    return this._observableArray.didChangeSteps;
+  }
+
   hasValue(value: T): boolean {
     return this._observableArray.hasValue(value);
   }
@@ -33,13 +45,5 @@ export class ReadOnlyObservableArray<T> {
 
   toValues(): T[] {
     return this._observableArray.toValues();
-  }
-
-  get didChange(): SimpleEvent<T[]> {
-    return this._observableArray.didChange;
-  }
-
-  get didChangeSteps(): SimpleEvent<ObservableArrayChange<T>[]> {
-    return this._observableArray.didChangeSteps;
   }
 }

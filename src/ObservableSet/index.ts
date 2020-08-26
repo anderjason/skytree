@@ -5,7 +5,15 @@ export interface ObservableSetChange<T> {
   value: T;
 }
 
-export class ObservableSet<T> {
+export interface ObservableSetBase<T> {
+  readonly didChange: SimpleEvent<T[]>;
+  readonly didChangeSteps: SimpleEvent<ObservableSetChange<T>[]>;
+
+  hasValue(value: T): boolean;
+  toValues(): T[];
+}
+
+export class ObservableSet<T> implements ObservableSetBase<T> {
   readonly didChange = SimpleEvent.ofEmpty<T[]>();
   readonly didChangeSteps = SimpleEvent.ofEmpty<ObservableSetChange<T>[]>();
 
@@ -17,7 +25,7 @@ export class ObservableSet<T> {
     return new ObservableSet(new Set(values));
   }
 
-  static isObservableSet(input: any): input is ObservableSet<unknown> {
+  static isObservableSet(input: any): input is ObservableSetBase<unknown> {
     if (input == null) {
       return false;
     }

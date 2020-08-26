@@ -1,7 +1,7 @@
 import { SimpleEvent } from "../SimpleEvent";
-import { Observable } from "../Observable";
+import { Observable, ObservableBase } from "../Observable";
 
-export class ReadOnlyObservable<T> {
+export class ReadOnlyObservable<T> implements ObservableBase<T> {
   static givenObservable<T>(observable: Observable<T>): ReadOnlyObservable<T> {
     return new ReadOnlyObservable<T>(observable);
   }

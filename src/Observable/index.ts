@@ -2,7 +2,12 @@ import { SimpleEvent } from "../SimpleEvent";
 
 export type ObservableFilter<T> = (newValue: T, oldValue: T) => boolean;
 
-export class Observable<T = number> {
+export interface ObservableBase<T> {
+  readonly didChange: SimpleEvent<T>;
+  readonly value: T;
+}
+
+export class Observable<T = number> implements ObservableBase<T> {
   readonly didChange = SimpleEvent.ofEmpty<T>();
   readonly discardFilter: ObservableFilter<T> | undefined;
 
@@ -10,7 +15,7 @@ export class Observable<T = number> {
     return newValue === oldValue;
   }
 
-  static isObservable(input: any): input is Observable<unknown> {
+  static isObservable(input: any): input is ObservableBase<unknown> {
     if (input == null) {
       return false;
     }
