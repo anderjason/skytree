@@ -43,7 +43,9 @@ export class Connector<T> extends ManagedObject {
             }, true)
           );
         }
-      })
+
+        this.updateTarget();
+      }, true)
     );
 
     this.addHandle(

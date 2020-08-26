@@ -27,7 +27,8 @@ class Connector extends ManagedObject_1.ManagedObject {
                     this.updateTarget();
                 }, true));
             }
-        }));
+            this.updateTarget();
+        }, true));
         this.addHandle(this.target.didChange.subscribe(() => {
             this.updateTarget();
         }));
