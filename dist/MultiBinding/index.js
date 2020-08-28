@@ -14,10 +14,10 @@ class MultiBinding extends ManagedObject_1.ManagedObject {
     static givenGroups(groups) {
         return new MultiBinding(groups);
     }
-    static givenInputs(group) {
+    static givenOneGroup(group) {
         return new MultiBinding([group]);
     }
-    static givenAny(inputs) {
+    static givenAnyChange(inputs) {
         const groups = inputs.map((input) => {
             return [input];
         });

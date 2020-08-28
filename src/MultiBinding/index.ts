@@ -9,11 +9,11 @@ export class MultiBinding extends ManagedObject {
     return new MultiBinding(groups);
   }
 
-  static givenInputs(group: MultiBindingGroup): MultiBinding {
+  static givenOneGroup(group: MultiBindingGroup): MultiBinding {
     return new MultiBinding([group]);
   }
 
-  static givenAny(inputs: ObservableBase<any>[]): MultiBinding {
+  static givenAnyChange(inputs: ObservableBase<any>[]): MultiBinding {
     const groups: MultiBindingGroup[] = inputs.map((input) => {
       return [input];
     });
