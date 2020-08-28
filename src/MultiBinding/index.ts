@@ -1,10 +1,10 @@
 import { ManagedObject } from "../ManagedObject";
-import { Observable, ObservableBase } from "../Observable";
+import { ObservableBase } from "../Observable";
 import { ObservableSet } from "../ObservableSet";
 import { SimpleEvent } from "../SimpleEvent";
 import { Handle } from "../Handle";
 
-export type MultiBindingInvalidateMode = "immediate" | "nextFrame";
+export type MultiBindingInvalidateMode = "immediate" | "lazy";
 
 export interface MultiBindingDefinition {
   inputs: ObservableBase<any>[] | ObservableSet<ObservableBase<any>>;
@@ -21,7 +21,8 @@ export class MultiBinding extends ManagedObject {
 
   private _inputHandles: Handle[] = [];
   private _invalidateMode: MultiBindingInvalidateMode;
-  private _isInvalidating: boolean = false;
+  private _willCheckNextFrame: boolean = false;
+  private _invalidatedSet = new Set();
 
   private constructor(definition: MultiBindingDefinition) {
     super();
@@ -55,10 +56,13 @@ export class MultiBinding extends ManagedObject {
     this.inputs.toValues().forEach((input) => {
       this._inputHandles.push(
         input.didChange.subscribe(() => {
+          this._invalidatedSet.add(input);
           this.onChange();
         })
       );
     });
+
+    this.invalidateNow();
   }
 
   private unsubscribeInputs() {
@@ -70,21 +74,30 @@ export class MultiBinding extends ManagedObject {
 
   private onChange() {
     if (this._invalidateMode === "immediate") {
-      this.didInvalidate.emit();
+      this.invalidateNow();
       return;
     }
 
-    if (this._isInvalidating) {
+    if (this._invalidatedSet.size === this.inputs.count) {
+      this.invalidateNow();
       return;
     }
 
-    this._isInvalidating = true;
+    if (this._willCheckNextFrame) {
+      return;
+    }
+
+    this._willCheckNextFrame = true;
 
     requestAnimationFrame(() => {
-      if (this._isInvalidating) {
-        this.didInvalidate.emit();
-        this._isInvalidating = false;
+      if (this._invalidatedSet.size > 0) {
+        this.invalidateNow();
       }
     });
+  }
+
+  private invalidateNow() {
+    this.didInvalidate.emit();
+    this._invalidatedSet.clear();
   }
 }

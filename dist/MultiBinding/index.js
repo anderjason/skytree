@@ -10,7 +10,8 @@ class MultiBinding extends ManagedObject_1.ManagedObject {
         super();
         this.didInvalidate = SimpleEvent_1.SimpleEvent.ofEmpty();
         this._inputHandles = [];
-        this._isInvalidating = false;
+        this._willCheckNextFrame = false;
+        this._invalidatedSet = new Set();
         if (ObservableSet_1.ObservableSet.isObservableSet(definition.inputs)) {
             this.inputs = definition.inputs;
         }
@@ -34,9 +35,11 @@ class MultiBinding extends ManagedObject_1.ManagedObject {
         this.unsubscribeInputs();
         this.inputs.toValues().forEach((input) => {
             this._inputHandles.push(input.didChange.subscribe(() => {
+                this._invalidatedSet.add(input);
                 this.onChange();
             }));
         });
+        this.invalidateNow();
     }
     unsubscribeInputs() {
         this._inputHandles.forEach((handle) => {
@@ -46,19 +49,26 @@ class MultiBinding extends ManagedObject_1.ManagedObject {
     }
     onChange() {
         if (this._invalidateMode === "immediate") {
-            this.didInvalidate.emit();
+            this.invalidateNow();
             return;
         }
-        if (this._isInvalidating) {
+        if (this._invalidatedSet.size === this.inputs.count) {
+            this.invalidateNow();
             return;
         }
-        this._isInvalidating = true;
+        if (this._willCheckNextFrame) {
+            return;
+        }
+        this._willCheckNextFrame = true;
         requestAnimationFrame(() => {
-            if (this._isInvalidating) {
-                this.didInvalidate.emit();
-                this._isInvalidating = false;
+            if (this._invalidatedSet.size > 0) {
+                this.invalidateNow();
             }
         });
+    }
+    invalidateNow() {
+        this.didInvalidate.emit();
+        this._invalidatedSet.clear();
     }
 }
 exports.MultiBinding = MultiBinding;
