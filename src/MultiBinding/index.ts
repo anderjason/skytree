@@ -13,6 +13,14 @@ export class MultiBinding extends ManagedObject {
     return new MultiBinding([group]);
   }
 
+  static givenAny(inputs: ObservableBase<any>[]): MultiBinding {
+    const groups: MultiBindingGroup[] = inputs.map((input) => {
+      return [input];
+    });
+
+    return new MultiBinding(groups);
+  }
+
   readonly didInvalidate = SimpleEvent.ofEmpty<void>();
 
   private _groups: MultiBindingGroup[];

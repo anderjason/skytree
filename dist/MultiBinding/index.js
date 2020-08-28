@@ -17,6 +17,12 @@ class MultiBinding extends ManagedObject_1.ManagedObject {
     static givenInputs(group) {
         return new MultiBinding([group]);
     }
+    static givenAny(inputs) {
+        const groups = inputs.map((input) => {
+            return [input];
+        });
+        return new MultiBinding(groups);
+    }
     initManagedObject() {
         this._groups.forEach((group) => {
             const invalidatedSet = new Set();

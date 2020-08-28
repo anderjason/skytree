@@ -5,6 +5,7 @@ export declare type MultiBindingGroup = ObservableBase<any>[];
 export declare class MultiBinding extends ManagedObject {
     static givenGroups(groups: MultiBindingGroup[]): MultiBinding;
     static givenInputs(group: MultiBindingGroup): MultiBinding;
+    static givenAny(inputs: ObservableBase<any>[]): MultiBinding;
     readonly didInvalidate: SimpleEvent<void>;
     private _groups;
     private _willInvalidateLater;
