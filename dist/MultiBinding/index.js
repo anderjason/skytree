@@ -46,6 +46,7 @@ class MultiBinding extends ManagedObject_1.ManagedObject {
             handle.release();
         });
         this._inputHandles = [];
+        this._invalidatedSet.clear();
     }
     onChange() {
         if (this._invalidateMode === "immediate") {

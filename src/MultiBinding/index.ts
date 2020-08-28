@@ -70,6 +70,7 @@ export class MultiBinding extends ManagedObject {
       handle.release();
     });
     this._inputHandles = [];
+    this._invalidatedSet.clear();
   }
 
   private onChange() {
