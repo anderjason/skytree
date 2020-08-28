@@ -6,6 +6,7 @@ import "./Duration/index.test";
 import "./Handle/index.test";
 import "./Instant/index.test";
 import "./ManagedObject/index.test";
+import "./MultiBinding/index.test";
 import "./NumberUtil/index.test";
 import "./Observable/index.test";
 import "./ObservableArray/index.test";

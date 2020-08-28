@@ -1,104 +1,82 @@
 import { ManagedObject } from "../ManagedObject";
 import { ObservableBase } from "../Observable";
-import { ObservableSet } from "../ObservableSet";
 import { SimpleEvent } from "../SimpleEvent";
-import { Handle } from "../Handle";
 
-export type MultiBindingInvalidateMode = "immediate" | "lazy";
-
-export interface MultiBindingDefinition {
-  inputs: ObservableBase<any>[] | ObservableSet<ObservableBase<any>>;
-  invalidateMode: MultiBindingInvalidateMode;
-}
+export type MultiBindingGroup = ObservableBase<any>[];
 
 export class MultiBinding extends ManagedObject {
-  static givenDefinition(definition: MultiBindingDefinition): MultiBinding {
-    return new MultiBinding(definition);
+  static givenGroups(groups: MultiBindingGroup[]): MultiBinding {
+    return new MultiBinding(groups);
+  }
+
+  static givenInputs(group: MultiBindingGroup): MultiBinding {
+    return new MultiBinding([group]);
   }
 
   readonly didInvalidate = SimpleEvent.ofEmpty<void>();
-  readonly inputs: ObservableSet<ObservableBase<any>>;
 
-  private _inputHandles: Handle[] = [];
-  private _invalidateMode: MultiBindingInvalidateMode;
-  private _willCheckNextFrame: boolean = false;
-  private _invalidatedSet = new Set();
+  private _groups: MultiBindingGroup[];
+  private _willInvalidateLater: boolean = false;
+  private _invalidatedSetByGroup = new Map<
+    MultiBindingGroup,
+    Set<ObservableBase<any>>
+  >();
 
-  private constructor(definition: MultiBindingDefinition) {
+  private constructor(groups: MultiBindingGroup[]) {
     super();
 
-    if (ObservableSet.isObservableSet(definition.inputs)) {
-      this.inputs = definition.inputs;
-    } else {
-      this.inputs = ObservableSet.givenValues(definition.inputs);
-    }
-
-    this._invalidateMode = definition.invalidateMode;
+    this._groups = groups;
   }
 
   initManagedObject() {
-    this.addHandle(
-      this.inputs.didChange.subscribe(() => {
-        this.subscribeInputs();
-      }, true)
-    );
+    this._groups.forEach((group) => {
+      const invalidatedSet = new Set<ObservableBase<any>>();
+      this._invalidatedSetByGroup.set(group, invalidatedSet);
 
-    this.addHandle(
-      Handle.givenCallback(() => {
-        this.unsubscribeInputs();
-      })
-    );
+      group.forEach((input) => {
+        this.addHandle(
+          input.didChange.subscribe(() => {
+            invalidatedSet.add(input);
+            this.onChange();
+          })
+        );
+      });
+    });
   }
 
-  private subscribeInputs() {
-    this.unsubscribeInputs();
-
-    this.inputs.toValues().forEach((input) => {
-      this._inputHandles.push(
-        input.didChange.subscribe(() => {
-          this._invalidatedSet.add(input);
-          this.onChange();
-        })
-      );
+  private isAnyGroupInvalidated(): boolean {
+    return this._groups.some((group) => {
+      const invalidatedSet = this._invalidatedSetByGroup.get(group);
+      return invalidatedSet.size === group.length;
     });
-
-    this.invalidateNow();
-  }
-
-  private unsubscribeInputs() {
-    this._inputHandles.forEach((handle) => {
-      handle.release();
-    });
-    this._inputHandles = [];
-    this._invalidatedSet.clear();
   }
 
   private onChange() {
-    if (this._invalidateMode === "immediate") {
+    if (this.isAnyGroupInvalidated()) {
       this.invalidateNow();
       return;
     }
 
-    if (this._invalidatedSet.size === this.inputs.count) {
-      this.invalidateNow();
+    if (this._willInvalidateLater) {
       return;
     }
 
-    if (this._willCheckNextFrame) {
-      return;
-    }
+    this._willInvalidateLater = true;
 
-    this._willCheckNextFrame = true;
-
-    requestAnimationFrame(() => {
-      if (this._invalidatedSet.size > 0) {
+    setTimeout(() => {
+      if (this._willInvalidateLater == true) {
         this.invalidateNow();
       }
-    });
+    }, 0);
   }
 
   private invalidateNow() {
     this.didInvalidate.emit();
-    this._invalidatedSet.clear();
+
+    this._willInvalidateLater = false;
+
+    for (let [group, invalidatedSet] of this._invalidatedSetByGroup) {
+      invalidatedSet.clear();
+    }
   }
 }
