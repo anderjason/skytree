@@ -53,6 +53,14 @@ export class ObservableArray<T> implements ObservableArrayBase<T> {
     return this._array.length;
   }
 
+  forEach(fn: (value: T, index: number, array: T[]) => void) {
+    this._array.forEach(fn);
+  }
+
+  map<TO>(fn: (value: T, index: number, array: T[]) => TO[]) {
+    return this._array.map(fn);
+  }
+
   addValue(value: T, index?: number): void {
     const newIndex: number = index != null ? index : this._array.length;
 

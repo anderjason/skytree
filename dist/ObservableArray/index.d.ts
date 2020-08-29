@@ -23,6 +23,8 @@ export declare class ObservableArray<T> implements ObservableArrayBase<T> {
     private _isObservableArray;
     private constructor();
     get count(): number;
+    forEach(fn: (value: T, index: number, array: T[]) => void): void;
+    map<TO>(fn: (value: T, index: number, array: T[]) => TO[]): TO[][];
     addValue(value: T, index?: number): void;
     moveValueAtIndex(oldIndex: number, newIndex: number): void;
     replaceValueAtIndex: (index: number, value: T) => void;

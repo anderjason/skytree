@@ -65,6 +65,12 @@ class ObservableArray {
     get count() {
         return this._array.length;
     }
+    forEach(fn) {
+        this._array.forEach(fn);
+    }
+    map(fn) {
+        return this._array.map(fn);
+    }
     addValue(value, index) {
         const newIndex = index != null ? index : this._array.length;
         const updates = this._array
