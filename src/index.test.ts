@@ -10,6 +10,7 @@ import "./MultiBinding/index.test";
 import "./NumberUtil/index.test";
 import "./Observable/index.test";
 import "./ObservableArray/index.test";
+import "./ObservableDict/index.test";
 import "./PathBinding/index.test";
 import "./Percent/index.test";
 import "./PromiseUtil/index.test";

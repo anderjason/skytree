@@ -13,6 +13,7 @@ import { NumberUtil } from "./NumberUtil";
 import { ObjectUtil } from "./ObjectUtil";
 import { Observable } from "./Observable";
 import { ObservableArray } from "./ObservableArray";
+import { ObservableDict } from "./ObservableDict";
 import { ObservableSet } from "./ObservableSet";
 import { PathBinding } from "./PathBinding";
 import { Percent } from "./Percent";
@@ -20,6 +21,7 @@ import { PromiseUtil } from "./PromiseUtil";
 import { RateLimitedFunction } from "./RateLimitedFunction";
 import { ReadOnlyObservable } from "./ReadOnlyObservable";
 import { ReadOnlyObservableArray } from "./ReadOnlyObservableArray";
+import { ReadOnlyObservableDict } from "./ReadOnlyObservableDict";
 import { ReadOnlyObservableSet } from "./ReadOnlyObservableSet";
 import { SequentialWorker } from "./SequentialWorker";
 import { SetUtil } from "./SetUtil";
@@ -46,6 +48,7 @@ export {
   ObjectUtil,
   Observable,
   ObservableArray,
+  ObservableDict,
   ObservableSet,
   PathBinding,
   Percent,
@@ -53,6 +56,7 @@ export {
   RateLimitedFunction,
   ReadOnlyObservable,
   ReadOnlyObservableArray,
+  ReadOnlyObservableDict,
   ReadOnlyObservableSet,
   SequentialWorker,
   SetUtil,
