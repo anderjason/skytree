@@ -15,6 +15,6 @@ export declare class ValuePath {
     toParts(): PathPart[];
     toString(): string;
     toRelativePath(descendant: ValuePath): ValuePath;
-    withRelativePath(vccPath: ValuePath): ValuePath;
     withRelativeParts(pathParts?: PathPart[]): ValuePath;
+    withRelativeString(pathString: string): ValuePath;
 }

@@ -123,19 +123,21 @@ export class ValuePath {
     return new ValuePath(descendant.toParts().slice(this.toParts().length));
   }
 
-  withRelativePath(vccPath: ValuePath): ValuePath {
-    if (vccPath == null) {
-      throw new Error("Path is required");
-    }
-
-    return new ValuePath([...this._pathParts, ...vccPath.toParts()]);
-  }
-
   withRelativeParts(pathParts: PathPart[] = []): ValuePath {
     if (pathParts == null) {
       throw new Error("Path parts are required");
     }
 
     return new ValuePath([...this._pathParts, ...pathParts]);
+  }
+
+  withRelativeString(pathString: string): ValuePath {
+    if (pathString == null) {
+      throw new Error("Path string is required");
+    }
+
+    const parts = pathString.split(".");
+
+    return new ValuePath([...this._pathParts, ...parts]);
   }
 }

@@ -90,17 +90,18 @@ class ValuePath {
         }
         return new ValuePath(descendant.toParts().slice(this.toParts().length));
     }
-    withRelativePath(vccPath) {
-        if (vccPath == null) {
-            throw new Error("Path is required");
-        }
-        return new ValuePath([...this._pathParts, ...vccPath.toParts()]);
-    }
     withRelativeParts(pathParts = []) {
         if (pathParts == null) {
             throw new Error("Path parts are required");
         }
         return new ValuePath([...this._pathParts, ...pathParts]);
+    }
+    withRelativeString(pathString) {
+        if (pathString == null) {
+            throw new Error("Path string is required");
+        }
+        const parts = pathString.split(".");
+        return new ValuePath([...this._pathParts, ...parts]);
     }
 }
 exports.ValuePath = ValuePath;
