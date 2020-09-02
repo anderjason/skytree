@@ -8,7 +8,7 @@ Test.define("ObservableDict can be created empty", () => {
 });
 
 Test.define("ObservableDict can be created from an array", () => {
-  const od = ObservableDict.givenDict({
+  const od = ObservableDict.givenValues({
     message: "hello world",
     color: "red",
   });
@@ -42,9 +42,9 @@ function assertDictChange<T>(
         JSON.stringify(actualChanges, null, 2)
       );
       Test.assertIsDeepEqual(
-        dict.toDict(),
+        dict.toValues(),
         expectedValue,
-        JSON.stringify(dict.toDict(), null, 2)
+        JSON.stringify(dict.toValues(), null, 2)
       );
 
       resolve();
@@ -55,7 +55,7 @@ function assertDictChange<T>(
 }
 
 Test.define("ObservableDict can add an item", async () => {
-  const input = ObservableDict.givenDict({
+  const input = ObservableDict.givenValues({
     message: "one",
   });
 
@@ -77,7 +77,7 @@ Test.define("ObservableDict can add an item", async () => {
 });
 
 Test.define("ObservableDict can update an existing key", async () => {
-  const input = ObservableDict.givenDict({
+  const input = ObservableDict.givenValues({
     message: "one",
   });
 
@@ -99,7 +99,7 @@ Test.define("ObservableDict can update an existing key", async () => {
 });
 
 Test.define("ObservableArray can remove a key", async () => {
-  const input = ObservableDict.givenDict({
+  const input = ObservableDict.givenValues({
     message: "one",
     color: "red",
   });
@@ -121,7 +121,7 @@ Test.define("ObservableArray can remove a key", async () => {
 });
 
 Test.define("ObservableDict can be cleared", async () => {
-  const input = ObservableDict.givenDict({
+  const input = ObservableDict.givenValues({
     message: "one",
     color: "red",
   });

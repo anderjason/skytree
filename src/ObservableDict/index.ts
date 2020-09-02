@@ -31,7 +31,7 @@ export interface ObservableDictBase<T = unknown> {
 
   hasKey(key: string): boolean;
   toOptionalValueGivenKey(key: string): T;
-  toDict(): Dict<T>;
+  toValues(): Dict<T>;
 }
 
 export class ObservableDict<T = unknown> implements ObservableDictBase<T> {
@@ -42,8 +42,8 @@ export class ObservableDict<T = unknown> implements ObservableDictBase<T> {
     return new ObservableDict({});
   }
 
-  static givenDict<T>(dict: Dict<T>): ObservableDict<T> {
-    return new ObservableDict(dict);
+  static givenValues<T>(values: Dict<T>): ObservableDict<T> {
+    return new ObservableDict(values);
   }
 
   static isObservableDict(input: any): input is ObservableDictBase<unknown> {
@@ -93,7 +93,7 @@ export class ObservableDict<T = unknown> implements ObservableDictBase<T> {
 
     this._map.set(key, value);
 
-    this.didChange.emit(this.toDict());
+    this.didChange.emit(this.toValues());
     this.didChangeSteps.emit(updates);
   }
 
@@ -112,7 +112,7 @@ export class ObservableDict<T = unknown> implements ObservableDictBase<T> {
 
     this._map.delete(key);
 
-    this.didChange.emit(this.toDict());
+    this.didChange.emit(this.toValues());
     this.didChangeSteps.emit(updates);
   }
 
@@ -174,7 +174,7 @@ export class ObservableDict<T = unknown> implements ObservableDictBase<T> {
       }
     }
 
-    this.didChange.emit(this.toDict());
+    this.didChange.emit(this.toValues());
     this.didChangeSteps.emit(updates);
   }
 
@@ -186,7 +186,7 @@ export class ObservableDict<T = unknown> implements ObservableDictBase<T> {
     return this._map.get(key);
   }
 
-  toDict(): Dict<T> {
+  toValues(): Dict<T> {
     const dict: Dict<T> = {};
     for (let [key, value] of this._map) {
       dict[key] = value;

@@ -41,7 +41,7 @@ export class ReadOnlyObservableDict<T = unknown>
     return this._observableDict.toOptionalValueGivenKey(key);
   }
 
-  toDict(): Dict<T> {
-    return this._observableDict.toDict();
+  toValues(): Dict<T> {
+    return this._observableDict.toValues();
   }
 }

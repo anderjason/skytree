@@ -4,6 +4,7 @@ import { ManagedObject } from "../ManagedObject";
 import { Handle } from "../Handle";
 import { ObservableArray } from "../ObservableArray";
 import { ObservableSet } from "../ObservableSet";
+import { ObservableDict } from "../ObservableDict";
 import { ReadOnlyObservable } from "../ReadOnlyObservable";
 
 export interface PathBindingDefinition {
@@ -66,7 +67,8 @@ export class PathBinding extends ManagedObject {
     while (object != null && index < length) {
       if (
         Observable.isObservable(object) ||
-        ObservableArray.isObservableArray(object)
+        ObservableArray.isObservableArray(object) ||
+        ObservableDict.isObservableDict(object)
       ) {
         this._pathHandles.push(
           object.didChange.subscribe(() => {
@@ -82,6 +84,12 @@ export class PathBinding extends ManagedObject {
           object = null;
         } else {
           object = object.toValues()[nextPathPart as number];
+        }
+      } else if (ObservableDict.isObservableDict(object)) {
+        if (Number.isInteger(nextPathPart)) {
+          object = null;
+        } else {
+          object = object.toOptionalValueGivenKey(nextPathPart as string);
         }
       } else if (ObservableSet.isObservableSet(object)) {
         object = null;

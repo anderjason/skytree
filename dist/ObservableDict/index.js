@@ -26,8 +26,8 @@ class ObservableDict {
     static ofEmpty() {
         return new ObservableDict({});
     }
-    static givenDict(dict) {
-        return new ObservableDict(dict);
+    static givenValues(values) {
+        return new ObservableDict(values);
     }
     static isObservableDict(input) {
         if (input == null) {
@@ -59,7 +59,7 @@ class ObservableDict {
             });
         }
         this._map.set(key, value);
-        this.didChange.emit(this.toDict());
+        this.didChange.emit(this.toValues());
         this.didChangeSteps.emit(updates);
     }
     removeKey(key) {
@@ -74,7 +74,7 @@ class ObservableDict {
             },
         ];
         this._map.delete(key);
-        this.didChange.emit(this.toDict());
+        this.didChange.emit(this.toValues());
         this.didChangeSteps.emit(updates);
     }
     clear() {
@@ -125,7 +125,7 @@ class ObservableDict {
                 this._map.delete(key);
             }
         }
-        this.didChange.emit(this.toDict());
+        this.didChange.emit(this.toValues());
         this.didChangeSteps.emit(updates);
     }
     hasKey(key) {
@@ -134,7 +134,7 @@ class ObservableDict {
     toOptionalValueGivenKey(key) {
         return this._map.get(key);
     }
-    toDict() {
+    toValues() {
         const dict = {};
         for (let [key, value] of this._map) {
             dict[key] = value;

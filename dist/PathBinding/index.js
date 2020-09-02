@@ -6,6 +6,7 @@ const ManagedObject_1 = require("../ManagedObject");
 const Handle_1 = require("../Handle");
 const ObservableArray_1 = require("../ObservableArray");
 const ObservableSet_1 = require("../ObservableSet");
+const ObservableDict_1 = require("../ObservableDict");
 const ReadOnlyObservable_1 = require("../ReadOnlyObservable");
 class PathBinding extends ManagedObject_1.ManagedObject {
     constructor(definition) {
@@ -25,7 +26,8 @@ class PathBinding extends ManagedObject_1.ManagedObject {
             let object = this._input;
             while (object != null && index < length) {
                 if (Observable_1.Observable.isObservable(object) ||
-                    ObservableArray_1.ObservableArray.isObservableArray(object)) {
+                    ObservableArray_1.ObservableArray.isObservableArray(object) ||
+                    ObservableDict_1.ObservableDict.isObservableDict(object)) {
                     this._pathHandles.push(object.didChange.subscribe(() => {
                         this.rebuild();
                     }));
@@ -37,6 +39,14 @@ class PathBinding extends ManagedObject_1.ManagedObject {
                     }
                     else {
                         object = object.toValues()[nextPathPart];
+                    }
+                }
+                else if (ObservableDict_1.ObservableDict.isObservableDict(object)) {
+                    if (Number.isInteger(nextPathPart)) {
+                        object = null;
+                    }
+                    else {
+                        object = object.toOptionalValueGivenKey(nextPathPart);
                     }
                 }
                 else if (ObservableSet_1.ObservableSet.isObservableSet(object)) {

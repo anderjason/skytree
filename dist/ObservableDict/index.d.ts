@@ -14,13 +14,13 @@ export interface ObservableDictBase<T = unknown> {
     readonly didChangeSteps: SimpleEvent<ObservableDictChange<T>[]>;
     hasKey(key: string): boolean;
     toOptionalValueGivenKey(key: string): T;
-    toDict(): Dict<T>;
+    toValues(): Dict<T>;
 }
 export declare class ObservableDict<T = unknown> implements ObservableDictBase<T> {
     readonly didChange: SimpleEvent<Dict<T>>;
     readonly didChangeSteps: SimpleEvent<ObservableDictChange<T>[]>;
     static ofEmpty<T>(): ObservableDict<T>;
-    static givenDict<T>(dict: Dict<T>): ObservableDict<T>;
+    static givenValues<T>(values: Dict<T>): ObservableDict<T>;
     static isObservableDict(input: any): input is ObservableDictBase<unknown>;
     private _map;
     private _isObservableDict;
@@ -32,5 +32,5 @@ export declare class ObservableDict<T = unknown> implements ObservableDictBase<T
     sync(input: Dict<T>): void;
     hasKey(key: string): boolean;
     toOptionalValueGivenKey(key: string): T | undefined;
-    toDict(): Dict<T>;
+    toValues(): Dict<T>;
 }
