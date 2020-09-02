@@ -6,7 +6,7 @@ import { ObservableArray } from "../ObservableArray";
 import { ObservableSet } from "../ObservableSet";
 import { ObservableDict } from "../ObservableDict";
 import { ReadOnlyObservable } from "../ReadOnlyObservable";
-import { ReadOnlyObservableArray } from "..";
+import { ReadOnlyObservableArray, ObjectUtil } from "..";
 
 export interface PathBindingDefinition {
   input: any;
@@ -44,7 +44,7 @@ export class PathBinding extends ManagedObject {
     if (Observable.isObservable(definition.output)) {
       this._output = definition.output;
     } else {
-      this._output = Observable.ofEmpty(Observable.isStrictEqual);
+      this._output = Observable.ofEmpty(ObjectUtil.objectIsDeepEqual);
     }
 
     this.output = ReadOnlyObservable.givenObservable(this._output);

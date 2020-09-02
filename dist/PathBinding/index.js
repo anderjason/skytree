@@ -9,6 +9,7 @@ const ObservableArray_1 = require("../ObservableArray");
 const ObservableSet_1 = require("../ObservableSet");
 const ObservableDict_1 = require("../ObservableDict");
 const ReadOnlyObservable_1 = require("../ReadOnlyObservable");
+const __1 = require("..");
 class PathBinding extends ManagedObject_1.ManagedObject {
     constructor(definition) {
         super();
@@ -24,7 +25,7 @@ class PathBinding extends ManagedObject_1.ManagedObject {
             this._output = definition.output;
         }
         else {
-            this._output = Observable_1.Observable.ofEmpty(Observable_1.Observable.isStrictEqual);
+            this._output = Observable_1.Observable.ofEmpty(__1.ObjectUtil.objectIsDeepEqual);
         }
         this.output = ReadOnlyObservable_1.ReadOnlyObservable.givenObservable(this._output);
     }

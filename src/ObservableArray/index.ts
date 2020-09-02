@@ -1,5 +1,6 @@
 import { SimpleEvent } from "../SimpleEvent";
 import { ArrayUtil } from "../ArrayUtil";
+import { ObjectUtil } from "..";
 
 export interface ObservableArrayChange<T> {
   type: "add" | "remove" | "move";
