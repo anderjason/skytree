@@ -44,10 +44,14 @@ class ObservableDict {
     setValue(key, value) {
         const updates = [];
         if (this._map.has(key)) {
+            const oldValue = this._map.get(key);
+            if (oldValue === value) {
+                return;
+            }
             updates.push({
                 type: "update",
                 key,
-                oldValue: this._map.get(key),
+                oldValue,
                 newValue: value,
             });
         }

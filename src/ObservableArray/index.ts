@@ -148,6 +148,10 @@ export class ObservableArray<T> implements ObservableArrayBase<T> {
 
     const oldValue = this._array[index];
 
+    if (oldValue === value) {
+      return;
+    }
+
     const updates: ObservableArrayChange<T>[] = [];
 
     if (oldValue != null) {

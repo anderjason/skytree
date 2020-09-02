@@ -78,10 +78,16 @@ export class ObservableDict<T = unknown> implements ObservableDictBase<T> {
     const updates: ObservableDictChange<T>[] = [];
 
     if (this._map.has(key)) {
+      const oldValue = this._map.get(key);
+
+      if (oldValue === value) {
+        return;
+      }
+
       updates.push({
         type: "update",
         key,
-        oldValue: this._map.get(key),
+        oldValue,
         newValue: value,
       });
     } else {
