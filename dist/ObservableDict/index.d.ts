@@ -14,6 +14,7 @@ export interface ObservableDictBase<T = unknown> {
     readonly didChangeSteps: SimpleEvent<ObservableDictChange<T>[]>;
     hasKey(key: string): boolean;
     toOptionalValueGivenKey(key: string): T;
+    toKeys(): Set<string>;
     toValues(): Dict<T>;
 }
 export declare class ObservableDict<T = unknown> implements ObservableDictBase<T> {
@@ -32,5 +33,6 @@ export declare class ObservableDict<T = unknown> implements ObservableDictBase<T
     sync(input: Dict<T>): void;
     hasKey(key: string): boolean;
     toOptionalValueGivenKey(key: string): T | undefined;
+    toKeys(): Set<string>;
     toValues(): Dict<T>;
 }

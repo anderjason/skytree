@@ -31,6 +31,7 @@ export interface ObservableDictBase<T = unknown> {
 
   hasKey(key: string): boolean;
   toOptionalValueGivenKey(key: string): T;
+  toKeys(): Set<string>;
   toValues(): Dict<T>;
 }
 
@@ -184,6 +185,10 @@ export class ObservableDict<T = unknown> implements ObservableDictBase<T> {
 
   toOptionalValueGivenKey(key: string): T | undefined {
     return this._map.get(key);
+  }
+
+  toKeys(): Set<string> {
+    return new Set(this._map.keys());
   }
 
   toValues(): Dict<T> {

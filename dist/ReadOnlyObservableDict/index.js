@@ -24,6 +24,9 @@ class ReadOnlyObservableDict {
     toOptionalValueGivenKey(key) {
         return this._observableDict.toOptionalValueGivenKey(key);
     }
+    toKeys() {
+        return this._observableDict.toKeys();
+    }
     toValues() {
         return this._observableDict.toValues();
     }

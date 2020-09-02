@@ -134,6 +134,9 @@ class ObservableDict {
     toOptionalValueGivenKey(key) {
         return this._map.get(key);
     }
+    toKeys() {
+        return new Set(this._map.keys());
+    }
     toValues() {
         const dict = {};
         for (let [key, value] of this._map) {

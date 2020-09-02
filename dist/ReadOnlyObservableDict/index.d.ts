@@ -10,5 +10,6 @@ export declare class ReadOnlyObservableDict<T = unknown> implements ObservableDi
     get didChangeSteps(): SimpleEvent<ObservableDictChange<T>[]>;
     hasKey(key: string): boolean;
     toOptionalValueGivenKey(key: string): T | undefined;
+    toKeys(): Set<string>;
     toValues(): Dict<T>;
 }
