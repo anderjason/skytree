@@ -25,10 +25,15 @@ export class PathBinding extends ManagedObject {
 
   readonly path: ValuePath;
 
+  private _matchedPath = Observable.ofEmpty<ValuePath>(ValuePath.isEqual);
+  readonly matchedPath = ReadOnlyObservable.givenObservable(this._matchedPath);
+
+  private _isMatched = Observable.ofEmpty<boolean>(Observable.isStrictEqual);
+  readonly isMatched = ReadOnlyObservable.givenObservable(this._isMatched);
+
   private _input: any;
   private _pathHandles: Handle[] = [];
   private _currentBuildId: number = 0;
-  private _matchedPath: PathPart[] = [];
 
   private constructor(definition: PathBindingDefinition) {
     super();
@@ -43,10 +48,6 @@ export class PathBinding extends ManagedObject {
     }
 
     this.output = ReadOnlyObservable.givenObservable(this._output);
-  }
-
-  get matchedPath(): ValuePath {
-    return ValuePath.givenParts(this._matchedPath);
   }
 
   initManagedObject() {
@@ -82,7 +83,7 @@ export class PathBinding extends ManagedObject {
     let inputAtPathStep: any = this._input;
     let isMatch = inputAtPathStep != null;
 
-    this._matchedPath = [];
+    let matchedPathParts = [];
 
     while (isMatch) {
       if (
@@ -130,26 +131,30 @@ export class PathBinding extends ManagedObject {
 
       if (nextInput != null) {
         inputAtPathStep = nextInput;
-        this._matchedPath.push(nextPathStep);
+        matchedPathParts.push(nextPathStep);
       } else {
         isMatch = false;
       }
     }
 
-    if (!this.matchedPath.isEqual(this.path)) {
+    this._matchedPath.setValue(ValuePath.givenParts(matchedPathParts));
+    const isMatched = this.matchedPath.value.isEqual(this.path);
+
+    if (isMatched) {
+      const matchedInput = inputAtPathStep;
+      if (Observable.isObservable(matchedInput)) {
+        this._output.setValue(matchedInput.value);
+      } else if (ObservableArray.isObservableArray(matchedInput)) {
+        this._output.setValue(matchedInput.toValues());
+      } else if (ObservableDict.isObservableDict(matchedInput)) {
+        this._output.setValue(matchedInput.toValues());
+      } else {
+        this._output.setValue(matchedInput);
+      }
+    } else {
       this._output.setValue(undefined);
-      return;
     }
 
-    const matchedInput = inputAtPathStep;
-    if (Observable.isObservable(matchedInput)) {
-      this._output.setValue(matchedInput.value);
-    } else if (ObservableArray.isObservableArray(matchedInput)) {
-      this._output.setValue(matchedInput.toValues());
-    } else if (ObservableDict.isObservableDict(matchedInput)) {
-      this._output.setValue(matchedInput.toValues());
-    } else {
-      this._output.setValue(matchedInput);
-    }
+    this._isMatched.setValue(isMatched);
   }
 }

@@ -12,12 +12,14 @@ export declare class PathBinding extends ManagedObject {
     private _output;
     readonly output: ReadOnlyObservable<unknown>;
     readonly path: ValuePath;
+    private _matchedPath;
+    readonly matchedPath: ReadOnlyObservable<ValuePath>;
+    private _isMatched;
+    readonly isMatched: ReadOnlyObservable<boolean>;
     private _input;
     private _pathHandles;
     private _currentBuildId;
-    private _matchedPath;
     private constructor();
-    get matchedPath(): ValuePath;
     initManagedObject(): void;
     private clearPathHandles;
     private rebuild;
