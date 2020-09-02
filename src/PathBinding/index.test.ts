@@ -5,23 +5,22 @@ import { Observable } from "../Observable";
 import { ObjectUtil } from "../ObjectUtil";
 import { Handle } from "../Handle";
 import { ObservableArray } from "../ObservableArray";
+import { ObservableDict } from "..";
 
-Test.define("PathBinding can observe a single value", () => {
-  const handles: Handle[] = [];
-
+Test.define("PathBinding can observe a single value", (obj) => {
   const input = Observable.givenValue("hello");
-  const pathBinding = PathBinding.givenDefinition({
-    input,
-    path: ValuePath.ofEmpty(),
-  });
-
-  handles.push(pathBinding.init());
+  const pathBinding = obj.addManagedObject(
+    PathBinding.givenDefinition({
+      input,
+      path: ValuePath.ofEmpty(),
+    })
+  );
 
   Test.assertIsDeepEqual(pathBinding.output.value, "hello");
 
   let outputValues: unknown[] = [];
 
-  handles.push(
+  obj.addHandle(
     pathBinding.output.didChange.subscribe((newValue) => {
       outputValues.push(newValue);
     })
@@ -30,11 +29,7 @@ Test.define("PathBinding can observe a single value", () => {
   input.setValue("world");
   input.setValue("message");
 
-  handles.forEach((handle) => {
-    handle.release();
-  });
-
-  Test.assert(ObjectUtil.objectIsDeepEqual(outputValues, ["world", "message"]));
+  Test.assertIsDeepEqual(outputValues, ["world", "message"]);
 });
 
 Test.define("PathBinding can observe undefined", () => {
@@ -315,14 +310,12 @@ Test.define("PathBinding can observe an observable at a complex path", () => {
     handle.release();
   });
 
-  Test.assert(
-    ObjectUtil.objectIsDeepEqual(outputValues, [
-      "world",
-      "message",
-      undefined,
-      "again",
-    ])
-  );
+  Test.assertIsDeepEqual(outputValues, [
+    "world",
+    "message",
+    undefined,
+    "again",
+  ]);
 });
 
 Test.define("PathBinding only changes once for each input change", (obj) => {
@@ -344,10 +337,17 @@ Test.define("PathBinding only changes once for each input change", (obj) => {
   );
 
   input.setValue({
-    some: {
-      path: "test",
-    },
+    some: ObservableDict.givenValues({
+      path: ObservableArray.givenValues([1, 2, 3]),
+    }),
   });
 
-  Test.assert(changeCount === 1);
+  input.setValue({
+    some: ObservableDict.givenValues({
+      path: ObservableArray.givenValues([4, 5, 6]),
+    }),
+  });
+
+  Test.assert(changeCount === 2);
+  Test.assertIsDeepEqual([4, 5, 6], pathBinding.output.value);
 });

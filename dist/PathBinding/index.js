@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PathBinding = void 0;
 const Observable_1 = require("../Observable");
+const ValuePath_1 = require("../ValuePath");
 const ManagedObject_1 = require("../ManagedObject");
 const Handle_1 = require("../Handle");
 const ObservableArray_1 = require("../ObservableArray");
@@ -13,8 +14,9 @@ class PathBinding extends ManagedObject_1.ManagedObject {
         super();
         this._pathHandles = [];
         this._currentBuildId = 0;
+        this._matchedPath = [];
         this._input = definition.input;
-        this._path = definition.path;
+        this.path = definition.path;
         if (Observable_1.Observable.isObservable(definition.output)) {
             this._output = definition.output;
         }
@@ -26,10 +28,12 @@ class PathBinding extends ManagedObject_1.ManagedObject {
     static givenDefinition(definition) {
         return new PathBinding(definition);
     }
+    get matchedPath() {
+        return ValuePath_1.ValuePath.givenParts(this._matchedPath);
+    }
     initManagedObject() {
         this.rebuild();
         this.addHandle(Handle_1.Handle.givenCallback(() => {
-            console.log("uninit PathBinding");
             this.clearPathHandles();
         }));
     }
@@ -47,10 +51,11 @@ class PathBinding extends ManagedObject_1.ManagedObject {
         const thisBuildId = this._currentBuildId;
         this.clearPathHandles();
         let index = 0;
-        let parts = this._path.toParts();
-        let length = parts.length;
+        let parts = this.path.toParts();
         let inputAtPathStep = this._input;
-        while (inputAtPathStep != null && index < length) {
+        let isMatch = inputAtPathStep != null;
+        this._matchedPath = [];
+        while (isMatch) {
             if (Observable_1.Observable.isObservable(inputAtPathStep) ||
                 ObservableArray_1.ObservableArray.isObservableArray(inputAtPathStep) ||
                 ObservableDict_1.ObservableDict.isObservableDict(inputAtPathStep)) {
@@ -60,45 +65,61 @@ class PathBinding extends ManagedObject_1.ManagedObject {
                     }
                 }));
             }
-            const nextPathPart = parts[index++];
+            const nextPathStep = parts[index++];
+            let nextInput;
             if (ObservableArray_1.ObservableArray.isObservableArray(inputAtPathStep)) {
-                if (!Number.isInteger(nextPathPart)) {
-                    inputAtPathStep = null;
+                if (!Number.isInteger(nextPathStep)) {
+                    nextInput = null; // stop here
                 }
                 else {
-                    inputAtPathStep = inputAtPathStep.toValues()[nextPathPart];
+                    nextInput = inputAtPathStep.toValues()[nextPathStep];
                 }
             }
             else if (ObservableDict_1.ObservableDict.isObservableDict(inputAtPathStep)) {
-                if (Number.isInteger(nextPathPart)) {
-                    inputAtPathStep = null;
+                if (Number.isInteger(nextPathStep)) {
+                    nextInput = null;
                 }
                 else {
-                    inputAtPathStep = inputAtPathStep.toOptionalValueGivenKey(nextPathPart);
+                    nextInput = inputAtPathStep.toOptionalValueGivenKey(nextPathStep);
                 }
             }
             else if (ObservableSet_1.ObservableSet.isObservableSet(inputAtPathStep)) {
-                inputAtPathStep = null;
+                nextInput = null;
             }
             else if (Observable_1.Observable.isObservable(inputAtPathStep)) {
                 const objectValue = inputAtPathStep.value;
                 if (objectValue != null) {
-                    inputAtPathStep = objectValue[nextPathPart];
+                    nextInput = objectValue[nextPathStep];
                 }
             }
             else {
                 // should be regular object or array
-                inputAtPathStep = inputAtPathStep[nextPathPart];
+                nextInput = inputAtPathStep[nextPathStep];
+            }
+            if (nextInput != null) {
+                inputAtPathStep = nextInput;
+                this._matchedPath.push(nextPathStep);
+            }
+            else {
+                isMatch = false;
             }
         }
-        if (Observable_1.Observable.isObservable(inputAtPathStep)) {
-            console.log("subscribe B");
-            this._pathHandles.push(inputAtPathStep.didChange.subscribe((targetValue) => {
-                this._output.setValue(targetValue);
-            }, true));
+        if (!this.matchedPath.isEqual(this.path)) {
+            this._output.setValue(undefined);
+            return;
+        }
+        const matchedInput = inputAtPathStep;
+        if (Observable_1.Observable.isObservable(matchedInput)) {
+            this._output.setValue(matchedInput.value);
+        }
+        else if (ObservableArray_1.ObservableArray.isObservableArray(matchedInput)) {
+            this._output.setValue(matchedInput.toValues());
+        }
+        else if (ObservableDict_1.ObservableDict.isObservableDict(matchedInput)) {
+            this._output.setValue(matchedInput.toValues());
         }
         else {
-            this._output.setValue(inputAtPathStep);
+            this._output.setValue(matchedInput);
         }
     }
 }

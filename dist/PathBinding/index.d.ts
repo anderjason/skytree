@@ -11,11 +11,13 @@ export declare class PathBinding extends ManagedObject {
     static givenDefinition(definition: PathBindingDefinition): PathBinding;
     private _output;
     readonly output: ReadOnlyObservable<unknown>;
+    readonly path: ValuePath;
     private _input;
-    private _path;
     private _pathHandles;
     private _currentBuildId;
+    private _matchedPath;
     private constructor();
+    get matchedPath(): ValuePath;
     initManagedObject(): void;
     private clearPathHandles;
     private rebuild;
