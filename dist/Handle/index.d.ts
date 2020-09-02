@@ -1,6 +1,6 @@
-import { Observable } from "../Observable";
+import { ObservableSet } from "../ObservableSet";
 export declare class Handle {
-    static readonly unreleasedCount: Observable<number>;
+    static readonly unreleasedSet: ObservableSet<Handle>;
     static givenCallback(callback: () => void): Handle;
     private _callback;
     private constructor();

@@ -324,3 +324,30 @@ Test.define("PathBinding can observe an observable at a complex path", () => {
     ])
   );
 });
+
+Test.define("PathBinding only changes once for each input change", (obj) => {
+  const input = Observable.ofEmpty<any>();
+
+  const pathBinding = obj.addManagedObject(
+    PathBinding.givenDefinition({
+      input,
+      path: ValuePath.givenParts(["some", "path"]),
+    })
+  );
+
+  let changeCount = 0;
+
+  obj.addHandle(
+    pathBinding.output.didChange.subscribe(() => {
+      changeCount += 1;
+    })
+  );
+
+  input.setValue({
+    some: {
+      path: "test",
+    },
+  });
+
+  Test.assert(changeCount === 1);
+});

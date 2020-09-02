@@ -25,6 +25,7 @@ export class PathBinding extends ManagedObject {
   private _input: any;
   private _path: ValuePath;
   private _pathHandles: Handle[] = [];
+  private _currentBuildId: number = 0;
 
   private constructor(definition: PathBindingDefinition) {
     super();
@@ -44,17 +45,29 @@ export class PathBinding extends ManagedObject {
   initManagedObject() {
     this.rebuild();
 
-    this.addHandle(Handle.givenCallback(this.clearPathHandles));
+    this.addHandle(
+      Handle.givenCallback(() => {
+        console.log("uninit PathBinding");
+        this.clearPathHandles();
+      })
+    );
   }
 
-  private clearPathHandles = () => {
+  private clearPathHandles() {
     this._pathHandles.forEach((handle) => {
       handle.release();
     });
     this._pathHandles = [];
-  };
+  }
 
-  private rebuild = () => {
+  private rebuild(): void {
+    this._currentBuildId += 1;
+    if (this._currentBuildId > 1000) {
+      this._currentBuildId = 0;
+    }
+
+    const thisBuildId = this._currentBuildId;
+
     this.clearPathHandles();
 
     let index = 0;
@@ -62,58 +75,61 @@ export class PathBinding extends ManagedObject {
 
     let length = parts.length;
 
-    let object: any = this._input;
+    let inputAtPathStep: any = this._input;
 
-    while (object != null && index < length) {
+    while (inputAtPathStep != null && index < length) {
       if (
-        Observable.isObservable(object) ||
-        ObservableArray.isObservableArray(object) ||
-        ObservableDict.isObservableDict(object)
+        Observable.isObservable(inputAtPathStep) ||
+        ObservableArray.isObservableArray(inputAtPathStep) ||
+        ObservableDict.isObservableDict(inputAtPathStep)
       ) {
         this._pathHandles.push(
-          object.didChange.subscribe(() => {
-            this.rebuild();
+          inputAtPathStep.didChange.subscribe(() => {
+            if (this._currentBuildId === thisBuildId) {
+              this.rebuild();
+            }
           })
         );
       }
 
       const nextPathPart = parts[index++];
 
-      if (ObservableArray.isObservableArray(object)) {
+      if (ObservableArray.isObservableArray(inputAtPathStep)) {
         if (!Number.isInteger(nextPathPart)) {
-          object = null;
+          inputAtPathStep = null;
         } else {
-          object = object.toValues()[nextPathPart as number];
+          inputAtPathStep = inputAtPathStep.toValues()[nextPathPart as number];
         }
-      } else if (ObservableDict.isObservableDict(object)) {
+      } else if (ObservableDict.isObservableDict(inputAtPathStep)) {
         if (Number.isInteger(nextPathPart)) {
-          object = null;
+          inputAtPathStep = null;
         } else {
-          object = object.toOptionalValueGivenKey(nextPathPart as string);
+          inputAtPathStep = inputAtPathStep.toOptionalValueGivenKey(
+            nextPathPart as string
+          );
         }
-      } else if (ObservableSet.isObservableSet(object)) {
-        object = null;
-      } else if (Observable.isObservable(object)) {
-        const objectValue = object.value as any;
+      } else if (ObservableSet.isObservableSet(inputAtPathStep)) {
+        inputAtPathStep = null;
+      } else if (Observable.isObservable(inputAtPathStep)) {
+        const objectValue = inputAtPathStep.value as any;
         if (objectValue != null) {
-          object = objectValue[nextPathPart];
+          inputAtPathStep = objectValue[nextPathPart];
         }
       } else {
         // should be regular object or array
-        object = object[nextPathPart];
+        inputAtPathStep = inputAtPathStep[nextPathPart];
       }
     }
 
-    if (Observable.isObservable(object)) {
+    if (Observable.isObservable(inputAtPathStep)) {
+      console.log("subscribe B");
       this._pathHandles.push(
-        object.didChange.subscribe((targetValue) => {
+        inputAtPathStep.didChange.subscribe((targetValue) => {
           this._output.setValue(targetValue);
         }, true)
       );
     } else {
-      this._output.setValue(object);
+      this._output.setValue(inputAtPathStep);
     }
-
-    return index && index == length ? object : undefined;
-  };
+  }
 }

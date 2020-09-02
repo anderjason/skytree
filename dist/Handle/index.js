@@ -1,14 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Handle = void 0;
-const Observable_1 = require("../Observable");
+const ObservableSet_1 = require("../ObservableSet");
 class Handle {
     constructor(callback) {
         this._callback = callback;
     }
     static givenCallback(callback) {
-        this.unreleasedCount.setValue(this.unreleasedCount.value + 1);
-        return new Handle(callback);
+        const handle = new Handle(callback);
+        this.unreleasedSet.addValue(handle);
+        return handle;
     }
     get isReleased() {
         return this._callback == null;
@@ -17,13 +18,12 @@ class Handle {
         if (this._callback == null) {
             return;
         }
+        Handle.unreleasedSet.removeValue(this);
         const fn = this._callback;
         this._callback = undefined;
         fn();
-        Handle.unreleasedCount.setValue(Handle.unreleasedCount.value - 1);
-        return;
     }
 }
 exports.Handle = Handle;
-Handle.unreleasedCount = Observable_1.Observable.givenValue(0);
+Handle.unreleasedSet = ObservableSet_1.ObservableSet.ofEmpty();
 //# sourceMappingURL=index.js.map

@@ -12,67 +12,7 @@ class PathBinding extends ManagedObject_1.ManagedObject {
     constructor(definition) {
         super();
         this._pathHandles = [];
-        this.clearPathHandles = () => {
-            this._pathHandles.forEach((handle) => {
-                handle.release();
-            });
-            this._pathHandles = [];
-        };
-        this.rebuild = () => {
-            this.clearPathHandles();
-            let index = 0;
-            let parts = this._path.toParts();
-            let length = parts.length;
-            let object = this._input;
-            while (object != null && index < length) {
-                if (Observable_1.Observable.isObservable(object) ||
-                    ObservableArray_1.ObservableArray.isObservableArray(object) ||
-                    ObservableDict_1.ObservableDict.isObservableDict(object)) {
-                    this._pathHandles.push(object.didChange.subscribe(() => {
-                        this.rebuild();
-                    }));
-                }
-                const nextPathPart = parts[index++];
-                if (ObservableArray_1.ObservableArray.isObservableArray(object)) {
-                    if (!Number.isInteger(nextPathPart)) {
-                        object = null;
-                    }
-                    else {
-                        object = object.toValues()[nextPathPart];
-                    }
-                }
-                else if (ObservableDict_1.ObservableDict.isObservableDict(object)) {
-                    if (Number.isInteger(nextPathPart)) {
-                        object = null;
-                    }
-                    else {
-                        object = object.toOptionalValueGivenKey(nextPathPart);
-                    }
-                }
-                else if (ObservableSet_1.ObservableSet.isObservableSet(object)) {
-                    object = null;
-                }
-                else if (Observable_1.Observable.isObservable(object)) {
-                    const objectValue = object.value;
-                    if (objectValue != null) {
-                        object = objectValue[nextPathPart];
-                    }
-                }
-                else {
-                    // should be regular object or array
-                    object = object[nextPathPart];
-                }
-            }
-            if (Observable_1.Observable.isObservable(object)) {
-                this._pathHandles.push(object.didChange.subscribe((targetValue) => {
-                    this._output.setValue(targetValue);
-                }, true));
-            }
-            else {
-                this._output.setValue(object);
-            }
-            return index && index == length ? object : undefined;
-        };
+        this._currentBuildId = 0;
         this._input = definition.input;
         this._path = definition.path;
         if (Observable_1.Observable.isObservable(definition.output)) {
@@ -88,7 +28,78 @@ class PathBinding extends ManagedObject_1.ManagedObject {
     }
     initManagedObject() {
         this.rebuild();
-        this.addHandle(Handle_1.Handle.givenCallback(this.clearPathHandles));
+        this.addHandle(Handle_1.Handle.givenCallback(() => {
+            console.log("uninit PathBinding");
+            this.clearPathHandles();
+        }));
+    }
+    clearPathHandles() {
+        this._pathHandles.forEach((handle) => {
+            handle.release();
+        });
+        this._pathHandles = [];
+    }
+    rebuild() {
+        this._currentBuildId += 1;
+        if (this._currentBuildId > 1000) {
+            this._currentBuildId = 0;
+        }
+        const thisBuildId = this._currentBuildId;
+        this.clearPathHandles();
+        let index = 0;
+        let parts = this._path.toParts();
+        let length = parts.length;
+        let inputAtPathStep = this._input;
+        while (inputAtPathStep != null && index < length) {
+            if (Observable_1.Observable.isObservable(inputAtPathStep) ||
+                ObservableArray_1.ObservableArray.isObservableArray(inputAtPathStep) ||
+                ObservableDict_1.ObservableDict.isObservableDict(inputAtPathStep)) {
+                this._pathHandles.push(inputAtPathStep.didChange.subscribe(() => {
+                    if (this._currentBuildId === thisBuildId) {
+                        this.rebuild();
+                    }
+                }));
+            }
+            const nextPathPart = parts[index++];
+            if (ObservableArray_1.ObservableArray.isObservableArray(inputAtPathStep)) {
+                if (!Number.isInteger(nextPathPart)) {
+                    inputAtPathStep = null;
+                }
+                else {
+                    inputAtPathStep = inputAtPathStep.toValues()[nextPathPart];
+                }
+            }
+            else if (ObservableDict_1.ObservableDict.isObservableDict(inputAtPathStep)) {
+                if (Number.isInteger(nextPathPart)) {
+                    inputAtPathStep = null;
+                }
+                else {
+                    inputAtPathStep = inputAtPathStep.toOptionalValueGivenKey(nextPathPart);
+                }
+            }
+            else if (ObservableSet_1.ObservableSet.isObservableSet(inputAtPathStep)) {
+                inputAtPathStep = null;
+            }
+            else if (Observable_1.Observable.isObservable(inputAtPathStep)) {
+                const objectValue = inputAtPathStep.value;
+                if (objectValue != null) {
+                    inputAtPathStep = objectValue[nextPathPart];
+                }
+            }
+            else {
+                // should be regular object or array
+                inputAtPathStep = inputAtPathStep[nextPathPart];
+            }
+        }
+        if (Observable_1.Observable.isObservable(inputAtPathStep)) {
+            console.log("subscribe B");
+            this._pathHandles.push(inputAtPathStep.didChange.subscribe((targetValue) => {
+                this._output.setValue(targetValue);
+            }, true));
+        }
+        else {
+            this._output.setValue(inputAtPathStep);
+        }
     }
 }
 exports.PathBinding = PathBinding;

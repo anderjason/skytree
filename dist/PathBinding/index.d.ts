@@ -14,6 +14,7 @@ export declare class PathBinding extends ManagedObject {
     private _input;
     private _path;
     private _pathHandles;
+    private _currentBuildId;
     private constructor();
     initManagedObject(): void;
     private clearPathHandles;

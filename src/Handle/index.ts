@@ -1,12 +1,14 @@
-import { Observable } from "../Observable";
+import { ObservableSet } from "../ObservableSet";
 
 export class Handle {
-  static readonly unreleasedCount = Observable.givenValue<number>(0);
+  static readonly unreleasedSet = ObservableSet.ofEmpty<Handle>();
 
   static givenCallback(callback: () => void): Handle {
-    this.unreleasedCount.setValue(this.unreleasedCount.value + 1);
+    const handle = new Handle(callback);
 
-    return new Handle(callback);
+    this.unreleasedSet.addValue(handle);
+
+    return handle;
   }
 
   private _callback: (() => void) | undefined;
@@ -24,13 +26,11 @@ export class Handle {
       return;
     }
 
+    Handle.unreleasedSet.removeValue(this);
+
     const fn = this._callback;
     this._callback = undefined;
 
     fn();
-
-    Handle.unreleasedCount.setValue(Handle.unreleasedCount.value - 1);
-
-    return;
   }
 }

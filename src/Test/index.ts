@@ -5,6 +5,8 @@ import { ManagedObject } from "../ManagedObject";
 
 let currentAssertionIndex: number = 0;
 
+export type TestFunction = (emptyObject: ManagedObject) => Promise<any> | void;
+
 function assert(value: boolean, failedMessage?: string): void {
   currentAssertionIndex += 1;
 
@@ -50,10 +52,7 @@ async function assertThrows(
 export class Test {
   private static _allTests: Test[] = [];
 
-  static define(
-    label: string,
-    fn: (emptyObject: ManagedObject) => Promise<any> | void
-  ): void {
+  static define(label: string, fn: TestFunction): void {
     if (label == null) {
       throw new Error("label is required");
     }
@@ -73,12 +72,12 @@ export class Test {
     await PromiseUtil.asyncSequenceGivenArrayAndCallback(
       Test._allTests,
       async (test) => {
-        const unreleasedHandlesBefore = Handle.unreleasedCount.value;
+        const unreleasedHandlesBefore = Handle.unreleasedSet.count;
         const managedObjectsBefore = ManagedObject.initializedSet.count;
 
         await test.toPromise();
 
-        const unreleasedHandlesAfter = Handle.unreleasedCount.value;
+        const unreleasedHandlesAfter = Handle.unreleasedSet.count;
         const managedObjectsAfter = ManagedObject.initializedSet.count;
 
         if (managedObjectsBefore !== managedObjectsAfter) {
@@ -94,6 +93,9 @@ export class Test {
         }
 
         if (unreleasedHandlesBefore !== unreleasedHandlesAfter) {
+          console.log(
+            String((Handle.unreleasedSet.toValues()[0] as any)._callback)
+          );
           throw new Error(
             `Some handles were not released after test '${test.label}' (before ${unreleasedHandlesBefore}, after ${unreleasedHandlesAfter})`
           );
@@ -104,12 +106,9 @@ export class Test {
 
   readonly label: string;
 
-  private _fn: (emptyObject: ManagedObject) => Promise<any> | void;
+  private _fn: TestFunction;
 
-  private constructor(
-    label: string,
-    fn: (emptyObject: ManagedObject) => Promise<any> | void
-  ) {
+  private constructor(label: string, fn: TestFunction) {
     this.label = label;
     this._fn = fn;
   }

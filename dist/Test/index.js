@@ -45,10 +45,10 @@ class Test {
     }
     static async runAll() {
         await PromiseUtil_1.PromiseUtil.asyncSequenceGivenArrayAndCallback(Test._allTests, async (test) => {
-            const unreleasedHandlesBefore = Handle_1.Handle.unreleasedCount.value;
+            const unreleasedHandlesBefore = Handle_1.Handle.unreleasedSet.count;
             const managedObjectsBefore = ManagedObject_1.ManagedObject.initializedSet.count;
             await test.toPromise();
-            const unreleasedHandlesAfter = Handle_1.Handle.unreleasedCount.value;
+            const unreleasedHandlesAfter = Handle_1.Handle.unreleasedSet.count;
             const managedObjectsAfter = ManagedObject_1.ManagedObject.initializedSet.count;
             if (managedObjectsBefore !== managedObjectsAfter) {
                 console.log(ManagedObject_1.ManagedObject.initializedSet
@@ -57,6 +57,7 @@ class Test {
                 throw new Error(`Some managed objects are still initialized after test '${test.label}' (before ${managedObjectsBefore}, after ${managedObjectsAfter})`);
             }
             if (unreleasedHandlesBefore !== unreleasedHandlesAfter) {
+                console.log(String(Handle_1.Handle.unreleasedSet.toValues()[0]._callback));
                 throw new Error(`Some handles were not released after test '${test.label}' (before ${unreleasedHandlesBefore}, after ${unreleasedHandlesAfter})`);
             }
         });
