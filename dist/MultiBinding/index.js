@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MultiBinding = void 0;
+const observable_1 = require("@anderjason/observable");
 const ManagedObject_1 = require("../ManagedObject");
-const SimpleEvent_1 = require("../SimpleEvent");
 class MultiBinding extends ManagedObject_1.ManagedObject {
     constructor(groups) {
         super();
-        this.didInvalidate = SimpleEvent_1.SimpleEvent.ofEmpty();
+        this.didInvalidate = observable_1.SimpleEvent.ofEmpty();
         this._willInvalidateLater = false;
         this._invalidatedSetByGroup = new Map();
         this._groups = groups;

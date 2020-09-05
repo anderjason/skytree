@@ -1,7 +1,10 @@
+import {
+  Handle,
+  ObservableArray,
+  ObservableArrayBase,
+  ReadOnlyObservableArray,
+} from "@anderjason/observable";
 import { ManagedObject } from "../ManagedObject";
-import { Handle } from "../Handle";
-import { ObservableArray, ObservableArrayBase } from "../ObservableArray";
-import { ReadOnlyObservableArray } from "..";
 
 export type ArrayInitializerCallback<TI, TO> = (
   value: TI,

@@ -1,7 +1,4 @@
-import { Handle } from "../Handle";
-import { ReadOnlyObservable } from "../ReadOnlyObservable";
-import { ReadOnlyObservableSet } from "../ReadOnlyObservableSet";
-import { ReadOnlyObservableArray } from "../ReadOnlyObservableArray";
+import { Handle, ReadOnlyObservable, ReadOnlyObservableArray, ReadOnlyObservableSet } from "@anderjason/observable";
 export declare class ManagedObject {
     private static _initializedSet;
     static readonly initializedSet: ReadOnlyObservableSet<ManagedObject>;

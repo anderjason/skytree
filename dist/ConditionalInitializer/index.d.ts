@@ -1,6 +1,5 @@
+import { ObservableBase, ReadOnlyObservable } from "@anderjason/observable";
 import { ManagedObject } from "../ManagedObject";
-import { ObservableBase } from "../Observable";
-import { ReadOnlyObservable } from "..";
 export interface ConditionalInitializerDefinition<TI, TO> {
     input: ObservableBase<TI>;
     fn: (input: TI) => boolean;

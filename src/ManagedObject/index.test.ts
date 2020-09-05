@@ -1,6 +1,6 @@
-import { Test } from "../Test";
+import { Handle } from "@anderjason/observable";
+import { Test } from "@anderjason/tests";
 import { ManagedObject } from ".";
-import { Handle } from "../Handle";
 
 Test.define("ManagedObject has a unique id per instance", () => {
   const instance1 = new ManagedObject();

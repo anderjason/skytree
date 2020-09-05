@@ -1,6 +1,5 @@
+import { ObservableArrayBase, ReadOnlyObservableArray } from "@anderjason/observable";
 import { ManagedObject } from "../ManagedObject";
-import { ObservableArrayBase } from "../ObservableArray";
-import { ReadOnlyObservableArray } from "..";
 export declare type ArrayInitializerCallback<TI, TO> = (value: TI, index: number, currentObject?: TO) => TO | undefined;
 export interface ArrayInitializerDefinition<TI, TO> {
     input: ObservableArrayBase<TI>;

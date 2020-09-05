@@ -1,12 +1,22 @@
 import { Transformer } from ".";
-import { Test } from "../Test";
-import { Observable } from "../Observable";
-import { PromiseUtil } from "../PromiseUtil";
-import { Duration } from "../Duration";
+import { Test } from "@anderjason/tests";
+import { Observable } from "@anderjason/observable";
+import { ManagedObject } from "../ManagedObject";
+
+function delay(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, milliseconds);
+  });
+}
 
 Test.define(
   "Transformer returns the expected results with a callback returning a promise",
-  async (obj) => {
+  async () => {
+    const obj = new ManagedObject();
+    obj.init();
+
     const delays = [300, 50, 200, 75];
 
     const input = Observable.ofEmpty<string>();
@@ -22,10 +32,10 @@ Test.define(
             return null;
           }
 
-          const delay = Duration.givenMilliseconds(delays[i]);
+          const milliseconds = delays[i];
           i += 1;
 
-          await PromiseUtil.asyncDelayGivenDuration(delay);
+          await delay(milliseconds);
 
           return lower.toUpperCase();
         },
@@ -43,16 +53,16 @@ Test.define(
     );
 
     input.setValue("a");
-    await PromiseUtil.asyncDelayGivenDuration(Duration.givenMilliseconds(100));
+    await delay(100);
 
     input.setValue("b");
-    await PromiseUtil.asyncDelayGivenDuration(Duration.givenMilliseconds(100));
+    await delay(100);
 
     input.setValue("c");
-    await PromiseUtil.asyncDelayGivenDuration(Duration.givenMilliseconds(100));
+    await delay(100);
 
     input.setValue("d");
-    await PromiseUtil.asyncDelayGivenDuration(Duration.givenMilliseconds(100));
+    await delay(100);
 
     Test.assertIsDeepEqual(outputs, ["B", "D"]);
   }

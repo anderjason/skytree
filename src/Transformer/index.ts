@@ -1,6 +1,9 @@
 import { ManagedObject } from "../ManagedObject";
-import { Observable, ObservableBase } from "../Observable";
-import { ReadOnlyObservable } from "..";
+import {
+  Observable,
+  ObservableBase,
+  ReadOnlyObservable,
+} from "@anderjason/observable";
 
 export interface TransformerDefinition<TI, TO> {
   input: ObservableBase<TI>;

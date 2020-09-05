@@ -1,5 +1,5 @@
 import { ManagedObject } from "../ManagedObject";
-import { Observable, ObservableBase } from "../Observable";
+import { Observable, ObservableBase } from "@anderjason/observable";
 export interface TransformerDefinition<TI, TO> {
     input: ObservableBase<TI>;
     fn: (value: TI) => TO | Promise<TO>;

@@ -1,7 +1,10 @@
+import {
+  Handle,
+  Observable,
+  ObservableBase,
+  ReadOnlyObservable,
+} from "@anderjason/observable";
 import { ManagedObject } from "../ManagedObject";
-import { Handle } from "../Handle";
-import { Observable, ObservableBase } from "../Observable";
-import { ReadOnlyObservable } from "..";
 
 export type ExclusiveInitializerCallback<T> = (
   newValue: T,

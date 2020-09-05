@@ -1,7 +1,7 @@
-import { ManagedObject } from "../ManagedObject";
-import { Test } from "../Test";
-import { ObservableArray } from "../ObservableArray";
+import { ObservableArray } from "@anderjason/observable";
+import { Test } from "@anderjason/tests";
 import { ArrayInitializer } from ".";
+import { ManagedObject } from "../ManagedObject";
 
 Test.define("ArrayInitializer can be created", () => {
   class TestObject extends ManagedObject {

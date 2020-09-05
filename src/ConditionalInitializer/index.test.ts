@@ -1,7 +1,7 @@
-import { ManagedObject } from "../ManagedObject";
-import { Test } from "../Test";
+import { Observable } from "@anderjason/observable";
+import { Test } from "@anderjason/tests";
 import { ConditionalInitializer } from ".";
-import { Observable } from "../Observable";
+import { ManagedObject } from "../ManagedObject";
 
 Test.define("ConditionalInitializer can be created with a condition", () => {
   class TestObject extends ManagedObject {

@@ -1,8 +1,12 @@
-import { Test } from "../Test";
-import { Observable } from "../Observable";
+import { Test } from "@anderjason/tests";
+import { Observable } from "@anderjason/observable";
 import { Connector } from ".";
+import { ManagedObject } from "../ManagedObject";
 
-Test.define("Connector sets the target value", (obj) => {
+Test.define("Connector sets the target value", () => {
+  const obj = new ManagedObject();
+  obj.init();
+
   const connector = obj.addManagedObject(Connector.givenDefinition({}));
 
   const source = Observable.givenValue("hello");
@@ -14,11 +18,16 @@ Test.define("Connector sets the target value", (obj) => {
   connector.target.setValue(target);
 
   Test.assert(target.value === "hello");
+
+  obj.uninit();
 });
 
 Test.define(
   "Connector updates the target value when the source is changed",
-  (obj) => {
+  () => {
+    const obj = new ManagedObject();
+    obj.init();
+
     const connector = obj.addManagedObject(Connector.givenDefinition({}));
 
     const source1 = Observable.givenValue("hello");
@@ -31,12 +40,17 @@ Test.define(
 
     connector.source.setValue(source2);
     Test.assert(target.value === "world");
+
+    obj.uninit();
   }
 );
 
 Test.define(
   "Connector updates the target value when the source value is changed",
-  (obj) => {
+  () => {
+    const obj = new ManagedObject();
+    obj.init();
+
     const connector = obj.addManagedObject(Connector.givenDefinition({}));
 
     const source = Observable.givenValue("hello");
@@ -48,5 +62,7 @@ Test.define(
 
     source.setValue("world");
     Test.assert(target.value === "world");
+
+    obj.uninit();
   }
 );

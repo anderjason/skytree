@@ -1,15 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArrayInitializer = void 0;
+const observable_1 = require("@anderjason/observable");
 const ManagedObject_1 = require("../ManagedObject");
-const Handle_1 = require("../Handle");
-const ObservableArray_1 = require("../ObservableArray");
-const __1 = require("..");
 class ArrayInitializer extends ManagedObject_1.ManagedObject {
     constructor(definition) {
         super();
-        this._objects = ObservableArray_1.ObservableArray.ofEmpty();
-        this.objects = __1.ReadOnlyObservableArray.givenObservableArray(this._objects);
+        this._objects = observable_1.ObservableArray.ofEmpty();
+        this.objects = observable_1.ReadOnlyObservableArray.givenObservableArray(this._objects);
         this._previousInput = [];
         this._input = definition.input;
         this._callback = definition.fn;
@@ -52,7 +50,7 @@ class ArrayInitializer extends ManagedObject_1.ManagedObject {
             }
             this._previousInput = newInput;
         }, true));
-        this.addHandle(Handle_1.Handle.givenCallback(() => {
+        this.addHandle(observable_1.Handle.givenCallback(() => {
             this._objects.clear();
         }));
     }

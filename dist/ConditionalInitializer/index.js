@@ -1,14 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConditionalInitializer = void 0;
+const observable_1 = require("@anderjason/observable");
 const ManagedObject_1 = require("../ManagedObject");
-const Observable_1 = require("../Observable");
-const __1 = require("..");
 class ConditionalInitializer extends ManagedObject_1.ManagedObject {
     constructor(definition) {
         super();
-        this._output = Observable_1.Observable.ofEmpty();
-        this.output = __1.ReadOnlyObservable.givenObservable(this._output);
+        this._output = observable_1.Observable.ofEmpty();
+        this.output = observable_1.ReadOnlyObservable.givenObservable(this._output);
         this._input = definition.input;
         this._shouldInitialize = definition.fn;
         this._instance = definition.instance;

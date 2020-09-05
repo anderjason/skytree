@@ -1,5 +1,4 @@
-import { Observable } from "../Observable";
-import { Handle } from "../Handle";
+import { Handle, Observable } from "@anderjason/observable";
 import { ManagedObject } from "../ManagedObject";
 export declare type JobState = "queued" | "running" | "finished" | "cancelled";
 export interface Job {

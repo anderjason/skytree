@@ -1,6 +1,5 @@
+import { ObservableBase, SimpleEvent } from "@anderjason/observable";
 import { ManagedObject } from "../ManagedObject";
-import { ObservableBase } from "../Observable";
-import { SimpleEvent } from "../SimpleEvent";
 
 export type MultiBindingGroup = ObservableBase<any>[];
 

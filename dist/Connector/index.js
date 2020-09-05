@@ -2,13 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Connector = void 0;
 const ManagedObject_1 = require("../ManagedObject");
-const Observable_1 = require("../Observable");
-const Handle_1 = require("../Handle");
+const observable_1 = require("@anderjason/observable");
 class Connector extends ManagedObject_1.ManagedObject {
     constructor(definition) {
         super();
-        this.source = Observable_1.Observable.ofEmpty(Observable_1.Observable.isStrictEqual);
-        this.target = Observable_1.Observable.ofEmpty(Observable_1.Observable.isStrictEqual);
+        this.source = observable_1.Observable.ofEmpty(observable_1.Observable.isStrictEqual);
+        this.target = observable_1.Observable.ofEmpty(observable_1.Observable.isStrictEqual);
         this.source.setValue(definition.source);
         this.target.setValue(definition.target);
     }
@@ -32,7 +31,7 @@ class Connector extends ManagedObject_1.ManagedObject {
         this.addHandle(this.target.didChange.subscribe(() => {
             this.updateTarget();
         }));
-        this.addHandle(Handle_1.Handle.givenCallback(() => {
+        this.addHandle(observable_1.Handle.givenCallback(() => {
             if (this._sourceValueHandle != null) {
                 this._sourceValueHandle.release();
                 this.removeHandle(this._sourceValueHandle);

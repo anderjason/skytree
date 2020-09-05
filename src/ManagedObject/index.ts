@@ -1,11 +1,13 @@
-import { Handle } from "../Handle";
-import { StringUtil } from "../StringUtil";
-import { ObservableSet } from "../ObservableSet";
-import { Observable } from "../Observable";
-import { ReadOnlyObservable } from "../ReadOnlyObservable";
-import { ReadOnlyObservableSet } from "../ReadOnlyObservableSet";
-import { ObservableArray } from "../ObservableArray";
-import { ReadOnlyObservableArray } from "../ReadOnlyObservableArray";
+import { StringUtil } from "@anderjason/util";
+import {
+  Handle,
+  Observable,
+  ObservableArray,
+  ObservableSet,
+  ReadOnlyObservable,
+  ReadOnlyObservableArray,
+  ReadOnlyObservableSet,
+} from "@anderjason/observable";
 
 export class ManagedObject {
   private static _initializedSet = ObservableSet.ofEmpty<ManagedObject>();

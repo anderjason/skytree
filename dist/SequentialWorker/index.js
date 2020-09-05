@@ -1,10 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SequentialWorker = void 0;
-const Observable_1 = require("../Observable");
-const Handle_1 = require("../Handle");
+const observable_1 = require("@anderjason/observable");
+const util_1 = require("@anderjason/util");
 const ManagedObject_1 = require("../ManagedObject");
-const ArrayUtil_1 = require("../ArrayUtil");
 class SequentialWorker extends ManagedObject_1.ManagedObject {
     constructor() {
         super();
@@ -19,12 +18,12 @@ class SequentialWorker extends ManagedObject_1.ManagedObject {
         this.startNextJob();
     }
     addWork(callback, cancelledCallback) {
-        const state = Observable_1.Observable.givenValue("queued");
-        const handle = this.addHandle(Handle_1.Handle.givenCallback(() => {
+        const state = observable_1.Observable.givenValue("queued");
+        const handle = this.addHandle(observable_1.Handle.givenCallback(() => {
             if (job.state.value === "queued") {
                 job.state.setValue("cancelled");
             }
-            this._jobs = ArrayUtil_1.ArrayUtil.arrayWithoutValue(this._jobs, job);
+            this._jobs = util_1.ArrayUtil.arrayWithoutValue(this._jobs, job);
             this._callbackByJob.delete(job);
             if (cancelledCallback != null) {
                 try {

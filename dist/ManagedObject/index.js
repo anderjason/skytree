@@ -1,29 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ManagedObject = void 0;
-const Handle_1 = require("../Handle");
-const StringUtil_1 = require("../StringUtil");
-const ObservableSet_1 = require("../ObservableSet");
-const Observable_1 = require("../Observable");
-const ReadOnlyObservable_1 = require("../ReadOnlyObservable");
-const ReadOnlyObservableSet_1 = require("../ReadOnlyObservableSet");
-const ObservableArray_1 = require("../ObservableArray");
-const ReadOnlyObservableArray_1 = require("../ReadOnlyObservableArray");
+const util_1 = require("@anderjason/util");
+const observable_1 = require("@anderjason/observable");
 class ManagedObject {
     constructor() {
-        this._handles = ObservableSet_1.ObservableSet.ofEmpty();
-        this.handles = ReadOnlyObservableSet_1.ReadOnlyObservableSet.givenObservableSet(this._handles);
-        this._parentObject = Observable_1.Observable.ofEmpty();
-        this.parentObject = ReadOnlyObservable_1.ReadOnlyObservable.givenObservable(this._parentObject);
-        this._childObjects = ObservableArray_1.ObservableArray.ofEmpty();
-        this.childObjects = ReadOnlyObservableArray_1.ReadOnlyObservableArray.givenObservableArray(this._childObjects);
-        this._isInitialized = Observable_1.Observable.givenValue(false);
-        this.isInitialized = ReadOnlyObservable_1.ReadOnlyObservable.givenObservable(this._isInitialized);
-        this.id = StringUtil_1.StringUtil.stringOfRandomCharacters(8);
+        this._handles = observable_1.ObservableSet.ofEmpty();
+        this.handles = observable_1.ReadOnlyObservableSet.givenObservableSet(this._handles);
+        this._parentObject = observable_1.Observable.ofEmpty();
+        this.parentObject = observable_1.ReadOnlyObservable.givenObservable(this._parentObject);
+        this._childObjects = observable_1.ObservableArray.ofEmpty();
+        this.childObjects = observable_1.ReadOnlyObservableArray.givenObservableArray(this._childObjects);
+        this._isInitialized = observable_1.Observable.givenValue(false);
+        this.isInitialized = observable_1.ReadOnlyObservable.givenObservable(this._isInitialized);
+        this.id = util_1.StringUtil.stringOfRandomCharacters(8);
     }
     init() {
         if (this.isInitialized.value === false) {
-            this._thisHandle = Handle_1.Handle.givenCallback(() => {
+            this._thisHandle = observable_1.Handle.givenCallback(() => {
                 this.uninit();
             });
             ManagedObject._initializedSet.addValue(this);
@@ -101,6 +95,6 @@ class ManagedObject {
     initManagedObject() { }
 }
 exports.ManagedObject = ManagedObject;
-ManagedObject._initializedSet = ObservableSet_1.ObservableSet.ofEmpty();
-ManagedObject.initializedSet = ReadOnlyObservableSet_1.ReadOnlyObservableSet.givenObservableSet(ManagedObject._initializedSet);
+ManagedObject._initializedSet = observable_1.ObservableSet.ofEmpty();
+ManagedObject.initializedSet = observable_1.ReadOnlyObservableSet.givenObservableSet(ManagedObject._initializedSet);
 //# sourceMappingURL=index.js.map

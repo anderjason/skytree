@@ -1,7 +1,6 @@
-import { Observable } from "../Observable";
-import { Handle } from "../Handle";
+import { Handle, Observable } from "@anderjason/observable";
+import { ArrayUtil } from "@anderjason/util";
 import { ManagedObject } from "../ManagedObject";
-import { ArrayUtil } from "../ArrayUtil";
 
 export type JobState = "queued" | "running" | "finished" | "cancelled";
 

@@ -1,10 +1,14 @@
-import { Test } from "../Test";
+import { Observable } from "@anderjason/observable";
+import { Test } from "@anderjason/tests";
 import { MultiBinding } from ".";
-import { Observable } from "..";
+import { ManagedObject } from "../ManagedObject";
 
 Test.define(
   "MultiBinding invalidates each time all inputs in any group have changed at least once",
-  (obj) => {
+  () => {
+    const obj = new ManagedObject();
+    obj.init();
+
     const inputA1 = Observable.givenValue("a1");
     const inputA2 = Observable.givenValue("a2");
     const inputA3 = Observable.givenValue("a3");
@@ -62,5 +66,7 @@ Test.define(
 
     inputC2.setValue("Y");
     Test.assert(didInvalidate == true);
+
+    obj.uninit();
   }
 );

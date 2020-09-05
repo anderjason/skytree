@@ -1,12 +1,13 @@
-import { Observable } from "../Observable";
-import { ValuePath, PathPart } from "../ValuePath";
+import {
+  Handle,
+  Observable,
+  ObservableArray,
+  ObservableDict,
+  ObservableSet,
+  ReadOnlyObservable,
+} from "@anderjason/observable";
+import { ObjectUtil, ValuePath } from "@anderjason/util";
 import { ManagedObject } from "../ManagedObject";
-import { Handle } from "../Handle";
-import { ObservableArray } from "../ObservableArray";
-import { ObservableSet } from "../ObservableSet";
-import { ObservableDict } from "../ObservableDict";
-import { ReadOnlyObservable } from "../ReadOnlyObservable";
-import { ReadOnlyObservableArray, ObjectUtil } from "..";
 
 export interface PathBindingDefinition {
   input: any;

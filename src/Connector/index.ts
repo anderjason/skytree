@@ -1,6 +1,5 @@
 import { ManagedObject } from "../ManagedObject";
-import { Observable, ObservableBase } from "../Observable";
-import { Handle } from "../Handle";
+import { Handle, Observable, ObservableBase } from "@anderjason/observable";
 
 export interface ConnectorDefinition<T> {
   source?: ObservableBase<T>;

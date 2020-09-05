@@ -2,7 +2,7 @@
 
 ## Installation
 
-`npm install --save skytree`
+`npm install --save @anderjason/skytree`
 
 ## API Reference
 
@@ -18,19 +18,7 @@
 
 `TODO`
 
-### Duration
-
-`TODO`
-
 ### ExclusiveInitializer
-
-`TODO`
-
-### Handle
-
-`TODO`
-
-### Instant
 
 `TODO`
 
@@ -42,39 +30,7 @@
 
 `TODO`
 
-### Observable
-
-`TODO`
-
-### ObservableArray
-
-`TODO`
-
-### ObservableSet
-
-`TODO`
-
 ### PathBinding
-
-`TODO`
-
-### Percent
-
-`TODO`
-
-### RateLimitedFunction
-
-`TODO`
-
-### ReadOnlyObservable
-
-`TODO`
-
-### ReadOnlyObservableArray
-
-`TODO`
-
-### ReadOnlyObservableSet
 
 `TODO`
 
@@ -82,52 +38,6 @@
 
 `TODO`
 
-### SimpleEvent
-
-`TODO`
-
-### Test
-
-`TODO`
-
-### Timer
-
-`TODO`
-
 ### Transformer
-
-`TODO`
-
-### ValuePath
-
-`TODO`
-
-## Helper classes
-
-### ArrayUtil
-
-`TODO`
-
-### MapUtil
-
-`TODO`
-
-### NumberUtil
-
-`TODO`
-
-### ObjectUtil
-
-`TODO`
-
-### PromiseUtil
-
-`TODO`
-
-### SetUtil
-
-`TODO`
-
-### StringUtil
 
 `TODO`

@@ -1,13 +1,18 @@
-import { Test } from "../Test";
-import { ValuePath } from "../ValuePath";
+import { Test } from "@anderjason/tests";
+import { ObjectUtil, ValuePath } from "@anderjason/util";
 import { PathBinding } from ".";
-import { Observable } from "../Observable";
-import { ObjectUtil } from "../ObjectUtil";
-import { Handle } from "../Handle";
-import { ObservableArray } from "../ObservableArray";
-import { ObservableDict } from "..";
+import {
+  Handle,
+  Observable,
+  ObservableArray,
+  ObservableDict,
+} from "@anderjason/observable";
+import { ManagedObject } from "../ManagedObject";
 
-Test.define("PathBinding can observe a single value", (obj) => {
+Test.define("PathBinding can observe a single value", () => {
+  const obj = new ManagedObject();
+  obj.init();
+
   const input = Observable.givenValue("hello");
   const pathBinding = obj.addManagedObject(
     PathBinding.givenDefinition({
@@ -30,6 +35,8 @@ Test.define("PathBinding can observe a single value", (obj) => {
   input.setValue("message");
 
   Test.assertIsDeepEqual(outputValues, ["world", "message"]);
+
+  obj.uninit();
 });
 
 Test.define("PathBinding can observe undefined", () => {
@@ -318,7 +325,10 @@ Test.define("PathBinding can observe an observable at a complex path", () => {
   ]);
 });
 
-Test.define("PathBinding only changes once for each input change", (obj) => {
+Test.define("PathBinding only changes once for each input change", () => {
+  const obj = new ManagedObject();
+  obj.init();
+
   const input = Observable.ofEmpty<any>();
 
   const pathBinding = obj.addManagedObject(
@@ -350,4 +360,6 @@ Test.define("PathBinding only changes once for each input change", (obj) => {
 
   Test.assert(changeCount === 2);
   Test.assertIsDeepEqual([4, 5, 6], pathBinding.output.value);
+
+  obj.uninit();
 });

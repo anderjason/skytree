@@ -1,7 +1,6 @@
-import { Observable } from "../Observable";
-import { ValuePath } from "../ValuePath";
+import { Observable, ReadOnlyObservable } from "@anderjason/observable";
+import { ValuePath } from "@anderjason/util";
 import { ManagedObject } from "../ManagedObject";
-import { ReadOnlyObservable } from "../ReadOnlyObservable";
 export interface PathBindingDefinition {
     input: any;
     path: ValuePath;
