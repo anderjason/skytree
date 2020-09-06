@@ -1,6 +1,6 @@
 import { StringUtil } from "@anderjason/util";
 import {
-  Handle,
+  Receipt,
   Observable,
   ObservableArray,
   ObservableSet,
@@ -17,15 +17,15 @@ export class ManagedObject {
 
   readonly id: string;
 
-  private _handles = ObservableSet.ofEmpty<Handle>();
-  readonly handles = ReadOnlyObservableSet.givenObservableSet(this._handles);
+  private _receipts = ObservableSet.ofEmpty<Receipt>();
+  readonly receipts = ReadOnlyObservableSet.givenObservableSet(this._receipts);
 
   private _parentObject = Observable.ofEmpty<ManagedObject>();
   readonly parentObject = ReadOnlyObservable.givenObservable(
     this._parentObject
   );
 
-  private _thisHandle: Handle | undefined;
+  private _thisReceipt: Receipt | undefined;
 
   private _childObjects = ObservableArray.ofEmpty<ManagedObject>();
   readonly childObjects = ReadOnlyObservableArray.givenObservableArray(
@@ -41,9 +41,9 @@ export class ManagedObject {
     this.id = StringUtil.stringOfRandomCharacters(8);
   }
 
-  init(): Handle {
+  init(): Receipt {
     if (this.isInitialized.value === false) {
-      this._thisHandle = Handle.givenCallback(() => {
+      this._thisReceipt = Receipt.givenCancelFunction(() => {
         this.uninit();
       });
 
@@ -57,21 +57,21 @@ export class ManagedObject {
       this.initManagedObject();
     }
 
-    return this._thisHandle;
+    return this._thisReceipt;
   }
 
   uninit(): void {
-    if (this._thisHandle == null) {
+    if (this._thisReceipt == null) {
       return;
     }
 
     ManagedObject._initializedSet.removeValue(this);
     this._isInitialized.setValue(false);
 
-    this._handles.toValues().forEach((handle) => {
-      handle.release();
+    this._receipts.toArray().forEach((receipt) => {
+      receipt.cancel();
     });
-    this._handles.clear();
+    this._receipts.clear();
 
     this._childObjects.toValues().forEach((child) => {
       child.uninit();
@@ -79,11 +79,11 @@ export class ManagedObject {
 
     this._childObjects.clear();
 
-    const handle = this._thisHandle;
-    this._thisHandle = undefined;
+    const receipt = this._thisReceipt;
+    this._thisReceipt = undefined;
 
-    if (handle != null) {
-      handle.release();
+    if (receipt != null) {
+      receipt.cancel();
     }
   }
 
@@ -106,14 +106,14 @@ export class ManagedObject {
     return childObject;
   }
 
-  addHandle(handle: Handle): Handle {
-    if (handle == null) {
+  addReceipt(receipt: Receipt): Receipt {
+    if (receipt == null) {
       return undefined;
     }
 
-    this._handles.addValue(handle);
+    this._receipts.addValue(receipt);
 
-    return handle;
+    return receipt;
   }
 
   removeManagedObject(child: ManagedObject): void {
@@ -135,12 +135,12 @@ export class ManagedObject {
     child._parentObject.setValue(undefined);
   }
 
-  removeHandle(handle: Handle): void {
-    if (handle == null) {
+  removeReceipt(receipt: Receipt): void {
+    if (receipt == null) {
       return;
     }
 
-    this._handles.removeValue(handle);
+    this._receipts.removeValue(receipt);
   }
 
   protected initManagedObject(): void {}

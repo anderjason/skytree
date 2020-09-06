@@ -16,7 +16,7 @@ class ConditionalInitializer extends ManagedObject_1.ManagedObject {
         return new ConditionalInitializer(definition);
     }
     initManagedObject() {
-        this.addHandle(this._input.didChange.subscribe((input) => {
+        this.addReceipt(this._input.didChange.subscribe((input) => {
             const isActive = this._shouldInitialize(input);
             if (isActive) {
                 if (this._output.value == null) {

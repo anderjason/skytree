@@ -8,7 +8,7 @@ export declare class Connector<T> extends ManagedObject {
     static givenDefinition<T>(definition: ConnectorDefinition<T>): Connector<T>;
     readonly source: Observable<ObservableBase<T>>;
     readonly target: Observable<Observable<T>>;
-    private _sourceValueHandle;
+    private _sourceValueReceipt;
     private constructor();
     initManagedObject(): void;
     private updateTarget;

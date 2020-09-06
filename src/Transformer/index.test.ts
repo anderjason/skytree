@@ -42,7 +42,7 @@ Test.define(
       })
     );
 
-    obj.addHandle(
+    obj.addReceipt(
       async.output.didChange.subscribe((upper) => {
         if (upper == null) {
           return null;

@@ -1,4 +1,4 @@
-import { ObservableBase, SimpleEvent } from "@anderjason/observable";
+import { ObservableBase, TypedEvent } from "@anderjason/observable";
 import { ManagedObject } from "../ManagedObject";
 
 export type MultiBindingGroup = ObservableBase<any>[];
@@ -20,7 +20,7 @@ export class MultiBinding extends ManagedObject {
     return new MultiBinding(groups);
   }
 
-  readonly didInvalidate = SimpleEvent.ofEmpty<void>();
+  readonly didInvalidate = TypedEvent.ofEmpty<void>();
 
   private _groups: MultiBindingGroup[];
   private _willInvalidateLater: boolean = false;
@@ -41,7 +41,7 @@ export class MultiBinding extends ManagedObject {
       this._invalidatedSetByGroup.set(group, invalidatedSet);
 
       group.forEach((input) => {
-        this.addHandle(
+        this.addReceipt(
           input.didChange.subscribe(() => {
             invalidatedSet.add(input);
             this.onChange();

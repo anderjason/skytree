@@ -16,7 +16,7 @@ class ExclusiveInitializer extends ManagedObject_1.ManagedObject {
     }
     initManagedObject() {
         if (this._input != null && this._callback != null) {
-            this.addHandle(this._input.didChange.subscribe((newValue, oldValue) => {
+            this.addReceipt(this._input.didChange.subscribe((newValue, oldValue) => {
                 const newObject = this._callback(newValue, oldValue, this._output.value);
                 if (newObject === this._output.value) {
                     return;
@@ -30,7 +30,7 @@ class ExclusiveInitializer extends ManagedObject_1.ManagedObject {
                 }
             }, true));
         }
-        this.addHandle(observable_1.Handle.givenCallback(() => {
+        this.addReceipt(observable_1.Receipt.givenCancelFunction(() => {
             this._output.setValue(undefined);
         }));
     }

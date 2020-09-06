@@ -6,7 +6,7 @@ const ManagedObject_1 = require("../ManagedObject");
 class MultiBinding extends ManagedObject_1.ManagedObject {
     constructor(groups) {
         super();
-        this.didInvalidate = observable_1.SimpleEvent.ofEmpty();
+        this.didInvalidate = observable_1.TypedEvent.ofEmpty();
         this._willInvalidateLater = false;
         this._invalidatedSetByGroup = new Map();
         this._groups = groups;
@@ -28,7 +28,7 @@ class MultiBinding extends ManagedObject_1.ManagedObject {
             const invalidatedSet = new Set();
             this._invalidatedSetByGroup.set(group, invalidatedSet);
             group.forEach((input) => {
-                this.addHandle(input.didChange.subscribe(() => {
+                this.addReceipt(input.didChange.subscribe(() => {
                     invalidatedSet.add(input);
                     this.onChange();
                 }));

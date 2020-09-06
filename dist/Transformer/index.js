@@ -16,7 +16,7 @@ class Transformer extends ManagedObject_1.ManagedObject {
     }
     initManagedObject() {
         let latestChangeId = 0;
-        this.addHandle(this.input.didChange.subscribe(async (value) => {
+        this.addReceipt(this.input.didChange.subscribe(async (value) => {
             latestChangeId += 1;
             if (latestChangeId > 10000) {
                 latestChangeId = 0;

@@ -16,7 +16,7 @@ class ArrayInitializer extends ManagedObject_1.ManagedObject {
         return new ArrayInitializer(definition);
     }
     initManagedObject() {
-        this.addHandle(this._input.didChange.subscribe(() => {
+        this.addReceipt(this._input.didChange.subscribe(() => {
             const newInput = this._input.toValues();
             if (newInput == null) {
                 return;
@@ -50,7 +50,7 @@ class ArrayInitializer extends ManagedObject_1.ManagedObject {
             }
             this._previousInput = newInput;
         }, true));
-        this.addHandle(observable_1.Handle.givenCallback(() => {
+        this.addReceipt(observable_1.Receipt.givenCancelFunction(() => {
             this._objects.clear();
         }));
     }

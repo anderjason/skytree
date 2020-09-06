@@ -16,10 +16,10 @@ export declare class PathBinding extends ManagedObject {
     private _isMatched;
     readonly isMatched: ReadOnlyObservable<boolean>;
     private _input;
-    private _pathHandles;
+    private _pathReceipts;
     private _currentBuildId;
     private constructor();
     initManagedObject(): void;
-    private clearPathHandles;
+    private clearPathReceipts;
     private rebuild;
 }

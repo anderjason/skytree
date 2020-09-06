@@ -2,7 +2,7 @@ import { Test } from "@anderjason/tests";
 import { ObjectUtil, ValuePath } from "@anderjason/util";
 import { PathBinding } from ".";
 import {
-  Handle,
+  Receipt,
   Observable,
   ObservableArray,
   ObservableDict,
@@ -25,7 +25,7 @@ Test.define("PathBinding can observe a single value", () => {
 
   let outputValues: unknown[] = [];
 
-  obj.addHandle(
+  obj.addReceipt(
     pathBinding.output.didChange.subscribe((newValue) => {
       outputValues.push(newValue);
     })
@@ -140,7 +140,7 @@ Test.define(
 Test.define(
   "PathBinding can observe a single value as a child of an observable",
   () => {
-    const handles: Handle[] = [];
+    const receipts: Receipt[] = [];
 
     interface Message {
       messageText: string;
@@ -155,13 +155,13 @@ Test.define(
       path: ValuePath.givenParts(["messageText"]),
     });
 
-    handles.push(pathBinding.init());
+    receipts.push(pathBinding.init());
 
     Test.assertIsDeepEqual(pathBinding.output.value, "hello");
 
     let outputValues: unknown[] = [];
 
-    handles.push(
+    receipts.push(
       pathBinding.output.didChange.subscribe((newValue) => {
         outputValues.push(newValue);
       })
@@ -174,8 +174,8 @@ Test.define(
       messageText: "message",
     });
 
-    handles.forEach((handle) => {
-      handle.release();
+    receipts.forEach((receipt) => {
+      receipt.cancel();
     });
 
     Test.assert(
@@ -187,7 +187,7 @@ Test.define(
 Test.define(
   "PathBinding can observe an observable as a child of an object",
   () => {
-    const handles: Handle[] = [];
+    const receipts: Receipt[] = [];
 
     interface Message {
       content: {
@@ -206,13 +206,13 @@ Test.define(
       path: ValuePath.givenParts(["content", "messageText"]),
     });
 
-    handles.push(pathBinding.init());
+    receipts.push(pathBinding.init());
 
     Test.assertIsDeepEqual(pathBinding.output.value, "hello");
 
     let outputValues: unknown[] = [];
 
-    handles.push(
+    receipts.push(
       pathBinding.output.didChange.subscribe((newValue) => {
         outputValues.push(newValue);
       })
@@ -221,8 +221,8 @@ Test.define(
     input.content.messageText.setValue("world");
     input.content.messageText.setValue("message");
 
-    handles.forEach((handle) => {
-      handle.release();
+    receipts.forEach((receipt) => {
+      receipt.cancel();
     });
 
     Test.assert(
@@ -232,7 +232,7 @@ Test.define(
 );
 
 Test.define("PathBinding can observe an observable at a complex path", () => {
-  const handles: Handle[] = [];
+  const receipts: Receipt[] = [];
 
   interface MessageSegment {
     headers: [];
@@ -279,13 +279,13 @@ Test.define("PathBinding can observe an observable at a complex path", () => {
     path: ValuePath.givenParts([1, "segments", 0, "content", "body"]),
   });
 
-  handles.push(pathBinding.init());
+  receipts.push(pathBinding.init());
 
   Test.assertIsDeepEqual(pathBinding.output.value, "hello");
 
   let outputValues: unknown[] = [];
 
-  handles.push(
+  receipts.push(
     pathBinding.output.didChange.subscribe((newValue) => {
       outputValues.push(newValue);
     })
@@ -313,8 +313,8 @@ Test.define("PathBinding can observe an observable at a complex path", () => {
     },
   });
 
-  handles.forEach((handle) => {
-    handle.release();
+  receipts.forEach((receipt) => {
+    receipt.cancel();
   });
 
   Test.assertIsDeepEqual(outputValues, [
@@ -340,7 +340,7 @@ Test.define("PathBinding only changes once for each input change", () => {
 
   let changeCount = 0;
 
-  obj.addHandle(
+  obj.addReceipt(
     pathBinding.output.didChange.subscribe(() => {
       changeCount += 1;
     })

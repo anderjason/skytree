@@ -37,7 +37,7 @@ export class ConditionalInitializer<
   }
 
   initManagedObject() {
-    this.addHandle(
+    this.addReceipt(
       this._input.didChange.subscribe((input) => {
         const isActive = this._shouldInitialize(input);
 

@@ -35,9 +35,9 @@ Test.define("SequentialWorker can run jobs in sequence", async () => {
   });
 
   await new Promise((resolve, reject) => {
-    const handle = jobC.state.didChange.subscribe((state) => {
+    const receipt = jobC.state.didChange.subscribe((state) => {
       if (state === "finished") {
-        handle.release();
+        receipt.cancel();
         resolve();
       }
     });

@@ -28,7 +28,7 @@ Test.define("ArrayInitializer can be created", () => {
     },
   });
 
-  const handle = arrayInitializer.init();
+  const receipt = arrayInitializer.init();
 
   input.addValue("hello");
   input.addValue("world");
@@ -97,5 +97,5 @@ Test.define("ArrayInitializer can be created", () => {
   Test.assert(objects5[1].isInitialized.value);
   Test.assert(objects5[0] === originalFirstObject);
 
-  handle.release();
+  receipt.cancel();
 });

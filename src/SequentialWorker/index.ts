@@ -1,4 +1,4 @@
-import { Handle, Observable } from "@anderjason/observable";
+import { Receipt, Observable } from "@anderjason/observable";
 import { ArrayUtil } from "@anderjason/util";
 import { ManagedObject } from "../ManagedObject";
 
@@ -6,7 +6,7 @@ export type JobState = "queued" | "running" | "finished" | "cancelled";
 
 export interface Job {
   state: Observable<JobState>;
-  handle: Handle;
+  receipt: Receipt;
 }
 
 export type JobCallback = () => Promise<void>;
@@ -35,8 +35,8 @@ export class SequentialWorker extends ManagedObject {
   ): Job {
     const state = Observable.givenValue<JobState>("queued");
 
-    const handle = this.addHandle(
-      Handle.givenCallback(() => {
+    const receipt = this.addReceipt(
+      Receipt.givenCancelFunction(() => {
         if (job.state.value === "queued") {
           job.state.setValue("cancelled");
         }
@@ -55,7 +55,7 @@ export class SequentialWorker extends ManagedObject {
     );
 
     const job: Job = {
-      handle,
+      receipt: receipt,
       state,
     };
 

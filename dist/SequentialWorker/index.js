@@ -19,7 +19,7 @@ class SequentialWorker extends ManagedObject_1.ManagedObject {
     }
     addWork(callback, cancelledCallback) {
         const state = observable_1.Observable.givenValue("queued");
-        const handle = this.addHandle(observable_1.Handle.givenCallback(() => {
+        const receipt = this.addReceipt(observable_1.Receipt.givenCancelFunction(() => {
             if (job.state.value === "queued") {
                 job.state.setValue("cancelled");
             }
@@ -35,7 +35,7 @@ class SequentialWorker extends ManagedObject_1.ManagedObject {
             }
         }));
         const job = {
-            handle,
+            receipt: receipt,
             state,
         };
         this._jobs.push(job);

@@ -15,27 +15,27 @@ class Connector extends ManagedObject_1.ManagedObject {
         return new Connector(definition);
     }
     initManagedObject() {
-        this.addHandle(this.source.didChange.subscribe((source) => {
-            if (this._sourceValueHandle != null) {
-                this._sourceValueHandle.release();
-                this.removeHandle(this._sourceValueHandle);
-                this._sourceValueHandle = undefined;
+        this.addReceipt(this.source.didChange.subscribe((source) => {
+            if (this._sourceValueReceipt != null) {
+                this._sourceValueReceipt.cancel();
+                this.removeReceipt(this._sourceValueReceipt);
+                this._sourceValueReceipt = undefined;
             }
             if (source != null) {
-                this._sourceValueHandle = this.addHandle(source.didChange.subscribe(() => {
+                this._sourceValueReceipt = this.addReceipt(source.didChange.subscribe(() => {
                     this.updateTarget();
                 }, true));
             }
             this.updateTarget();
         }, true));
-        this.addHandle(this.target.didChange.subscribe(() => {
+        this.addReceipt(this.target.didChange.subscribe(() => {
             this.updateTarget();
         }));
-        this.addHandle(observable_1.Handle.givenCallback(() => {
-            if (this._sourceValueHandle != null) {
-                this._sourceValueHandle.release();
-                this.removeHandle(this._sourceValueHandle);
-                this._sourceValueHandle = undefined;
+        this.addReceipt(observable_1.Receipt.givenCancelFunction(() => {
+            if (this._sourceValueReceipt != null) {
+                this._sourceValueReceipt.cancel();
+                this.removeReceipt(this._sourceValueReceipt);
+                this._sourceValueReceipt = undefined;
             }
         }));
     }

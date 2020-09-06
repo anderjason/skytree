@@ -1,9 +1,9 @@
-import { Handle, Observable } from "@anderjason/observable";
+import { Receipt, Observable } from "@anderjason/observable";
 import { ManagedObject } from "../ManagedObject";
 export declare type JobState = "queued" | "running" | "finished" | "cancelled";
 export interface Job {
     state: Observable<JobState>;
-    handle: Handle;
+    receipt: Receipt;
 }
 export declare type JobCallback = () => Promise<void>;
 export declare type CancelledJobCallback = () => void;

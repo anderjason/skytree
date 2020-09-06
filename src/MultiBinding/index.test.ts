@@ -28,7 +28,7 @@ Test.define(
     );
 
     let didInvalidate: any = false;
-    obj.addHandle(
+    obj.addReceipt(
       multiBinding.didInvalidate.subscribe(() => {
         didInvalidate = true;
       })

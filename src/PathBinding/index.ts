@@ -1,5 +1,5 @@
 import {
-  Handle,
+  Receipt,
   Observable,
   ObservableArray,
   ObservableDict,
@@ -33,7 +33,7 @@ export class PathBinding extends ManagedObject {
   readonly isMatched = ReadOnlyObservable.givenObservable(this._isMatched);
 
   private _input: any;
-  private _pathHandles: Handle[] = [];
+  private _pathReceipts: Receipt[] = [];
   private _currentBuildId: number = 0;
 
   private constructor(definition: PathBindingDefinition) {
@@ -54,18 +54,18 @@ export class PathBinding extends ManagedObject {
   initManagedObject() {
     this.rebuild();
 
-    this.addHandle(
-      Handle.givenCallback(() => {
-        this.clearPathHandles();
+    this.addReceipt(
+      Receipt.givenCancelFunction(() => {
+        this.clearPathReceipts();
       })
     );
   }
 
-  private clearPathHandles() {
-    this._pathHandles.forEach((handle) => {
-      handle.release();
+  private clearPathReceipts() {
+    this._pathReceipts.forEach((receipt) => {
+      receipt.cancel();
     });
-    this._pathHandles = [];
+    this._pathReceipts = [];
   }
 
   private rebuild(): void {
@@ -76,7 +76,7 @@ export class PathBinding extends ManagedObject {
 
     const thisBuildId = this._currentBuildId;
 
-    this.clearPathHandles();
+    this.clearPathReceipts();
 
     let index = 0;
     let parts = this.path.toParts();
@@ -92,7 +92,7 @@ export class PathBinding extends ManagedObject {
         ObservableArray.isObservableArray(inputAtPathStep) ||
         ObservableDict.isObservableDict(inputAtPathStep)
       ) {
-        this._pathHandles.push(
+        this._pathReceipts.push(
           inputAtPathStep.didChange.subscribe(() => {
             if (this._currentBuildId === thisBuildId) {
               this.rebuild();

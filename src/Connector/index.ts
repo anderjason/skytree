@@ -1,5 +1,5 @@
 import { ManagedObject } from "../ManagedObject";
-import { Handle, Observable, ObservableBase } from "@anderjason/observable";
+import { Receipt, Observable, ObservableBase } from "@anderjason/observable";
 
 export interface ConnectorDefinition<T> {
   source?: ObservableBase<T>;
@@ -17,7 +17,7 @@ export class Connector<T> extends ManagedObject {
 
   readonly target = Observable.ofEmpty<Observable<T>>(Observable.isStrictEqual);
 
-  private _sourceValueHandle: Handle;
+  private _sourceValueReceipt: Receipt;
 
   private constructor(definition: ConnectorDefinition<T>) {
     super();
@@ -27,16 +27,16 @@ export class Connector<T> extends ManagedObject {
   }
 
   initManagedObject() {
-    this.addHandle(
+    this.addReceipt(
       this.source.didChange.subscribe((source) => {
-        if (this._sourceValueHandle != null) {
-          this._sourceValueHandle.release();
-          this.removeHandle(this._sourceValueHandle);
-          this._sourceValueHandle = undefined;
+        if (this._sourceValueReceipt != null) {
+          this._sourceValueReceipt.cancel();
+          this.removeReceipt(this._sourceValueReceipt);
+          this._sourceValueReceipt = undefined;
         }
 
         if (source != null) {
-          this._sourceValueHandle = this.addHandle(
+          this._sourceValueReceipt = this.addReceipt(
             source.didChange.subscribe(() => {
               this.updateTarget();
             }, true)
@@ -47,18 +47,18 @@ export class Connector<T> extends ManagedObject {
       }, true)
     );
 
-    this.addHandle(
+    this.addReceipt(
       this.target.didChange.subscribe(() => {
         this.updateTarget();
       })
     );
 
-    this.addHandle(
-      Handle.givenCallback(() => {
-        if (this._sourceValueHandle != null) {
-          this._sourceValueHandle.release();
-          this.removeHandle(this._sourceValueHandle);
-          this._sourceValueHandle = undefined;
+    this.addReceipt(
+      Receipt.givenCancelFunction(() => {
+        if (this._sourceValueReceipt != null) {
+          this._sourceValueReceipt.cancel();
+          this.removeReceipt(this._sourceValueReceipt);
+          this._sourceValueReceipt = undefined;
         }
       })
     );

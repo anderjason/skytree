@@ -1,4 +1,4 @@
-import { Handle } from "@anderjason/observable";
+import { Receipt } from "@anderjason/observable";
 import { Test } from "@anderjason/tests";
 import { ManagedObject } from ".";
 
@@ -55,77 +55,80 @@ Test.define("ManagedObject only invokes initManagedObject once", () => {
   instance.uninit();
 });
 
-Test.define("ManagedObject returns a handle from init", () => {
+Test.define("ManagedObject returns a receipt from init", () => {
   class MySubclass extends ManagedObject {
     initManagedObject() {}
   }
 
   const instance = new MySubclass();
-  const handle = instance.init();
+  const receipt = instance.init();
 
-  Test.assert(handle != null);
-  Test.assert(handle.isReleased === false);
+  Test.assert(receipt != null);
+  Test.assert(receipt.isCancelled === false);
 
   instance.uninit();
 });
 
 Test.define(
-  "ManagedObject returns the same handle if init is called multiple times",
+  "ManagedObject returns the same receipt if init is called multiple times",
   () => {
     class MySubclass extends ManagedObject {
       initManagedObject() {}
     }
 
     const instance = new MySubclass();
-    const handle1 = instance.init();
-    const handle2 = instance.init();
-    const handle3 = instance.init();
+    const receipt1 = instance.init();
+    const receipt2 = instance.init();
+    const receipt3 = instance.init();
 
-    Test.assert(handle1 != null);
-    Test.assert(handle1 === handle2);
-    Test.assert(handle1 === handle3);
+    Test.assert(receipt1 != null);
+    Test.assert(receipt1 === receipt2);
+    Test.assert(receipt1 === receipt3);
 
     instance.uninit();
   }
 );
 
-Test.define("ManagedObject is reset when the handle is released", () => {
-  let releaseCount: number = 0;
+Test.define(
+  "ManagedObject is uninitialized when the receipt is cancelled",
+  () => {
+    let releaseCount: number = 0;
 
-  class MySubclass extends ManagedObject {
-    initManagedObject() {
-      this.addHandle(
-        Handle.givenCallback(() => {
-          releaseCount += 1;
-        })
-      );
+    class MySubclass extends ManagedObject {
+      initManagedObject() {
+        this.addReceipt(
+          Receipt.givenCancelFunction(() => {
+            releaseCount += 1;
+          })
+        );
+      }
     }
+
+    const instance = new MySubclass();
+    const receipt1 = instance.init();
+    Test.assert(instance.isInitialized.value === true);
+
+    Test.assert(releaseCount === 0);
+    receipt1.cancel();
+    receipt1.cancel();
+
+    Test.assert(releaseCount === 1); // second release has no effect
+
+    // @ts-ignore
+    Test.assert(instance.isInitialized.value === false);
+
+    const receipt2 = instance.init(); // init again
+    Test.assert(instance.isInitialized.value === true);
+
+    Test.assert(receipt2 != null);
+    Test.assert(receipt1 !== receipt2); // different receipt from the first init
+
+    receipt2.cancel();
+
+    Test.assert(releaseCount === 2);
+    Test.assert(instance.isInitialized.value === false);
   }
-
-  const instance = new MySubclass();
-  const handle1 = instance.init();
-  Test.assert(instance.isInitialized.value === true);
-
-  Test.assert(releaseCount === 0);
-  handle1.release();
-  handle1.release();
-
-  Test.assert(releaseCount === 1); // second release has no effect
-
-  // @ts-ignore
-  Test.assert(instance.isInitialized.value === false);
-
-  const handle2 = instance.init(); // init again
-  Test.assert(instance.isInitialized.value === true);
-
-  Test.assert(handle2 != null);
-  Test.assert(handle1 !== handle2); // different handle from the first init
-
-  handle2.release();
-
-  Test.assert(releaseCount === 2);
-  Test.assert(instance.isInitialized.value === false);
-});
+);
 
 Test.define("ManagedObject has a list of child objects", () => {
   class MySubclass extends ManagedObject {
@@ -262,7 +265,7 @@ Test.define("ManagedObject inits child objects when init is called", () => {
   parentInstance1.uninit();
 });
 
-Test.define("ManagedObject updates the static initialized count", () => {
+Test.define("ManagedObject updates the static initialized set", () => {
   class MySubclass extends ManagedObject {
     initManagedObject() {}
   }

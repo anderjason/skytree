@@ -39,7 +39,7 @@ export class Transformer<TI, TO> extends ManagedObject {
   initManagedObject() {
     let latestChangeId = 0;
 
-    this.addHandle(
+    this.addReceipt(
       this.input.didChange.subscribe(async (value) => {
         latestChangeId += 1;
         if (latestChangeId > 10000) {

@@ -19,7 +19,7 @@ Test.define("ConditionalInitializer can be created with a condition", () => {
     instance: expectedInstance,
   });
 
-  const handle = initializer.init();
+  const receipt = initializer.init();
 
   Test.assert(initializer.output.value == null);
 
@@ -32,5 +32,5 @@ Test.define("ConditionalInitializer can be created with a condition", () => {
   input.setValue("B");
   Test.assert(initializer.output.value === expectedInstance);
 
-  handle.release();
+  receipt.cancel();
 });

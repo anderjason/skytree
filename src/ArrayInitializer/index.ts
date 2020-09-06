@@ -1,5 +1,5 @@
 import {
-  Handle,
+  Receipt,
   ObservableArray,
   ObservableArrayBase,
   ReadOnlyObservableArray,
@@ -44,7 +44,7 @@ export class ArrayInitializer<
   }
 
   initManagedObject() {
-    this.addHandle(
+    this.addReceipt(
       this._input.didChange.subscribe(() => {
         const newInput = this._input.toValues();
 
@@ -90,8 +90,8 @@ export class ArrayInitializer<
       }, true)
     );
 
-    this.addHandle(
-      Handle.givenCallback(() => {
+    this.addReceipt(
+      Receipt.givenCancelFunction(() => {
         this._objects.clear();
       })
     );

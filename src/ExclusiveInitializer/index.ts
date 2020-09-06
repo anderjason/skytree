@@ -1,5 +1,5 @@
 import {
-  Handle,
+  Receipt,
   Observable,
   ObservableBase,
   ReadOnlyObservable,
@@ -39,7 +39,7 @@ export class ExclusiveInitializer<T> extends ManagedObject {
 
   initManagedObject() {
     if (this._input != null && this._callback != null) {
-      this.addHandle(
+      this.addReceipt(
         this._input.didChange.subscribe((newValue: any, oldValue: any) => {
           const newObject = this._callback(
             newValue,
@@ -63,8 +63,8 @@ export class ExclusiveInitializer<T> extends ManagedObject {
       );
     }
 
-    this.addHandle(
-      Handle.givenCallback(() => {
+    this.addReceipt(
+      Receipt.givenCancelFunction(() => {
         this._output.setValue(undefined);
       })
     );

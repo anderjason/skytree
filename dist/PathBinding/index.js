@@ -11,7 +11,7 @@ class PathBinding extends ManagedObject_1.ManagedObject {
         this.matchedPath = observable_1.ReadOnlyObservable.givenObservable(this._matchedPath);
         this._isMatched = observable_1.Observable.ofEmpty(observable_1.Observable.isStrictEqual);
         this.isMatched = observable_1.ReadOnlyObservable.givenObservable(this._isMatched);
-        this._pathHandles = [];
+        this._pathReceipts = [];
         this._currentBuildId = 0;
         this._input = definition.input;
         this.path = definition.path;
@@ -28,15 +28,15 @@ class PathBinding extends ManagedObject_1.ManagedObject {
     }
     initManagedObject() {
         this.rebuild();
-        this.addHandle(observable_1.Handle.givenCallback(() => {
-            this.clearPathHandles();
+        this.addReceipt(observable_1.Receipt.givenCancelFunction(() => {
+            this.clearPathReceipts();
         }));
     }
-    clearPathHandles() {
-        this._pathHandles.forEach((handle) => {
-            handle.release();
+    clearPathReceipts() {
+        this._pathReceipts.forEach((receipt) => {
+            receipt.cancel();
         });
-        this._pathHandles = [];
+        this._pathReceipts = [];
     }
     rebuild() {
         this._currentBuildId += 1;
@@ -44,7 +44,7 @@ class PathBinding extends ManagedObject_1.ManagedObject {
             this._currentBuildId = 0;
         }
         const thisBuildId = this._currentBuildId;
-        this.clearPathHandles();
+        this.clearPathReceipts();
         let index = 0;
         let parts = this.path.toParts();
         let inputAtPathStep = this._input;
@@ -54,7 +54,7 @@ class PathBinding extends ManagedObject_1.ManagedObject {
             if (observable_1.Observable.isObservable(inputAtPathStep) ||
                 observable_1.ObservableArray.isObservableArray(inputAtPathStep) ||
                 observable_1.ObservableDict.isObservableDict(inputAtPathStep)) {
-                this._pathHandles.push(inputAtPathStep.didChange.subscribe(() => {
+                this._pathReceipts.push(inputAtPathStep.didChange.subscribe(() => {
                     if (this._currentBuildId === thisBuildId) {
                         this.rebuild();
                     }
