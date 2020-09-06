@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Transformer = exports.SequentialWorker = exports.PathBinding = exports.MultiBinding = exports.ManagedObject = exports.ExclusiveInitializer = exports.Connector = exports.ConditionalInitializer = exports.ArrayInitializer = void 0;
+exports.Transformer = exports.Timer = exports.SequentialWorker = exports.PathBinding = exports.MultiBinding = exports.ManagedObject = exports.ExclusiveInitializer = exports.Connector = exports.ConditionalInitializer = exports.ArrayInitializer = void 0;
 const ArrayInitializer_1 = require("./ArrayInitializer");
 Object.defineProperty(exports, "ArrayInitializer", { enumerable: true, get: function () { return ArrayInitializer_1.ArrayInitializer; } });
 const ConditionalInitializer_1 = require("./ConditionalInitializer");
@@ -17,6 +17,8 @@ const PathBinding_1 = require("./PathBinding");
 Object.defineProperty(exports, "PathBinding", { enumerable: true, get: function () { return PathBinding_1.PathBinding; } });
 const SequentialWorker_1 = require("./SequentialWorker");
 Object.defineProperty(exports, "SequentialWorker", { enumerable: true, get: function () { return SequentialWorker_1.SequentialWorker; } });
+const Timer_1 = require("./Timer");
+Object.defineProperty(exports, "Timer", { enumerable: true, get: function () { return Timer_1.Timer; } });
 const Transformer_1 = require("./Transformer");
 Object.defineProperty(exports, "Transformer", { enumerable: true, get: function () { return Transformer_1.Transformer; } });
 //# sourceMappingURL=index.js.map

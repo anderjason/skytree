@@ -6,6 +6,7 @@ import { ManagedObject } from "./ManagedObject";
 import { MultiBinding } from "./MultiBinding";
 import { PathBinding } from "./PathBinding";
 import { SequentialWorker } from "./SequentialWorker";
+import { Timer } from "./Timer";
 import { Transformer } from "./Transformer";
 
 export {
@@ -17,5 +18,6 @@ export {
   MultiBinding,
   PathBinding,
   SequentialWorker,
+  Timer,
   Transformer,
 };

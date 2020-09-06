@@ -6,5 +6,6 @@ import { ManagedObject } from "./ManagedObject";
 import { MultiBinding } from "./MultiBinding";
 import { PathBinding } from "./PathBinding";
 import { SequentialWorker } from "./SequentialWorker";
+import { Timer } from "./Timer";
 import { Transformer } from "./Transformer";
-export { ArrayInitializer, ConditionalInitializer, Connector, ExclusiveInitializer, ManagedObject, MultiBinding, PathBinding, SequentialWorker, Transformer, };
+export { ArrayInitializer, ConditionalInitializer, Connector, ExclusiveInitializer, ManagedObject, MultiBinding, PathBinding, SequentialWorker, Timer, Transformer, };
