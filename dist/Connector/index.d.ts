@@ -1,15 +1,17 @@
 import { ManagedObject } from "../ManagedObject";
-import { Observable, ObservableBase } from "@anderjason/observable";
-export interface ConnectorDefinition<T> {
-    source?: ObservableBase<T>;
+import { Observable, ObservableBase, ReadOnlyObservable } from "@anderjason/observable";
+export interface ConnectorProps<T> {
+    source?: T | ObservableBase<T>;
     target?: Observable<T>;
 }
-export declare class Connector<T> extends ManagedObject {
-    static givenDefinition<T>(definition: ConnectorDefinition<T>): Connector<T>;
-    readonly source: Observable<ObservableBase<T>>;
-    readonly target: Observable<Observable<T>>;
+export declare class Connector<T> extends ManagedObject<ConnectorProps<T>> {
+    private _source;
+    readonly source: ReadOnlyObservable<ObservableBase<T>>;
+    private _target;
+    readonly target: ReadOnlyObservable<Observable<T>>;
     private _sourceValueReceipt;
-    private constructor();
-    initManagedObject(): void;
+    onActivate(): void;
+    setSource(newSource: T | ObservableBase<T>): void;
+    setTarget(newTarget: Observable<T>): void;
     private updateTarget;
 }

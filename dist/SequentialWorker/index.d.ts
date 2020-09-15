@@ -7,13 +7,13 @@ export interface Job {
 }
 export declare type JobCallback = () => Promise<void>;
 export declare type CancelledJobCallback = () => void;
-export declare class SequentialWorker extends ManagedObject {
-    static ofEmpty(): SequentialWorker;
+export interface SequentialWorkerProps {
+}
+export declare class SequentialWorker extends ManagedObject<SequentialWorkerProps> {
     private _jobs;
     private _callbackByJob;
     private _isBusy;
-    private constructor();
-    initManagedObject(): void;
+    onActivate(): void;
     addWork(callback: JobCallback, cancelledCallback?: CancelledJobCallback): Job;
     private startNextJob;
     private runJob;

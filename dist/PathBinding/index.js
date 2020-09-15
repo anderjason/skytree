@@ -5,30 +5,25 @@ const observable_1 = require("@anderjason/observable");
 const util_1 = require("@anderjason/util");
 const ManagedObject_1 = require("../ManagedObject");
 class PathBinding extends ManagedObject_1.ManagedObject {
-    constructor(definition) {
-        super();
+    constructor(props) {
+        super(props);
         this._matchedPath = observable_1.Observable.ofEmpty(util_1.ValuePath.isEqual);
         this.matchedPath = observable_1.ReadOnlyObservable.givenObservable(this._matchedPath);
         this._isMatched = observable_1.Observable.ofEmpty(observable_1.Observable.isStrictEqual);
         this.isMatched = observable_1.ReadOnlyObservable.givenObservable(this._isMatched);
         this._pathReceipts = [];
         this._currentBuildId = 0;
-        this._input = definition.input;
-        this.path = definition.path;
-        if (observable_1.Observable.isObservable(definition.output)) {
-            this._output = definition.output;
+        if (observable_1.Observable.isObservable(props.output)) {
+            this._output = props.output;
         }
         else {
             this._output = observable_1.Observable.ofEmpty(util_1.ObjectUtil.objectIsDeepEqual);
         }
         this.output = observable_1.ReadOnlyObservable.givenObservable(this._output);
     }
-    static givenDefinition(definition) {
-        return new PathBinding(definition);
-    }
-    initManagedObject() {
+    onActivate() {
         this.rebuild();
-        this.addReceipt(observable_1.Receipt.givenCancelFunction(() => {
+        this.cancelOnDeactivate(new observable_1.Receipt(() => {
             this.clearPathReceipts();
         }));
     }
@@ -46,8 +41,8 @@ class PathBinding extends ManagedObject_1.ManagedObject {
         const thisBuildId = this._currentBuildId;
         this.clearPathReceipts();
         let index = 0;
-        let parts = this.path.toParts();
-        let inputAtPathStep = this._input;
+        let parts = this.props.path.toParts();
+        let inputAtPathStep = this.props.input;
         let isMatch = inputAtPathStep != null;
         let matchedPathParts = [];
         while (isMatch) {
@@ -100,7 +95,7 @@ class PathBinding extends ManagedObject_1.ManagedObject {
             }
         }
         this._matchedPath.setValue(util_1.ValuePath.givenParts(matchedPathParts));
-        const isMatched = this.matchedPath.value.isEqual(this.path);
+        const isMatched = this.matchedPath.value.isEqual(this.props.path);
         if (isMatched) {
             const matchedInput = inputAtPathStep;
             if (observable_1.Observable.isObservable(matchedInput)) {

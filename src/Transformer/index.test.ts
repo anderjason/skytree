@@ -14,8 +14,8 @@ function delay(milliseconds: number): Promise<void> {
 Test.define(
   "Transformer returns the expected results with a callback returning a promise",
   async () => {
-    const obj = new ManagedObject();
-    obj.init();
+    const obj = new ManagedObject({});
+    obj.activate();
 
     const delays = [300, 50, 200, 75];
 
@@ -25,7 +25,7 @@ Test.define(
     let i = 0;
 
     const async = obj.addManagedObject(
-      Transformer.givenDefinition({
+      new Transformer({
         input,
         fn: async (lower) => {
           if (lower == null) {
@@ -42,7 +42,7 @@ Test.define(
       })
     );
 
-    obj.addReceipt(
+    obj.cancelOnDeactivate(
       async.output.didChange.subscribe((upper) => {
         if (upper == null) {
           return null;

@@ -3,99 +3,97 @@ import { Test } from "@anderjason/tests";
 import { ArrayInitializer } from ".";
 import { ManagedObject } from "../ManagedObject";
 
-Test.define("ArrayInitializer can be created", () => {
-  class TestObject extends ManagedObject {
-    testValue: string;
-  }
+class TestObject extends ManagedObject {
+  testValue: string;
+}
 
+Test.define("ArrayInitializer returns the expected results", () => {
   const input = ObservableArray.ofEmpty<string>();
-  const arrayInitializer = ArrayInitializer.givenDefinition({
+  const arrayInitializer = new ArrayInitializer({
     input,
-    fn: (value: string, index: number, currentObject?: TestObject) => {
-      if (value === "skip this one") {
+    fn: (inputString: string, index: number, currentObject?: TestObject) => {
+      if (inputString === "skip") {
         return undefined;
       }
 
       if (currentObject == null) {
         // create an object if it doesn't exist for this value
-        currentObject = new TestObject();
+        currentObject = new TestObject({});
       }
 
       // set up the object for this value
-      currentObject.testValue = value;
+      currentObject.testValue = inputString;
 
       return currentObject;
     },
   });
+  arrayInitializer.activate();
 
-  const receipt = arrayInitializer.init();
+  input.addValue("red");
+  input.addValue("orange");
+  // input is ["red", "orange"]
 
-  input.addValue("hello");
-  input.addValue("world");
-
-  const objects = arrayInitializer.objects.toValues();
+  const objects = arrayInitializer.output.toValues();
   Test.assert(objects.length === 2);
-  Test.assert(objects[0].testValue === "hello");
-  Test.assert(objects[1].testValue === "world");
-  Test.assert(objects[0].isInitialized.value);
-  Test.assert(objects[1].isInitialized.value);
+  Test.assert(objects[0].testValue === "red");
+  Test.assert(objects[1].testValue === "orange");
+  Test.assert(objects[0].isActive.value);
+  Test.assert(objects[1].isActive.value);
 
   const originalFirstObject = objects[0];
   const originalSecondObject = objects[1];
 
-  input.addValue("message", 0);
+  input.addValue("green", 0);
+  // input is ["green", "red", "orange"]
 
-  const objects2 = arrayInitializer.objects.toValues();
+  const objects2 = arrayInitializer.output.toValues();
   Test.assert(objects2.length === 3);
-  Test.assert(objects2[0].testValue === "message");
-  Test.assert(objects2[1].testValue === "hello");
-  Test.assert(objects2[2].testValue === "world");
-  Test.assert(objects2[0].isInitialized.value);
-  Test.assert(objects2[1].isInitialized.value);
-  Test.assert(objects2[2].isInitialized.value);
+  Test.assert(objects2[0].testValue === "green");
+  Test.assert(objects2[1].testValue === "red");
+  Test.assert(objects2[2].testValue === "orange");
+  Test.assert(objects2[0].isActive.value);
+  Test.assert(objects2[1].isActive.value);
+  Test.assert(objects2[2].isActive.value);
   Test.assert(objects2[0] === originalFirstObject);
   Test.assert(objects2[1] === originalSecondObject);
 
-  input.removeAllWhere((str) => str === "hello");
+  input.removeAllWhere((str) => str === "red");
+  // input is ["green", "orange"]
 
-  const objects3 = arrayInitializer.objects.toValues();
+  const objects3 = arrayInitializer.output.toValues();
   Test.assert(objects3.length === 2);
-  Test.assert(objects3[0].testValue === "message");
-  Test.assert(objects3[1].testValue === "world");
-  Test.assert(objects3[0].isInitialized.value);
-  Test.assert(objects3[1].isInitialized.value);
+  Test.assert(objects3[0].testValue === "green");
+  Test.assert(objects3[1].testValue === "orange");
+  Test.assert(objects3[0].isActive.value);
+  Test.assert(objects3[1].isActive.value);
   Test.assert(objects3[0] === originalFirstObject);
   Test.assert(objects3[1] === originalSecondObject);
 
-  input.addValue("skip this one", 1);
+  input.addValue("skip", 1);
+  // input = ["green", "skip", "orange"]
 
-  const objects4 = arrayInitializer.objects.toValues();
+  const objects4 = arrayInitializer.output.toValues();
   Test.assert(objects4.length === 3, "Expected length 3 in objects4");
-  Test.assert(
-    objects4[0].testValue === "message",
-    "Expected message in objects4"
-  );
+  Test.assert(objects4[0].testValue === "green", "Expected green in objects4");
   Test.assert(objects4[1] == null, "Expected null in objects4");
-  Test.assert(objects4[2].testValue === "world", "Expected world in objects4");
   Test.assert(
-    objects4[0].isInitialized.value,
-    "Expected 0 initialized in objects4"
+    objects4[2].testValue === "orange",
+    "Expected orange in objects4"
   );
-  Test.assert(
-    objects4[2].isInitialized.value,
-    "Expected 2 initialized in objects4"
-  );
+  Test.assert(objects4[0].isActive.value, "Expected 0 initialized in objects4");
+  Test.assert(objects4[2].isActive.value, "Expected 2 initialized in objects4");
   Test.assert(objects4[0] === originalFirstObject);
 
   input.removeValueAtIndex(1);
+  // input is ["green", "orange"]
 
-  const objects5 = arrayInitializer.objects.toValues();
+  const objects5 = arrayInitializer.output.toValues();
   Test.assert(objects5.length === 2);
-  Test.assert(objects5[0].testValue === "message");
-  Test.assert(objects5[1].testValue === "world");
-  Test.assert(objects5[0].isInitialized.value);
-  Test.assert(objects5[1].isInitialized.value);
+  Test.assert(objects5[0].testValue === "green");
+  Test.assert(objects5[1].testValue === "orange");
+  Test.assert(objects5[0].isActive.value);
+  Test.assert(objects5[1].isActive.value);
   Test.assert(objects5[0] === originalFirstObject);
 
-  receipt.cancel();
+  arrayInitializer.deactivate();
 });

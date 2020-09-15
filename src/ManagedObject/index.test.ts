@@ -3,110 +3,107 @@ import { Test } from "@anderjason/tests";
 import { ManagedObject } from ".";
 
 Test.define("ManagedObject has a unique id per instance", () => {
-  const instance1 = new ManagedObject();
-  const instance2 = new ManagedObject();
+  const instance1 = new ManagedObject({});
+  const instance2 = new ManagedObject({});
 
-  Test.assert(instance1.id != null);
-  Test.assert(instance1.id.length === 8);
+  Test.assert(instance1.managedObjectId != null);
+  Test.assert(instance1.managedObjectId.length === 8);
 
-  Test.assert(instance2.id != null);
-  Test.assert(instance2.id.length === 8);
+  Test.assert(instance2.managedObjectId != null);
+  Test.assert(instance2.managedObjectId.length === 8);
 
-  Test.assert(instance1.id !== instance2.id);
+  Test.assert(instance1.managedObjectId !== instance2.managedObjectId);
 });
 
-Test.define(
-  "ManagedObject invokes initManagedObject when init is called",
-  () => {
-    let didInit = false as boolean;
-
-    class MySubclass extends ManagedObject {
-      initManagedObject() {
-        didInit = true;
-      }
-    }
-
-    const instance = new MySubclass();
-    instance.init();
-
-    Test.assert(didInit === true);
-    Test.assert(instance.isInitialized.value === true);
-
-    instance.uninit();
-  }
-);
-
-Test.define("ManagedObject only invokes initManagedObject once", () => {
-  let initCount: number = 0;
+Test.define("ManagedObject invokes onActivate when activate is called", () => {
+  let didactivate = false as boolean;
 
   class MySubclass extends ManagedObject {
-    initManagedObject() {
-      initCount += 1;
+    onActivate() {
+      didactivate = true;
     }
   }
 
-  const instance = new MySubclass();
-  instance.init();
-  instance.init();
-  instance.init();
+  const instance = new MySubclass({});
+  instance.activate();
 
-  Test.assert(initCount === 1);
+  Test.assert(didactivate === true);
+  Test.assert(instance.isActive.value === true);
 
-  instance.uninit();
+  instance.deactivate();
 });
 
-Test.define("ManagedObject returns a receipt from init", () => {
+Test.define("ManagedObject only invokes onActivate once", () => {
+  let activateCount: number = 0;
+
   class MySubclass extends ManagedObject {
-    initManagedObject() {}
+    onActivate() {
+      activateCount += 1;
+    }
   }
 
-  const instance = new MySubclass();
-  const receipt = instance.init();
+  const instance = new MySubclass({});
+  instance.activate();
+  instance.activate();
+  instance.activate();
+
+  Test.assert(activateCount === 1);
+
+  instance.deactivate();
+});
+
+Test.define("ManagedObject returns a receipt from activate", () => {
+  class MySubclass extends ManagedObject {
+    onActivate() {}
+  }
+
+  const instance = new MySubclass({});
+  const receipt = instance.activate();
 
   Test.assert(receipt != null);
   Test.assert(receipt.isCancelled === false);
 
-  instance.uninit();
+  instance.deactivate();
 });
 
 Test.define(
-  "ManagedObject returns the same receipt if init is called multiple times",
+  "ManagedObject returns the same receipt if activate is called multiple times",
   () => {
     class MySubclass extends ManagedObject {
-      initManagedObject() {}
+      onActivate() {}
     }
 
-    const instance = new MySubclass();
-    const receipt1 = instance.init();
-    const receipt2 = instance.init();
-    const receipt3 = instance.init();
+    const instance = new MySubclass({});
+    const receipt1 = instance.activate();
+    const receipt2 = instance.activate();
+    const receipt3 = instance.activate();
 
     Test.assert(receipt1 != null);
     Test.assert(receipt1 === receipt2);
     Test.assert(receipt1 === receipt3);
 
-    instance.uninit();
+    instance.deactivate();
   }
 );
 
 Test.define(
-  "ManagedObject is uninitialized when the receipt is cancelled",
+  "ManagedObject is deactivated when the receipt is cancelled",
   () => {
     let releaseCount: number = 0;
 
     class MySubclass extends ManagedObject {
-      initManagedObject() {
-        this.addReceipt(
-          Receipt.givenCancelFunction(() => {
+      onActivate() {
+        this.cancelOnDeactivate(
+          new Receipt(() => {
             releaseCount += 1;
           })
         );
       }
     }
 
-    const instance = new MySubclass();
-    const receipt1 = instance.init();
-    Test.assert(instance.isInitialized.value === true);
+    const instance = new MySubclass({});
+    const receipt1 = instance.activate();
+    Test.assert(instance.isActive.value === true);
 
     Test.assert(releaseCount === 0);
     receipt1.cancel();
@@ -115,70 +112,73 @@ Test.define(
     Test.assert(releaseCount === 1); // second release has no effect
 
     // @ts-ignore
-    Test.assert(instance.isInitialized.value === false);
+    Test.assert(instance.isActive.value === false);
 
-    const receipt2 = instance.init(); // init again
-    Test.assert(instance.isInitialized.value === true);
+    const receipt2 = instance.activate(); // activate again
+    Test.assert(instance.isActive.value === true);
 
     Test.assert(receipt2 != null);
-    Test.assert(receipt1 !== receipt2); // different receipt from the first init
+    Test.assert(receipt1 !== receipt2); // different receipt from the first activate
 
     receipt2.cancel();
 
     Test.assert(releaseCount === 2);
-    Test.assert(instance.isInitialized.value === false);
+    Test.assert(instance.isActive.value === false);
   }
 );
 
 Test.define("ManagedObject has a list of child objects", () => {
   class MySubclass extends ManagedObject {
-    initManagedObject() {}
+    onActivate() {}
   }
 
-  const parentInstance = new MySubclass();
-  parentInstance.init();
+  const parentInstance = new MySubclass({});
+  parentInstance.activate();
 
   Test.assert(parentInstance.childObjects.toValues() != null);
   Test.assert(parentInstance.childObjects.toValues().length === 0);
 
-  parentInstance.uninit();
+  parentInstance.deactivate();
 });
 
-Test.define("ManagedObject initializes objects when added as children", () => {
-  class MySubclass extends ManagedObject {
-    initManagedObject() {}
+Test.define(
+  "ManagedObject activateializes objects when added as children",
+  () => {
+    class MySubclass extends ManagedObject {
+      onActivate() {}
+    }
+
+    const parentInstance = new MySubclass({});
+    parentInstance.activate();
+
+    const childInstance = new MySubclass({});
+    Test.assert(childInstance.isActive.value === false);
+
+    parentInstance.addManagedObject(childInstance);
+
+    Test.assert(childInstance.isActive.value === true);
+
+    parentInstance.deactivate();
   }
-
-  const parentInstance = new MySubclass();
-  parentInstance.init();
-
-  const childInstance = new MySubclass();
-  Test.assert(childInstance.isInitialized.value === false);
-
-  parentInstance.addManagedObject(childInstance);
-
-  Test.assert(childInstance.isInitialized.value === true);
-
-  parentInstance.uninit();
-});
+);
 
 Test.define(
   "ManagedObject sets parent of objects when added as children",
   () => {
     class MySubclass extends ManagedObject {
-      initManagedObject() {}
+      onActivate() {}
     }
 
-    const parentInstance = new MySubclass();
-    parentInstance.init();
+    const parentInstance = new MySubclass({});
+    parentInstance.activate();
 
-    const childInstance = new MySubclass();
+    const childInstance = new MySubclass({});
     Test.assert(childInstance.parentObject.value == null);
 
     parentInstance.addManagedObject(childInstance);
     Test.assert(childInstance.parentObject.value === parentInstance);
 
-    parentInstance.uninit();
+    parentInstance.deactivate();
   }
 );
 
@@ -186,19 +186,19 @@ Test.define(
   "ManagedObject unsets parent of objects when removed as children",
   () => {
     class MySubclass extends ManagedObject {
-      initManagedObject() {}
+      onActivate() {}
     }
 
-    const parentInstance = new MySubclass();
-    parentInstance.init();
+    const parentInstance = new MySubclass({});
+    parentInstance.activate();
 
-    const childInstance = new MySubclass();
+    const childInstance = new MySubclass({});
     parentInstance.addManagedObject(childInstance);
     parentInstance.removeManagedObject(childInstance);
 
     Test.assert(childInstance.parentObject.value == null);
 
-    parentInstance.uninit();
+    parentInstance.deactivate();
   }
 );
 
@@ -206,16 +206,16 @@ Test.define(
   "ManagedObject removes objects from other parents when added as children",
   () => {
     class MySubclass extends ManagedObject {
-      initManagedObject() {}
+      onActivate() {}
     }
 
-    const parentInstance1 = new MySubclass();
-    const parentInstance2 = new MySubclass();
+    const parentInstance1 = new MySubclass({});
+    const parentInstance2 = new MySubclass({});
 
-    parentInstance1.init();
-    parentInstance2.init();
+    parentInstance1.activate();
+    parentInstance2.activate();
 
-    const childInstance = new MySubclass();
+    const childInstance = new MySubclass({});
     parentInstance1.addManagedObject(childInstance);
     Test.assert(childInstance.parentObject.value === parentInstance1);
     Test.assert(parentInstance1.childObjects.hasValue(childInstance));
@@ -226,60 +226,66 @@ Test.define(
     Test.assert(parentInstance2.childObjects.hasValue(childInstance)); // added
     Test.assert(!parentInstance1.childObjects.hasValue(childInstance)); // removed
 
-    parentInstance1.uninit();
-    parentInstance2.uninit();
+    parentInstance1.deactivate();
+    parentInstance2.deactivate();
   }
 );
 
-Test.define("ManagedObject uninits child objects when uninit is called", () => {
+Test.define(
+  "ManagedObject unactivates child objects when unactivate is called",
+  () => {
+    class MySubclass extends ManagedObject {
+      onActivate() {}
+    }
+
+    const parentInstance1 = new MySubclass({});
+    parentInstance1.activate();
+
+    const childInstance = new MySubclass({});
+    parentInstance1.addManagedObject(childInstance);
+    Test.assert(childInstance.isActive.value === true);
+
+    parentInstance1.deactivate();
+
+    Test.assert(childInstance.isActive.value === false);
+  }
+);
+
+Test.define(
+  "ManagedObject activates child objects when activate is called",
+  () => {
+    class MySubclass extends ManagedObject {
+      onActivate() {}
+    }
+
+    const parentInstance1 = new MySubclass({});
+    const childInstance = new MySubclass({});
+    parentInstance1.addManagedObject(childInstance);
+    Test.assert(childInstance.isActive.value === false); // parent is not activateialized yet
+
+    parentInstance1.activate();
+
+    Test.assert(childInstance.isActive.value === true);
+
+    parentInstance1.deactivate();
+  }
+);
+
+Test.define("ManagedObject updates the static activateialized set", () => {
   class MySubclass extends ManagedObject {
-    initManagedObject() {}
+    onActivate() {}
   }
 
-  const parentInstance1 = new MySubclass();
-  parentInstance1.init();
+  const startValue = ManagedObject.activeSet.count;
 
-  const childInstance = new MySubclass();
+  const parentInstance1 = new MySubclass({});
+  const childInstance = new MySubclass({});
   parentInstance1.addManagedObject(childInstance);
-  Test.assert(childInstance.isInitialized.value === true);
+  parentInstance1.activate();
 
-  parentInstance1.uninit();
+  Test.assert(ManagedObject.activeSet.count === startValue + 2);
 
-  Test.assert(childInstance.isInitialized.value === false);
-});
+  parentInstance1.deactivate();
 
-Test.define("ManagedObject inits child objects when init is called", () => {
-  class MySubclass extends ManagedObject {
-    initManagedObject() {}
-  }
-
-  const parentInstance1 = new MySubclass();
-  const childInstance = new MySubclass();
-  parentInstance1.addManagedObject(childInstance);
-  Test.assert(childInstance.isInitialized.value === false); // parent is not initialized yet
-
-  parentInstance1.init();
-
-  Test.assert(childInstance.isInitialized.value === true);
-
-  parentInstance1.uninit();
-});
-
-Test.define("ManagedObject updates the static initialized set", () => {
-  class MySubclass extends ManagedObject {
-    initManagedObject() {}
-  }
-
-  const startValue = ManagedObject.initializedSet.count;
-
-  const parentInstance1 = new MySubclass();
-  const childInstance = new MySubclass();
-  parentInstance1.addManagedObject(childInstance);
-  parentInstance1.init();
-
-  Test.assert(ManagedObject.initializedSet.count === startValue + 2);
-
-  parentInstance1.uninit();
-
-  Test.assert(ManagedObject.initializedSet.count === startValue);
+  Test.assert(ManagedObject.activeSet.count === startValue);
 });

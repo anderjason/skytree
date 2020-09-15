@@ -3,13 +3,21 @@ import { ManagedObject } from "../ManagedObject";
 
 export type MultiBindingGroup = ObservableBase<any>[];
 
-export class MultiBinding extends ManagedObject {
+export interface MultiBindingProps {
+  groups: MultiBindingGroup[];
+}
+
+export class MultiBinding extends ManagedObject<MultiBindingProps> {
   static givenGroups(groups: MultiBindingGroup[]): MultiBinding {
-    return new MultiBinding(groups);
+    return new MultiBinding({
+      groups,
+    });
   }
 
   static givenOneGroup(group: MultiBindingGroup): MultiBinding {
-    return new MultiBinding([group]);
+    return new MultiBinding({
+      groups: [group],
+    });
   }
 
   static givenAnyChange(inputs: ObservableBase<any>[]): MultiBinding {
@@ -17,31 +25,26 @@ export class MultiBinding extends ManagedObject {
       return [input];
     });
 
-    return new MultiBinding(groups);
+    return new MultiBinding({
+      groups,
+    });
   }
 
-  readonly didInvalidate = TypedEvent.ofEmpty<void>();
+  readonly didInvalidate = new TypedEvent();
 
-  private _groups: MultiBindingGroup[];
   private _willInvalidateLater: boolean = false;
   private _invalidatedSetByGroup = new Map<
     MultiBindingGroup,
     Set<ObservableBase<any>>
   >();
 
-  private constructor(groups: MultiBindingGroup[]) {
-    super();
-
-    this._groups = groups;
-  }
-
-  initManagedObject() {
-    this._groups.forEach((group) => {
+  onActivate() {
+    this.props.groups.forEach((group) => {
       const invalidatedSet = new Set<ObservableBase<any>>();
       this._invalidatedSetByGroup.set(group, invalidatedSet);
 
       group.forEach((input) => {
-        this.addReceipt(
+        this.cancelOnDeactivate(
           input.didChange.subscribe(() => {
             invalidatedSet.add(input);
             this.onChange();
@@ -52,7 +55,7 @@ export class MultiBinding extends ManagedObject {
   }
 
   private isAnyGroupInvalidated(): boolean {
-    return this._groups.some((group) => {
+    return this.props.groups.some((group) => {
       const invalidatedSet = this._invalidatedSetByGroup.get(group);
       return invalidatedSet.size === group.length;
     });

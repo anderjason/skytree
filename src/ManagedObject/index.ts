@@ -9,13 +9,13 @@ import {
   ReadOnlyObservableSet,
 } from "@anderjason/observable";
 
-export class ManagedObject {
-  private static _initializedSet = ObservableSet.ofEmpty<ManagedObject>();
-  static readonly initializedSet = ReadOnlyObservableSet.givenObservableSet(
-    ManagedObject._initializedSet
+export class ManagedObject<T = any> {
+  private static _activeSet = ObservableSet.ofEmpty<ManagedObject>();
+  static readonly activeSet = ReadOnlyObservableSet.givenObservableSet(
+    ManagedObject._activeSet
   );
 
-  readonly id: string;
+  readonly managedObjectId: string;
 
   private _receipts = ObservableSet.ofEmpty<Receipt>();
   readonly receipts = ReadOnlyObservableSet.givenObservableSet(this._receipts);
@@ -32,41 +32,47 @@ export class ManagedObject {
     this._childObjects
   );
 
-  private _isInitialized = Observable.givenValue(false);
-  readonly isInitialized = ReadOnlyObservable.givenObservable(
-    this._isInitialized
-  );
+  private _isActive = Observable.givenValue(false);
+  readonly isActive = ReadOnlyObservable.givenObservable(this._isActive);
 
-  constructor() {
-    this.id = StringUtil.stringOfRandomCharacters(8);
+  private _props: T;
+
+  constructor(props: T) {
+    this._props = props;
+
+    this.managedObjectId = StringUtil.stringOfRandomCharacters(8);
   }
 
-  init(): Receipt {
-    if (this.isInitialized.value === false) {
-      this._thisReceipt = Receipt.givenCancelFunction(() => {
-        this.uninit();
+  get props(): T {
+    return this._props;
+  }
+
+  activate(): Receipt {
+    if (this.isActive.value === false) {
+      this._thisReceipt = new Receipt(() => {
+        this.deactivate();
       });
 
-      ManagedObject._initializedSet.addValue(this);
-      this._isInitialized.setValue(true);
+      ManagedObject._activeSet.addValue(this);
+      this._isActive.setValue(true);
 
       this._childObjects.toValues().forEach((child) => {
-        child.init();
+        child.activate();
       });
 
-      this.initManagedObject();
+      this.onActivate();
     }
 
     return this._thisReceipt;
   }
 
-  uninit(): void {
+  deactivate(): void {
     if (this._thisReceipt == null) {
       return;
     }
 
-    ManagedObject._initializedSet.removeValue(this);
-    this._isInitialized.setValue(false);
+    ManagedObject._activeSet.removeValue(this);
+    this._isActive.setValue(false);
 
     this._receipts.toArray().forEach((receipt) => {
       receipt.cancel();
@@ -74,7 +80,7 @@ export class ManagedObject {
     this._receipts.clear();
 
     this._childObjects.toValues().forEach((child) => {
-      child.uninit();
+      child.deactivate();
     });
 
     this._childObjects.clear();
@@ -99,14 +105,14 @@ export class ManagedObject {
     this._childObjects.addValue(childObject);
     childObject._parentObject.setValue(this);
 
-    if (this.isInitialized.value === true) {
-      childObject.init();
+    if (this.isActive.value === true) {
+      childObject.activate();
     }
 
     return childObject;
   }
 
-  addReceipt(receipt: Receipt): Receipt {
+  cancelOnDeactivate(receipt: Receipt): Receipt {
     if (receipt == null) {
       return undefined;
     }
@@ -114,6 +120,14 @@ export class ManagedObject {
     this._receipts.addValue(receipt);
 
     return receipt;
+  }
+
+  removeCancelOnDeactivate(receipt: Receipt): void {
+    if (receipt == null) {
+      return;
+    }
+
+    this._receipts.removeValue(receipt);
   }
 
   removeManagedObject(child: ManagedObject): void {
@@ -126,7 +140,7 @@ export class ManagedObject {
     }
 
     try {
-      child.uninit();
+      child.deactivate();
     } catch (err) {
       console.error(err);
     }
@@ -135,13 +149,5 @@ export class ManagedObject {
     child._parentObject.setValue(undefined);
   }
 
-  removeReceipt(receipt: Receipt): void {
-    if (receipt == null) {
-      return;
-    }
-
-    this._receipts.removeValue(receipt);
-  }
-
-  protected initManagedObject(): void {}
+  protected onActivate(): void {}
 }

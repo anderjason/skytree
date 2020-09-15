@@ -9,9 +9,9 @@ Test.define("ConditionalInitializer can be created with a condition", () => {
   }
 
   const input = Observable.givenValue<string>("A");
-  const expectedInstance = new TestObject();
+  const expectedInstance = new TestObject({});
 
-  const initializer = ConditionalInitializer.givenDefinition({
+  const initializer = new ConditionalInitializer({
     input,
     fn: (value: string) => {
       return value === "B";
@@ -19,7 +19,7 @@ Test.define("ConditionalInitializer can be created with a condition", () => {
     instance: expectedInstance,
   });
 
-  const receipt = initializer.init();
+  const receipt = initializer.activate();
 
   Test.assert(initializer.output.value == null);
 

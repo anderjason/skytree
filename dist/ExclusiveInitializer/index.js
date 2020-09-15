@@ -4,20 +4,15 @@ exports.ExclusiveInitializer = void 0;
 const observable_1 = require("@anderjason/observable");
 const ManagedObject_1 = require("../ManagedObject");
 class ExclusiveInitializer extends ManagedObject_1.ManagedObject {
-    constructor(definition) {
-        super();
+    constructor() {
+        super(...arguments);
         this._output = observable_1.Observable.ofEmpty(observable_1.Observable.isStrictEqual);
         this.output = observable_1.ReadOnlyObservable.givenObservable(this._output);
-        this._input = definition.input;
-        this._callback = definition.fn;
     }
-    static givenDefinition(definition) {
-        return new ExclusiveInitializer(definition);
-    }
-    initManagedObject() {
-        if (this._input != null && this._callback != null) {
-            this.addReceipt(this._input.didChange.subscribe((newValue, oldValue) => {
-                const newObject = this._callback(newValue, oldValue, this._output.value);
+    onActivate() {
+        if (this.props.input != null && this.props.fn != null) {
+            this.cancelOnDeactivate(this.props.input.didChange.subscribe((newValue, oldValue) => {
+                const newObject = this.props.fn(newValue, oldValue, this._output.value);
                 if (newObject === this._output.value) {
                     return;
                 }
@@ -30,7 +25,7 @@ class ExclusiveInitializer extends ManagedObject_1.ManagedObject {
                 }
             }, true));
         }
-        this.addReceipt(observable_1.Receipt.givenCancelFunction(() => {
+        this.cancelOnDeactivate(new observable_1.Receipt(() => {
             this._output.setValue(undefined);
         }));
     }

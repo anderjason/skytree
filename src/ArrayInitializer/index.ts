@@ -12,7 +12,7 @@ export type ArrayInitializerCallback<TI, TO> = (
   currentObject?: TO
 ) => TO | undefined;
 
-export interface ArrayInitializerDefinition<TI, TO> {
+export interface ArrayInitializerProps<TI, TO> {
   input: ObservableArrayBase<TI>;
   fn: ArrayInitializerCallback<TI, TO>;
 }
@@ -20,33 +20,16 @@ export interface ArrayInitializerDefinition<TI, TO> {
 export class ArrayInitializer<
   TI,
   TO extends ManagedObject
-> extends ManagedObject {
-  static givenDefinition<TI, TO extends ManagedObject>(
-    definition: ArrayInitializerDefinition<TI, TO>
-  ): ArrayInitializer<TI, TO> {
-    return new ArrayInitializer(definition);
-  }
+> extends ManagedObject<ArrayInitializerProps<TI, TO>> {
+  private _output = ObservableArray.ofEmpty<TO>();
+  readonly output = ReadOnlyObservableArray.givenObservableArray(this._output);
 
-  private _objects = ObservableArray.ofEmpty<TO>();
-  readonly objects = ReadOnlyObservableArray.givenObservableArray(
-    this._objects
-  );
-
-  private _input: ObservableArrayBase<TI>;
-  private _callback: ArrayInitializerCallback<TI, TO>;
   private _previousInput: TI[] = [];
 
-  private constructor(definition: ArrayInitializerDefinition<TI, TO>) {
-    super();
-
-    this._input = definition.input;
-    this._callback = definition.fn;
-  }
-
-  initManagedObject() {
-    this.addReceipt(
-      this._input.didChange.subscribe(() => {
-        const newInput = this._input.toValues();
+  onActivate() {
+    this.cancelOnDeactivate(
+      this.props.input.didChange.subscribe(() => {
+        const newInput = this.props.input.toValues();
 
         if (newInput == null) {
           return;
@@ -55,9 +38,9 @@ export class ArrayInitializer<
         for (let i = 0; i < newInput.length; i++) {
           if (this._previousInput[i] !== newInput[i]) {
             const newValue = newInput[i];
-            const previousObject = this._objects.toOptionalValueGivenIndex(i);
+            const previousObject = this._output.toOptionalValueGivenIndex(i);
 
-            const newObject = this._callback(newValue, i, previousObject);
+            const newObject = this.props.fn(newValue, i, previousObject);
 
             if (previousObject !== newObject) {
               if (previousObject != null) {
@@ -71,28 +54,28 @@ export class ArrayInitializer<
 
             // this needs to happen after adding the new object above,
             // so the object is initialized by the time this observable updates
-            this._objects.replaceValueAtIndex(i, newObject);
+            this._output.replaceValueAtIndex(i, newObject);
           }
         }
 
         if (this._previousInput.length > newInput.length) {
           for (let i = newInput.length; i < this._previousInput.length; i++) {
-            const object = this._objects.toOptionalValueGivenIndex(i);
+            const object = this._output.toOptionalValueGivenIndex(i);
             if (object != null) {
               this.removeManagedObject(object);
             }
           }
 
-          this._objects.removeAllWhere((v, i) => i >= newInput.length);
+          this._output.removeAllWhere((v, i) => i >= newInput.length);
         }
 
         this._previousInput = newInput;
       }, true)
     );
 
-    this.addReceipt(
-      Receipt.givenCancelFunction(() => {
-        this._objects.clear();
+    this.cancelOnDeactivate(
+      new Receipt(() => {
+        this._output.clear();
       })
     );
   }

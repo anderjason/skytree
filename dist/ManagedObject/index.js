@@ -4,43 +4,47 @@ exports.ManagedObject = void 0;
 const util_1 = require("@anderjason/util");
 const observable_1 = require("@anderjason/observable");
 class ManagedObject {
-    constructor() {
+    constructor(props) {
         this._receipts = observable_1.ObservableSet.ofEmpty();
         this.receipts = observable_1.ReadOnlyObservableSet.givenObservableSet(this._receipts);
         this._parentObject = observable_1.Observable.ofEmpty();
         this.parentObject = observable_1.ReadOnlyObservable.givenObservable(this._parentObject);
         this._childObjects = observable_1.ObservableArray.ofEmpty();
         this.childObjects = observable_1.ReadOnlyObservableArray.givenObservableArray(this._childObjects);
-        this._isInitialized = observable_1.Observable.givenValue(false);
-        this.isInitialized = observable_1.ReadOnlyObservable.givenObservable(this._isInitialized);
-        this.id = util_1.StringUtil.stringOfRandomCharacters(8);
+        this._isActive = observable_1.Observable.givenValue(false);
+        this.isActive = observable_1.ReadOnlyObservable.givenObservable(this._isActive);
+        this._props = props;
+        this.managedObjectId = util_1.StringUtil.stringOfRandomCharacters(8);
     }
-    init() {
-        if (this.isInitialized.value === false) {
-            this._thisReceipt = observable_1.Receipt.givenCancelFunction(() => {
-                this.uninit();
+    get props() {
+        return this._props;
+    }
+    activate() {
+        if (this.isActive.value === false) {
+            this._thisReceipt = new observable_1.Receipt(() => {
+                this.deactivate();
             });
-            ManagedObject._initializedSet.addValue(this);
-            this._isInitialized.setValue(true);
+            ManagedObject._activeSet.addValue(this);
+            this._isActive.setValue(true);
             this._childObjects.toValues().forEach((child) => {
-                child.init();
+                child.activate();
             });
-            this.initManagedObject();
+            this.onActivate();
         }
         return this._thisReceipt;
     }
-    uninit() {
+    deactivate() {
         if (this._thisReceipt == null) {
             return;
         }
-        ManagedObject._initializedSet.removeValue(this);
-        this._isInitialized.setValue(false);
+        ManagedObject._activeSet.removeValue(this);
+        this._isActive.setValue(false);
         this._receipts.toArray().forEach((receipt) => {
             receipt.cancel();
         });
         this._receipts.clear();
         this._childObjects.toValues().forEach((child) => {
-            child.uninit();
+            child.deactivate();
         });
         this._childObjects.clear();
         const receipt = this._thisReceipt;
@@ -58,17 +62,23 @@ class ManagedObject {
         }
         this._childObjects.addValue(childObject);
         childObject._parentObject.setValue(this);
-        if (this.isInitialized.value === true) {
-            childObject.init();
+        if (this.isActive.value === true) {
+            childObject.activate();
         }
         return childObject;
     }
-    addReceipt(receipt) {
+    cancelOnDeactivate(receipt) {
         if (receipt == null) {
             return undefined;
         }
         this._receipts.addValue(receipt);
         return receipt;
+    }
+    removeCancelOnDeactivate(receipt) {
+        if (receipt == null) {
+            return;
+        }
+        this._receipts.removeValue(receipt);
     }
     removeManagedObject(child) {
         if (child == null) {
@@ -78,7 +88,7 @@ class ManagedObject {
             return;
         }
         try {
-            child.uninit();
+            child.deactivate();
         }
         catch (err) {
             console.error(err);
@@ -86,15 +96,9 @@ class ManagedObject {
         this._childObjects.removeValue(child);
         child._parentObject.setValue(undefined);
     }
-    removeReceipt(receipt) {
-        if (receipt == null) {
-            return;
-        }
-        this._receipts.removeValue(receipt);
-    }
-    initManagedObject() { }
+    onActivate() { }
 }
 exports.ManagedObject = ManagedObject;
-ManagedObject._initializedSet = observable_1.ObservableSet.ofEmpty();
-ManagedObject.initializedSet = observable_1.ReadOnlyObservableSet.givenObservableSet(ManagedObject._initializedSet);
+ManagedObject._activeSet = observable_1.ObservableSet.ofEmpty();
+ManagedObject.activeSet = observable_1.ReadOnlyObservableSet.givenObservableSet(ManagedObject._activeSet);
 //# sourceMappingURL=index.js.map

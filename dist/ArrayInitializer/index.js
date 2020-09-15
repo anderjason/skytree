@@ -4,28 +4,23 @@ exports.ArrayInitializer = void 0;
 const observable_1 = require("@anderjason/observable");
 const ManagedObject_1 = require("../ManagedObject");
 class ArrayInitializer extends ManagedObject_1.ManagedObject {
-    constructor(definition) {
-        super();
-        this._objects = observable_1.ObservableArray.ofEmpty();
-        this.objects = observable_1.ReadOnlyObservableArray.givenObservableArray(this._objects);
+    constructor() {
+        super(...arguments);
+        this._output = observable_1.ObservableArray.ofEmpty();
+        this.output = observable_1.ReadOnlyObservableArray.givenObservableArray(this._output);
         this._previousInput = [];
-        this._input = definition.input;
-        this._callback = definition.fn;
     }
-    static givenDefinition(definition) {
-        return new ArrayInitializer(definition);
-    }
-    initManagedObject() {
-        this.addReceipt(this._input.didChange.subscribe(() => {
-            const newInput = this._input.toValues();
+    onActivate() {
+        this.cancelOnDeactivate(this.props.input.didChange.subscribe(() => {
+            const newInput = this.props.input.toValues();
             if (newInput == null) {
                 return;
             }
             for (let i = 0; i < newInput.length; i++) {
                 if (this._previousInput[i] !== newInput[i]) {
                     const newValue = newInput[i];
-                    const previousObject = this._objects.toOptionalValueGivenIndex(i);
-                    const newObject = this._callback(newValue, i, previousObject);
+                    const previousObject = this._output.toOptionalValueGivenIndex(i);
+                    const newObject = this.props.fn(newValue, i, previousObject);
                     if (previousObject !== newObject) {
                         if (previousObject != null) {
                             this.removeManagedObject(previousObject);
@@ -36,22 +31,22 @@ class ArrayInitializer extends ManagedObject_1.ManagedObject {
                     }
                     // this needs to happen after adding the new object above,
                     // so the object is initialized by the time this observable updates
-                    this._objects.replaceValueAtIndex(i, newObject);
+                    this._output.replaceValueAtIndex(i, newObject);
                 }
             }
             if (this._previousInput.length > newInput.length) {
                 for (let i = newInput.length; i < this._previousInput.length; i++) {
-                    const object = this._objects.toOptionalValueGivenIndex(i);
+                    const object = this._output.toOptionalValueGivenIndex(i);
                     if (object != null) {
                         this.removeManagedObject(object);
                     }
                 }
-                this._objects.removeAllWhere((v, i) => i >= newInput.length);
+                this._output.removeAllWhere((v, i) => i >= newInput.length);
             }
             this._previousInput = newInput;
         }, true));
-        this.addReceipt(observable_1.Receipt.givenCancelFunction(() => {
-            this._objects.clear();
+        this.cancelOnDeactivate(new observable_1.Receipt(() => {
+            this._output.clear();
         }));
     }
 }

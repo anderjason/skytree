@@ -1,42 +1,41 @@
 import { ManagedObject } from "../ManagedObject";
-import { Receipt, Observable, ObservableBase } from "@anderjason/observable";
+import {
+  Receipt,
+  Observable,
+  ObservableBase,
+  ReadOnlyObservable,
+} from "@anderjason/observable";
 
-export interface ConnectorDefinition<T> {
-  source?: ObservableBase<T>;
+export interface ConnectorProps<T> {
+  source?: T | ObservableBase<T>;
   target?: Observable<T>;
 }
 
-export class Connector<T> extends ManagedObject {
-  static givenDefinition<T>(definition: ConnectorDefinition<T>): Connector<T> {
-    return new Connector<T>(definition);
-  }
-
-  readonly source = Observable.ofEmpty<ObservableBase<T>>(
+export class Connector<T> extends ManagedObject<ConnectorProps<T>> {
+  private _source = Observable.ofEmpty<ObservableBase<T>>(
     Observable.isStrictEqual
   );
+  readonly source = ReadOnlyObservable.givenObservable(this._source);
 
-  readonly target = Observable.ofEmpty<Observable<T>>(Observable.isStrictEqual);
+  private _target = Observable.ofEmpty<Observable<T>>(Observable.isStrictEqual);
+  readonly target = ReadOnlyObservable.givenObservable(this._target);
 
   private _sourceValueReceipt: Receipt;
 
-  private constructor(definition: ConnectorDefinition<T>) {
-    super();
+  onActivate() {
+    this.setSource(this.props.source);
+    this.setTarget(this.props.target);
 
-    this.source.setValue(definition.source);
-    this.target.setValue(definition.target);
-  }
-
-  initManagedObject() {
-    this.addReceipt(
+    this.cancelOnDeactivate(
       this.source.didChange.subscribe((source) => {
         if (this._sourceValueReceipt != null) {
+          this.removeCancelOnDeactivate(this._sourceValueReceipt);
           this._sourceValueReceipt.cancel();
-          this.removeReceipt(this._sourceValueReceipt);
           this._sourceValueReceipt = undefined;
         }
 
         if (source != null) {
-          this._sourceValueReceipt = this.addReceipt(
+          this._sourceValueReceipt = this.cancelOnDeactivate(
             source.didChange.subscribe(() => {
               this.updateTarget();
             }, true)
@@ -47,21 +46,33 @@ export class Connector<T> extends ManagedObject {
       }, true)
     );
 
-    this.addReceipt(
+    this.cancelOnDeactivate(
       this.target.didChange.subscribe(() => {
         this.updateTarget();
       })
     );
 
-    this.addReceipt(
-      Receipt.givenCancelFunction(() => {
+    this.cancelOnDeactivate(
+      new Receipt(() => {
         if (this._sourceValueReceipt != null) {
+          this.removeCancelOnDeactivate(this._sourceValueReceipt);
           this._sourceValueReceipt.cancel();
-          this.removeReceipt(this._sourceValueReceipt);
           this._sourceValueReceipt = undefined;
         }
       })
     );
+  }
+
+  setSource(newSource: T | ObservableBase<T>): void {
+    if (Observable.isObservable(newSource)) {
+      this._source.setValue(newSource);
+    } else {
+      this._source.setValue(Observable.givenValue(newSource));
+    }
+  }
+
+  setTarget(newTarget: Observable<T>): void {
+    this._target.setValue(newTarget);
   }
 
   private updateTarget(): void {

@@ -6,20 +6,17 @@ const util_1 = require("@anderjason/util");
 const ManagedObject_1 = require("../ManagedObject");
 class SequentialWorker extends ManagedObject_1.ManagedObject {
     constructor() {
-        super();
+        super(...arguments);
         this._jobs = [];
         this._callbackByJob = new Map();
         this._isBusy = false;
     }
-    static ofEmpty() {
-        return new SequentialWorker();
-    }
-    initManagedObject() {
+    onActivate() {
         this.startNextJob();
     }
     addWork(callback, cancelledCallback) {
         const state = observable_1.Observable.givenValue("queued");
-        const receipt = this.addReceipt(observable_1.Receipt.givenCancelFunction(() => {
+        const receipt = this.cancelOnDeactivate(new observable_1.Receipt(() => {
             if (job.state.value === "queued") {
                 job.state.setValue("cancelled");
             }
@@ -49,7 +46,7 @@ class SequentialWorker extends ManagedObject_1.ManagedObject {
         if (this._isBusy) {
             return;
         }
-        if (this.isInitialized.value === false) {
+        if (this.isActive.value === false) {
             return;
         }
         const nextJob = this._jobs.shift();

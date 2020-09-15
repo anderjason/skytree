@@ -12,36 +12,22 @@ export type ExclusiveInitializerCallback<T> = (
   currentObject?: ManagedObject
 ) => ManagedObject | undefined;
 
-export interface ExclusiveInitializerDefinition<T> {
+export interface ExclusiveInitializerProps<T> {
   input: ObservableBase<T>;
   fn: ExclusiveInitializerCallback<T>;
 }
 
-export class ExclusiveInitializer<T> extends ManagedObject {
-  static givenDefinition<T>(
-    definition: ExclusiveInitializerDefinition<T>
-  ): ExclusiveInitializer<T> {
-    return new ExclusiveInitializer(definition);
-  }
-
+export class ExclusiveInitializer<T> extends ManagedObject<
+  ExclusiveInitializerProps<T>
+> {
   private _output = Observable.ofEmpty<ManagedObject>(Observable.isStrictEqual);
   readonly output = ReadOnlyObservable.givenObservable(this._output);
 
-  private _input: ObservableBase<T>;
-  private _callback: ExclusiveInitializerCallback<T>;
-
-  private constructor(definition: ExclusiveInitializerDefinition<T>) {
-    super();
-
-    this._input = definition.input;
-    this._callback = definition.fn;
-  }
-
-  initManagedObject() {
-    if (this._input != null && this._callback != null) {
-      this.addReceipt(
-        this._input.didChange.subscribe((newValue: any, oldValue: any) => {
-          const newObject = this._callback(
+  onActivate() {
+    if (this.props.input != null && this.props.fn != null) {
+      this.cancelOnDeactivate(
+        this.props.input.didChange.subscribe((newValue: any, oldValue: any) => {
+          const newObject = this.props.fn(
             newValue,
             oldValue,
             this._output.value
@@ -63,8 +49,8 @@ export class ExclusiveInitializer<T> extends ManagedObject {
       );
     }
 
-    this.addReceipt(
-      Receipt.givenCancelFunction(() => {
+    this.cancelOnDeactivate(
+      new Receipt(() => {
         this._output.setValue(undefined);
       })
     );

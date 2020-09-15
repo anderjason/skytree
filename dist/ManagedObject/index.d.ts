@@ -1,23 +1,25 @@
 import { Receipt, ReadOnlyObservable, ReadOnlyObservableArray, ReadOnlyObservableSet } from "@anderjason/observable";
-export declare class ManagedObject {
-    private static _initializedSet;
-    static readonly initializedSet: ReadOnlyObservableSet<ManagedObject>;
-    readonly id: string;
+export declare class ManagedObject<T = any> {
+    private static _activeSet;
+    static readonly activeSet: ReadOnlyObservableSet<ManagedObject<any>>;
+    readonly managedObjectId: string;
     private _receipts;
     readonly receipts: ReadOnlyObservableSet<Receipt>;
     private _parentObject;
-    readonly parentObject: ReadOnlyObservable<ManagedObject>;
+    readonly parentObject: ReadOnlyObservable<ManagedObject<any>>;
     private _thisReceipt;
     private _childObjects;
-    readonly childObjects: ReadOnlyObservableArray<ManagedObject>;
-    private _isInitialized;
-    readonly isInitialized: ReadOnlyObservable<boolean>;
-    constructor();
-    init(): Receipt;
-    uninit(): void;
+    readonly childObjects: ReadOnlyObservableArray<ManagedObject<any>>;
+    private _isActive;
+    readonly isActive: ReadOnlyObservable<boolean>;
+    private _props;
+    constructor(props: T);
+    get props(): T;
+    activate(): Receipt;
+    deactivate(): void;
     addManagedObject<T extends ManagedObject>(childObject: T): T;
-    addReceipt(receipt: Receipt): Receipt;
+    cancelOnDeactivate(receipt: Receipt): Receipt;
+    removeCancelOnDeactivate(receipt: Receipt): void;
     removeManagedObject(child: ManagedObject): void;
-    removeReceipt(receipt: Receipt): void;
-    protected initManagedObject(): void;
+    protected onActivate(): void;
 }

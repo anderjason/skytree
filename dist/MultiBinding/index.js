@@ -4,31 +4,36 @@ exports.MultiBinding = void 0;
 const observable_1 = require("@anderjason/observable");
 const ManagedObject_1 = require("../ManagedObject");
 class MultiBinding extends ManagedObject_1.ManagedObject {
-    constructor(groups) {
-        super();
-        this.didInvalidate = observable_1.TypedEvent.ofEmpty();
+    constructor() {
+        super(...arguments);
+        this.didInvalidate = new observable_1.TypedEvent();
         this._willInvalidateLater = false;
         this._invalidatedSetByGroup = new Map();
-        this._groups = groups;
     }
     static givenGroups(groups) {
-        return new MultiBinding(groups);
+        return new MultiBinding({
+            groups,
+        });
     }
     static givenOneGroup(group) {
-        return new MultiBinding([group]);
+        return new MultiBinding({
+            groups: [group],
+        });
     }
     static givenAnyChange(inputs) {
         const groups = inputs.map((input) => {
             return [input];
         });
-        return new MultiBinding(groups);
+        return new MultiBinding({
+            groups,
+        });
     }
-    initManagedObject() {
-        this._groups.forEach((group) => {
+    onActivate() {
+        this.props.groups.forEach((group) => {
             const invalidatedSet = new Set();
             this._invalidatedSetByGroup.set(group, invalidatedSet);
             group.forEach((input) => {
-                this.addReceipt(input.didChange.subscribe(() => {
+                this.cancelOnDeactivate(input.didChange.subscribe(() => {
                     invalidatedSet.add(input);
                     this.onChange();
                 }));
@@ -36,7 +41,7 @@ class MultiBinding extends ManagedObject_1.ManagedObject {
         });
     }
     isAnyGroupInvalidated() {
-        return this._groups.some((group) => {
+        return this.props.groups.some((group) => {
             const invalidatedSet = this._invalidatedSetByGroup.get(group);
             return invalidatedSet.size === group.length;
         });

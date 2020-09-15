@@ -11,8 +11,8 @@ function delay(milliseconds: number): Promise<void> {
 }
 
 Test.define("SequentialWorker can run jobs in sequence", async () => {
-  const worker = SequentialWorker.ofEmpty();
-  worker.init();
+  const worker = new SequentialWorker({});
+  worker.activate();
 
   const order: string[] = [];
 
@@ -47,5 +47,5 @@ Test.define("SequentialWorker can run jobs in sequence", async () => {
     ObjectUtil.objectIsDeepEqual(order, ["A1", "A2", "B1", "B2", "C1", "C2"])
   );
 
-  worker.uninit();
+  worker.deactivate();
 });

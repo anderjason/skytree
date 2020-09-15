@@ -12,20 +12,14 @@ export interface Job {
 export type JobCallback = () => Promise<void>;
 export type CancelledJobCallback = () => void;
 
-export class SequentialWorker extends ManagedObject {
-  static ofEmpty(): SequentialWorker {
-    return new SequentialWorker();
-  }
+export interface SequentialWorkerProps {}
 
+export class SequentialWorker extends ManagedObject<SequentialWorkerProps> {
   private _jobs: Job[] = [];
   private _callbackByJob = new Map<Job, JobCallback>();
   private _isBusy: boolean = false;
 
-  private constructor() {
-    super();
-  }
-
-  initManagedObject() {
+  onActivate() {
     this.startNextJob();
   }
 
@@ -35,8 +29,8 @@ export class SequentialWorker extends ManagedObject {
   ): Job {
     const state = Observable.givenValue<JobState>("queued");
 
-    const receipt = this.addReceipt(
-      Receipt.givenCancelFunction(() => {
+    const receipt = this.cancelOnDeactivate(
+      new Receipt(() => {
         if (job.state.value === "queued") {
           job.state.setValue("cancelled");
         }
@@ -74,7 +68,7 @@ export class SequentialWorker extends ManagedObject {
       return;
     }
 
-    if (this.isInitialized.value === false) {
+    if (this.isActive.value === false) {
       return;
     }
 

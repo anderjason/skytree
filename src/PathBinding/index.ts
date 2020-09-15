@@ -9,22 +9,16 @@ import {
 import { ObjectUtil, ValuePath } from "@anderjason/util";
 import { ManagedObject } from "../ManagedObject";
 
-export interface PathBindingDefinition {
+export interface PathBindingProps {
   input: any;
   path: ValuePath;
 
   output?: Observable<unknown>;
 }
 
-export class PathBinding extends ManagedObject {
-  static givenDefinition(definition: PathBindingDefinition): PathBinding {
-    return new PathBinding(definition);
-  }
-
+export class PathBinding extends ManagedObject<PathBindingProps> {
   private _output: Observable<unknown>;
   readonly output: ReadOnlyObservable<unknown>;
-
-  readonly path: ValuePath;
 
   private _matchedPath = Observable.ofEmpty<ValuePath>(ValuePath.isEqual);
   readonly matchedPath = ReadOnlyObservable.givenObservable(this._matchedPath);
@@ -32,18 +26,14 @@ export class PathBinding extends ManagedObject {
   private _isMatched = Observable.ofEmpty<boolean>(Observable.isStrictEqual);
   readonly isMatched = ReadOnlyObservable.givenObservable(this._isMatched);
 
-  private _input: any;
   private _pathReceipts: Receipt[] = [];
   private _currentBuildId: number = 0;
 
-  private constructor(definition: PathBindingDefinition) {
-    super();
+  constructor(props: PathBindingProps) {
+    super(props);
 
-    this._input = definition.input;
-    this.path = definition.path;
-
-    if (Observable.isObservable(definition.output)) {
-      this._output = definition.output;
+    if (Observable.isObservable(props.output)) {
+      this._output = props.output;
     } else {
       this._output = Observable.ofEmpty(ObjectUtil.objectIsDeepEqual);
     }
@@ -51,11 +41,11 @@ export class PathBinding extends ManagedObject {
     this.output = ReadOnlyObservable.givenObservable(this._output);
   }
 
-  initManagedObject() {
+  onActivate() {
     this.rebuild();
 
-    this.addReceipt(
-      Receipt.givenCancelFunction(() => {
+    this.cancelOnDeactivate(
+      new Receipt(() => {
         this.clearPathReceipts();
       })
     );
@@ -79,9 +69,9 @@ export class PathBinding extends ManagedObject {
     this.clearPathReceipts();
 
     let index = 0;
-    let parts = this.path.toParts();
+    let parts = this.props.path.toParts();
 
-    let inputAtPathStep: any = this._input;
+    let inputAtPathStep: any = this.props.input;
     let isMatch = inputAtPathStep != null;
 
     let matchedPathParts = [];
@@ -139,7 +129,7 @@ export class PathBinding extends ManagedObject {
     }
 
     this._matchedPath.setValue(ValuePath.givenParts(matchedPathParts));
-    const isMatched = this.matchedPath.value.isEqual(this.path);
+    const isMatched = this.matchedPath.value.isEqual(this.props.path);
 
     if (isMatched) {
       const matchedInput = inputAtPathStep;

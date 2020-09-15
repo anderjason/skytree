@@ -10,12 +10,12 @@ import {
 import { ManagedObject } from "../ManagedObject";
 
 Test.define("PathBinding can observe a single value", () => {
-  const obj = new ManagedObject();
-  obj.init();
+  const obj = new ManagedObject({});
+  obj.activate();
 
   const input = Observable.givenValue("hello");
   const pathBinding = obj.addManagedObject(
-    PathBinding.givenDefinition({
+    new PathBinding({
       input,
       path: ValuePath.ofEmpty(),
     })
@@ -25,7 +25,7 @@ Test.define("PathBinding can observe a single value", () => {
 
   let outputValues: unknown[] = [];
 
-  obj.addReceipt(
+  obj.cancelOnDeactivate(
     pathBinding.output.didChange.subscribe((newValue) => {
       outputValues.push(newValue);
     })
@@ -36,33 +36,33 @@ Test.define("PathBinding can observe a single value", () => {
 
   Test.assertIsDeepEqual(outputValues, ["world", "message"]);
 
-  obj.uninit();
+  obj.deactivate();
 });
 
 Test.define("PathBinding can observe undefined", () => {
-  const pathBinding = PathBinding.givenDefinition({
+  const pathBinding = new PathBinding({
     input: undefined,
     path: ValuePath.givenParts(["some", "path"]),
   });
 
-  pathBinding.init();
+  pathBinding.activate();
 
   Test.assertIsDeepEqual(pathBinding.output.value, undefined);
 
-  pathBinding.uninit();
+  pathBinding.deactivate();
 });
 
 Test.define("PathBinding can observe an empty observable", () => {
-  const pathBinding = PathBinding.givenDefinition({
+  const pathBinding = new PathBinding({
     input: Observable.ofEmpty(),
     path: ValuePath.givenParts(["some", "path"]),
   });
 
-  pathBinding.init();
+  pathBinding.activate();
 
   Test.assertIsDeepEqual(pathBinding.output.value, undefined);
 
-  pathBinding.uninit();
+  pathBinding.deactivate();
 });
 
 Test.define(
@@ -117,7 +117,7 @@ Test.define(
       ],
     };
 
-    const pathBinding = PathBinding.givenDefinition({
+    const pathBinding = new PathBinding({
       input,
       path: ValuePath.givenParts([
         "segments",
@@ -129,11 +129,11 @@ Test.define(
       ]),
     });
 
-    pathBinding.init();
+    pathBinding.activate();
 
     Test.assertIsDeepEqual(pathBinding.output.value, "hello world");
 
-    pathBinding.uninit();
+    pathBinding.deactivate();
   }
 );
 
@@ -150,12 +150,12 @@ Test.define(
       messageText: "hello",
     });
 
-    const pathBinding = PathBinding.givenDefinition({
+    const pathBinding = new PathBinding({
       input,
       path: ValuePath.givenParts(["messageText"]),
     });
 
-    receipts.push(pathBinding.init());
+    receipts.push(pathBinding.activate());
 
     Test.assertIsDeepEqual(pathBinding.output.value, "hello");
 
@@ -201,12 +201,12 @@ Test.define(
       },
     };
 
-    const pathBinding = PathBinding.givenDefinition({
+    const pathBinding = new PathBinding({
       input,
       path: ValuePath.givenParts(["content", "messageText"]),
     });
 
-    receipts.push(pathBinding.init());
+    receipts.push(pathBinding.activate());
 
     Test.assertIsDeepEqual(pathBinding.output.value, "hello");
 
@@ -274,12 +274,12 @@ Test.define("PathBinding can observe an observable at a complex path", () => {
     },
   ]);
 
-  const pathBinding = PathBinding.givenDefinition({
+  const pathBinding = new PathBinding({
     input,
     path: ValuePath.givenParts([1, "segments", 0, "content", "body"]),
   });
 
-  receipts.push(pathBinding.init());
+  receipts.push(pathBinding.activate());
 
   Test.assertIsDeepEqual(pathBinding.output.value, "hello");
 
@@ -326,13 +326,13 @@ Test.define("PathBinding can observe an observable at a complex path", () => {
 });
 
 Test.define("PathBinding only changes once for each input change", () => {
-  const obj = new ManagedObject();
-  obj.init();
+  const obj = new ManagedObject({});
+  obj.activate();
 
   const input = Observable.ofEmpty<any>();
 
   const pathBinding = obj.addManagedObject(
-    PathBinding.givenDefinition({
+    new PathBinding({
       input,
       path: ValuePath.givenParts(["some", "path"]),
     })
@@ -340,7 +340,7 @@ Test.define("PathBinding only changes once for each input change", () => {
 
   let changeCount = 0;
 
-  obj.addReceipt(
+  obj.cancelOnDeactivate(
     pathBinding.output.didChange.subscribe(() => {
       changeCount += 1;
     })
@@ -361,5 +361,5 @@ Test.define("PathBinding only changes once for each input change", () => {
   Test.assert(changeCount === 2);
   Test.assertIsDeepEqual([4, 5, 6], pathBinding.output.value);
 
-  obj.uninit();
+  obj.deactivate();
 });
