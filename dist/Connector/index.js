@@ -12,8 +12,9 @@ class Connector extends ManagedObject_1.ManagedObject {
         this.target = observable_1.ReadOnlyObservable.givenObservable(this._target);
     }
     onActivate() {
-        this.setSource(this.props.source);
-        this.setTarget(this.props.target);
+        if (this._target.value == null) {
+            this.setTarget(this.props.target);
+        }
         this.cancelOnDeactivate(this.source.didChange.subscribe((source) => {
             if (this._sourceValueReceipt != null) {
                 this.removeCancelOnDeactivate(this._sourceValueReceipt);

@@ -72,3 +72,22 @@ Test.define("Connector can accept a non-observable value as a source", () => {
 
   connector.deactivate();
 });
+
+Test.define(
+  "Connector updates the target if the source is set before the connector is activated",
+  () => {
+    const target = Observable.ofEmpty<string>();
+    const connector = new Connector({
+      target,
+    });
+
+    connector.setSource("hello");
+
+    Test.assert(target.value == null);
+
+    connector.activate();
+    Test.assert(target.value == "hello");
+
+    connector.deactivate();
+  }
+);
