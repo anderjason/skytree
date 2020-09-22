@@ -23,6 +23,8 @@ export class ExclusiveInitializer<T> extends ManagedObject<
   private _output = Observable.ofEmpty<ManagedObject>(Observable.isStrictEqual);
   readonly output = ReadOnlyObservable.givenObservable(this._output);
 
+  private _lastObject: ManagedObject;
+
   onActivate() {
     if (this.props.input != null && this.props.fn != null) {
       this.cancelOnDeactivate(
@@ -33,18 +35,21 @@ export class ExclusiveInitializer<T> extends ManagedObject<
             this._output.value
           );
 
-          if (newObject === this._output.value) {
+          if (newObject === this._lastObject) {
             return;
           }
 
-          if (this._output.value != null) {
-            this.removeManagedObject(this._output.value);
-            this._output.setValue(undefined);
+          if (this._lastObject != null) {
+            this.removeManagedObject(this._lastObject);
+            this._lastObject = undefined;
           }
 
           if (newObject != null) {
-            this._output.setValue(this.addManagedObject(newObject));
+            this._lastObject = newObject;
+            this.addManagedObject(newObject);
           }
+
+          this._output.setValue(this._lastObject);
         }, true)
       );
     }

@@ -1,6 +1,7 @@
 import { ArrayInitializer } from "./ArrayInitializer";
 import { ConditionalInitializer } from "./ConditionalInitializer";
 import { Connector } from "./Connector";
+import { DelayInitializer } from "./DelayInitializer";
 import { ExclusiveInitializer } from "./ExclusiveInitializer";
 import { ManagedObject } from "./ManagedObject";
 import { MultiBinding } from "./MultiBinding";
@@ -13,6 +14,7 @@ export {
   ArrayInitializer,
   ConditionalInitializer,
   Connector,
+  DelayInitializer,
   ExclusiveInitializer,
   ManagedObject,
   MultiBinding,

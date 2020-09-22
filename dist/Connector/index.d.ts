@@ -1,6 +1,7 @@
 import { ManagedObject } from "../ManagedObject";
 import { Observable, ObservableBase, ReadOnlyObservable } from "@anderjason/observable";
 export interface ConnectorProps<T> {
+    source?: T | ObservableBase<T>;
     target?: Observable<T>;
 }
 export declare class Connector<T> extends ManagedObject<ConnectorProps<T>> {

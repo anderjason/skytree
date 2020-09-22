@@ -18,6 +18,10 @@
 
 `TODO`
 
+### DelayInitializer
+
+`TODO`
+
 ### ExclusiveInitializer
 
 `TODO`

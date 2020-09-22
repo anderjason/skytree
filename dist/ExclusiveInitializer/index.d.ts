@@ -8,5 +8,6 @@ export interface ExclusiveInitializerProps<T> {
 export declare class ExclusiveInitializer<T> extends ManagedObject<ExclusiveInitializerProps<T>> {
     private _output;
     readonly output: ReadOnlyObservable<ManagedObject<any>>;
+    private _lastObject;
     onActivate(): void;
 }

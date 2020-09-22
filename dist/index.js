@@ -1,12 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Transformer = exports.Timer = exports.SequentialWorker = exports.PathBinding = exports.MultiBinding = exports.ManagedObject = exports.ExclusiveInitializer = exports.Connector = exports.ConditionalInitializer = exports.ArrayInitializer = void 0;
+exports.Transformer = exports.Timer = exports.SequentialWorker = exports.PathBinding = exports.MultiBinding = exports.ManagedObject = exports.ExclusiveInitializer = exports.DelayInitializer = exports.Connector = exports.ConditionalInitializer = exports.ArrayInitializer = void 0;
 const ArrayInitializer_1 = require("./ArrayInitializer");
 Object.defineProperty(exports, "ArrayInitializer", { enumerable: true, get: function () { return ArrayInitializer_1.ArrayInitializer; } });
 const ConditionalInitializer_1 = require("./ConditionalInitializer");
 Object.defineProperty(exports, "ConditionalInitializer", { enumerable: true, get: function () { return ConditionalInitializer_1.ConditionalInitializer; } });
 const Connector_1 = require("./Connector");
 Object.defineProperty(exports, "Connector", { enumerable: true, get: function () { return Connector_1.Connector; } });
+const DelayInitializer_1 = require("./DelayInitializer");
+Object.defineProperty(exports, "DelayInitializer", { enumerable: true, get: function () { return DelayInitializer_1.DelayInitializer; } });
 const ExclusiveInitializer_1 = require("./ExclusiveInitializer");
 Object.defineProperty(exports, "ExclusiveInitializer", { enumerable: true, get: function () { return ExclusiveInitializer_1.ExclusiveInitializer; } });
 const ManagedObject_1 = require("./ManagedObject");

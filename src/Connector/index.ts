@@ -7,6 +7,7 @@ import {
 } from "@anderjason/observable";
 
 export interface ConnectorProps<T> {
+  source?: T | ObservableBase<T>;
   target?: Observable<T>;
 }
 
@@ -22,6 +23,10 @@ export class Connector<T> extends ManagedObject<ConnectorProps<T>> {
   private _sourceValueReceipt: Receipt;
 
   onActivate() {
+    if (this._source.value == null) {
+      this.setSource(this.props.source);
+    }
+
     if (this._target.value == null) {
       this.setTarget(this.props.target);
     }
