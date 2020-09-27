@@ -1,151 +1,97 @@
 import {
-  Receipt,
   Observable,
-  ObservableArray,
-  ObservableDict,
-  ObservableSet,
+  ObservableBase,
   ReadOnlyObservable,
+  Receipt,
 } from "@anderjason/observable";
-import { ObjectUtil, ValuePath } from "@anderjason/util";
+import { ArrayUtil, ObjectUtil, ValuePath } from "@anderjason/util";
 import { ManagedObject } from "../ManagedObject";
 
-export interface PathBindingProps {
-  input: any;
+export interface PathBindingProps<TI, TO> {
+  input: ObservableBase<TI>;
   path: ValuePath;
 
-  output?: Observable<unknown>;
+  output?: Observable<TO>;
 }
 
-export class PathBinding extends ManagedObject<PathBindingProps> {
-  private _output: Observable<unknown>;
-  readonly output: ReadOnlyObservable<unknown>;
+interface BindingGroup {
+  bindings: Set<PathBinding<unknown, unknown>>;
+  inputReceipt: Receipt;
+}
 
-  private _matchedPath = Observable.ofEmpty<ValuePath>(ValuePath.isEqual);
-  readonly matchedPath = ReadOnlyObservable.givenObservable(this._matchedPath);
+export class PathBinding<TI, TO = unknown> extends ManagedObject<
+  PathBindingProps<TI, TO>
+> {
+  private static bindingGroupsByInput = new Map<unknown, BindingGroup>();
 
-  private _isMatched = Observable.ofEmpty<boolean>(Observable.isStrictEqual);
-  readonly isMatched = ReadOnlyObservable.givenObservable(this._isMatched);
+  static refreshAllHavingInput(input: unknown): void {
+    const bindingGroup = this.bindingGroupsByInput.get(input);
+    if (bindingGroup == null) {
+      return;
+    }
 
-  private _pathReceipts: Receipt[] = [];
-  private _currentBuildId: number = 0;
+    const bindings = ArrayUtil.arrayWithOrderFromValue(
+      Array.from(bindingGroup.bindings),
+      (binding) => binding.props.path.toParts().length,
+      "ascending"
+    );
 
-  constructor(props: PathBindingProps) {
+    bindings.forEach((binding) => {
+      binding.refresh();
+    });
+  }
+
+  private _output: Observable<TO>;
+  readonly output: ReadOnlyObservable<TO>;
+
+  constructor(props: PathBindingProps<TI, TO>) {
     super(props);
 
     if (Observable.isObservable(props.output)) {
       this._output = props.output;
     } else {
-      this._output = Observable.ofEmpty(ObjectUtil.objectIsDeepEqual);
+      this._output = Observable.ofEmpty(Observable.isStrictEqual);
     }
 
     this.output = ReadOnlyObservable.givenObservable(this._output);
   }
 
   onActivate() {
-    this.rebuild();
+    let bindingGroup: BindingGroup = PathBinding.bindingGroupsByInput.get(
+      this.props.input
+    );
+
+    if (bindingGroup == null) {
+      bindingGroup = {
+        bindings: new Set(),
+        inputReceipt: this.props.input.didChange.subscribe(() => {
+          PathBinding.refreshAllHavingInput(this.props.input);
+        }),
+      };
+      PathBinding.bindingGroupsByInput.set(this.props.input, bindingGroup);
+    }
+
+    bindingGroup.bindings.add(this);
+
+    this.refresh();
 
     this.cancelOnDeactivate(
       new Receipt(() => {
-        this.clearPathReceipts();
+        bindingGroup.bindings.delete(this);
+        if (bindingGroup.bindings.size === 0) {
+          bindingGroup.inputReceipt.cancel();
+          PathBinding.bindingGroupsByInput.delete(this.props.input);
+        }
       })
     );
   }
 
-  private clearPathReceipts() {
-    this._pathReceipts.forEach((receipt) => {
-      receipt.cancel();
-    });
-    this._pathReceipts = [];
-  }
-
-  private rebuild(): void {
-    this._currentBuildId += 1;
-    if (this._currentBuildId > 1000) {
-      this._currentBuildId = 0;
-    }
-
-    const thisBuildId = this._currentBuildId;
-
-    this.clearPathReceipts();
-
-    let index = 0;
-    let parts = this.props.path.toParts();
-
-    let inputAtPathStep: any = this.props.input;
-    let isMatch = inputAtPathStep != null;
-
-    let matchedPathParts = [];
-
-    while (isMatch) {
-      if (
-        Observable.isObservable(inputAtPathStep) ||
-        ObservableArray.isObservableArray(inputAtPathStep) ||
-        ObservableDict.isObservableDict(inputAtPathStep)
-      ) {
-        this._pathReceipts.push(
-          inputAtPathStep.didChange.subscribe(() => {
-            if (this._currentBuildId === thisBuildId) {
-              this.rebuild();
-            }
-          })
-        );
-      }
-
-      const nextPathStep = parts[index++];
-      let nextInput: any;
-
-      if (ObservableArray.isObservableArray(inputAtPathStep)) {
-        if (!Number.isInteger(nextPathStep)) {
-          nextInput = null; // stop here
-        } else {
-          nextInput = inputAtPathStep.toValues()[nextPathStep as number];
-        }
-      } else if (ObservableDict.isObservableDict(inputAtPathStep)) {
-        if (Number.isInteger(nextPathStep)) {
-          nextInput = null;
-        } else {
-          nextInput = inputAtPathStep.toOptionalValueGivenKey(
-            nextPathStep as string
-          );
-        }
-      } else if (ObservableSet.isObservableSet(inputAtPathStep)) {
-        nextInput = null;
-      } else if (Observable.isObservable(inputAtPathStep)) {
-        const objectValue = inputAtPathStep.value as any;
-        if (objectValue != null) {
-          nextInput = objectValue[nextPathStep];
-        }
-      } else {
-        // should be regular object or array
-        nextInput = inputAtPathStep[nextPathStep];
-      }
-
-      if (nextInput != null) {
-        inputAtPathStep = nextInput;
-        matchedPathParts.push(nextPathStep);
-      } else {
-        isMatch = false;
-      }
-    }
-
-    this._matchedPath.setValue(ValuePath.givenParts(matchedPathParts));
-    const isMatched = this.matchedPath.value.isEqual(this.props.path);
-
-    if (isMatched) {
-      const matchedInput = inputAtPathStep;
-      if (Observable.isObservable(matchedInput)) {
-        this._output.setValue(matchedInput.value);
-      } else if (ObservableArray.isObservableArray(matchedInput)) {
-        this._output.setValue(matchedInput.toValues());
-      } else if (ObservableDict.isObservableDict(matchedInput)) {
-        this._output.setValue(matchedInput.toValues());
-      } else {
-        this._output.setValue(matchedInput);
-      }
-    } else {
-      this._output.setValue(undefined);
-    }
-
-    this._isMatched.setValue(isMatched);
+  refresh(): void {
+    this._output.setValue(
+      ObjectUtil.optionalValueAtPathGivenObject(
+        this.props.input.value,
+        this.props.path
+      )
+    );
   }
 }

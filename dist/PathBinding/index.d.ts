@@ -1,22 +1,17 @@
-import { Observable, ReadOnlyObservable } from "@anderjason/observable";
+import { Observable, ObservableBase, ReadOnlyObservable } from "@anderjason/observable";
 import { ValuePath } from "@anderjason/util";
 import { ManagedObject } from "../ManagedObject";
-export interface PathBindingProps {
-    input: any;
+export interface PathBindingProps<TI, TO> {
+    input: ObservableBase<TI>;
     path: ValuePath;
-    output?: Observable<unknown>;
+    output?: Observable<TO>;
 }
-export declare class PathBinding extends ManagedObject<PathBindingProps> {
+export declare class PathBinding<TI, TO = unknown> extends ManagedObject<PathBindingProps<TI, TO>> {
+    private static bindingGroupsByInput;
+    static refreshAllHavingInput(input: unknown): void;
     private _output;
-    readonly output: ReadOnlyObservable<unknown>;
-    private _matchedPath;
-    readonly matchedPath: ReadOnlyObservable<ValuePath>;
-    private _isMatched;
-    readonly isMatched: ReadOnlyObservable<boolean>;
-    private _pathReceipts;
-    private _currentBuildId;
-    constructor(props: PathBindingProps);
+    readonly output: ReadOnlyObservable<TO>;
+    constructor(props: PathBindingProps<TI, TO>);
     onActivate(): void;
-    private clearPathReceipts;
-    private rebuild;
+    refresh(): void;
 }

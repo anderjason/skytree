@@ -1,6 +1,6 @@
 {
   "name": "skytree",
-  "version": "8.1.0",
+  "version": "9.0.0",
   "description": "",
   "main": "./dist/index.js",
   "repository": {
