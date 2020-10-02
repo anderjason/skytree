@@ -14,7 +14,7 @@ class SequentialWorker extends ManagedObject_1.ManagedObject {
     onActivate() {
         this.startNextJob();
     }
-    addWork(callback, cancelledCallback) {
+    addWork(callback, cancelledCallback, priority = 5) {
         const state = observable_1.Observable.givenValue("queued");
         const receipt = this.cancelOnDeactivate(new observable_1.Receipt(() => {
             if (job.state.value === "queued") {
@@ -33,6 +33,7 @@ class SequentialWorker extends ManagedObject_1.ManagedObject {
         }));
         const job = {
             receipt: receipt,
+            priority,
             state,
         };
         this._jobs.push(job);
@@ -49,10 +50,12 @@ class SequentialWorker extends ManagedObject_1.ManagedObject {
         if (this.isActive.value === false) {
             return;
         }
-        const nextJob = this._jobs.shift();
+        const orderedJobs = util_1.ArrayUtil.arrayWithOrderFromValue(this._jobs, (job) => job.priority, "descending");
+        const nextJob = orderedJobs[0];
         if (nextJob == null) {
             return;
         }
+        this._jobs = this._jobs.filter((job) => job !== nextJob);
         this._isBusy = true;
         this.runJob(nextJob).then(() => {
             this._isBusy = false;

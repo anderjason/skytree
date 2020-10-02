@@ -5,34 +5,40 @@ import { ManagedObject } from "../ManagedObject";
 import { Timer } from "../Timer";
 
 export interface DelayInitializerProps {
-  activateAfter: Duration;
   instance: ManagedObject<any>;
 
+  activateAfter?: Duration;
   deactivateAfter?: Duration;
 }
 
 export class DelayInitializer extends ManagedObject<DelayInitializerProps> {
   onActivate() {
-    const isInitialized = Observable.givenValue(false);
+    const shouldActivate = Observable.givenValue(false);
 
-    this.addManagedObject(
-      new Timer({
-        duration: this.props.activateAfter,
-        fn: () => {
-          isInitialized.setValue(true);
-        },
-      })
-    );
+    if (this.props.activateAfter != null) {
+      this.addManagedObject(
+        new Timer({
+          duration: this.props.activateAfter,
+          isRepeating: false,
+          fn: () => {
+            shouldActivate.setValue(true);
+          },
+        })
+      );
+    } else {
+      shouldActivate.setValue(true);
+    }
 
     if (this.props.deactivateAfter != null) {
       this.addManagedObject(
         new ConditionalInitializer({
-          input: isInitialized,
+          input: shouldActivate,
           fn: (v) => v,
           instance: new Timer({
             duration: this.props.deactivateAfter,
+            isRepeating: false,
             fn: () => {
-              isInitialized.setValue(false);
+              shouldActivate.setValue(false);
             },
           }),
         })
@@ -41,7 +47,7 @@ export class DelayInitializer extends ManagedObject<DelayInitializerProps> {
 
     this.addManagedObject(
       new ConditionalInitializer({
-        input: isInitialized,
+        input: shouldActivate,
         fn: (v) => v,
         instance: this.props.instance,
       })

@@ -3,6 +3,7 @@ import { ManagedObject } from "../ManagedObject";
 export declare type JobState = "queued" | "running" | "finished" | "cancelled";
 export interface Job {
     state: Observable<JobState>;
+    priority: number;
     receipt: Receipt;
 }
 export declare type JobCallback = () => Promise<void>;
@@ -14,7 +15,7 @@ export declare class SequentialWorker extends ManagedObject<SequentialWorkerProp
     private _callbackByJob;
     private _isBusy;
     onActivate(): void;
-    addWork(callback: JobCallback, cancelledCallback?: CancelledJobCallback): Job;
+    addWork(callback: JobCallback, cancelledCallback?: CancelledJobCallback, priority?: number): Job;
     private startNextJob;
     private runJob;
 }

@@ -5,8 +5,7 @@ import { Receipt } from "@anderjason/observable";
 export interface TimerProps {
   fn: () => void;
   duration: Duration;
-
-  isRepeating?: boolean;
+  isRepeating: boolean;
 }
 
 export class Timer extends ManagedObject<TimerProps> {

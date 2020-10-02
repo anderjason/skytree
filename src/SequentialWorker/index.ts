@@ -6,6 +6,7 @@ export type JobState = "queued" | "running" | "finished" | "cancelled";
 
 export interface Job {
   state: Observable<JobState>;
+  priority: number;
   receipt: Receipt;
 }
 
@@ -25,7 +26,8 @@ export class SequentialWorker extends ManagedObject<SequentialWorkerProps> {
 
   addWork(
     callback: JobCallback,
-    cancelledCallback?: CancelledJobCallback
+    cancelledCallback?: CancelledJobCallback,
+    priority: number = 5
   ): Job {
     const state = Observable.givenValue<JobState>("queued");
 
@@ -50,6 +52,7 @@ export class SequentialWorker extends ManagedObject<SequentialWorkerProps> {
 
     const job: Job = {
       receipt: receipt,
+      priority,
       state,
     };
 
@@ -72,10 +75,18 @@ export class SequentialWorker extends ManagedObject<SequentialWorkerProps> {
       return;
     }
 
-    const nextJob = this._jobs.shift();
+    const orderedJobs = ArrayUtil.arrayWithOrderFromValue(
+      this._jobs,
+      (job) => job.priority,
+      "descending"
+    );
+
+    const nextJob = orderedJobs[0];
     if (nextJob == null) {
       return;
     }
+
+    this._jobs = this._jobs.filter((job) => job !== nextJob);
 
     this._isBusy = true;
 
