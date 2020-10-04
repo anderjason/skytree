@@ -1,7 +1,7 @@
 import { Observable } from "@anderjason/observable";
 import { Test } from "@anderjason/tests";
 import { ValuePath } from "@anderjason/util";
-import { ManagedObject } from "../ManagedObject";
+import { Actor } from "../Actor";
 import { PathBinding } from "./";
 
 Test.define("PathBinding can observe a simple value", () => {
@@ -51,7 +51,7 @@ Test.define("PathBinding can observe a simple value", () => {
 Test.define(
   "PathBinding updates bindings with the shortest path first, given the same input",
   () => {
-    const mo = new ManagedObject({});
+    const mo = new Actor({});
     mo.activate();
 
     const input = Observable.givenValue({
@@ -71,21 +71,21 @@ Test.define(
       ],
     });
 
-    const secondArtboardSize = mo.addManagedObject(
+    const secondArtboardSize = mo.addActor(
       new PathBinding<any, string>({
         input,
         path: ValuePath.givenString("artboards.1.size"),
       })
     );
 
-    const artboards = mo.addManagedObject(
+    const artboards = mo.addActor(
       new PathBinding<any, any[]>({
         input,
         path: ValuePath.givenString("artboards"),
       })
     );
 
-    const secondArtboardColor = mo.addManagedObject(
+    const secondArtboardColor = mo.addActor(
       new PathBinding<any, string>({
         input,
         path: ValuePath.givenString("artboards.1.design.color"),

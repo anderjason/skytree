@@ -1,5 +1,5 @@
 import { Receipt, Observable } from "@anderjason/observable";
-import { ManagedObject } from "../ManagedObject";
+import { Actor } from "../Actor";
 export declare type JobState = "queued" | "running" | "finished" | "cancelled";
 export interface Job {
     state: Observable<JobState>;
@@ -10,7 +10,7 @@ export declare type JobCallback = () => Promise<void>;
 export declare type CancelledJobCallback = () => void;
 export interface SequentialWorkerProps {
 }
-export declare class SequentialWorker extends ManagedObject<SequentialWorkerProps> {
+export declare class SequentialWorker extends Actor<SequentialWorkerProps> {
     private _jobs;
     private _callbackByJob;
     private _isBusy;

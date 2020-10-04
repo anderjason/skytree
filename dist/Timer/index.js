@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Timer = void 0;
-const ManagedObject_1 = require("../ManagedObject");
+const Actor_1 = require("../Actor");
 const observable_1 = require("@anderjason/observable");
-class Timer extends ManagedObject_1.ManagedObject {
+class Timer extends Actor_1.Actor {
     onActivate() {
         if (this.props.isRepeating == true) {
             this._timeout = setInterval(() => {

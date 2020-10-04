@@ -6,27 +6,27 @@
 
 ## API Reference
 
-### ArrayInitializer
+### Actor
 
 `TODO`
 
-### ConditionalInitializer
+### ArrayActivator
 
 `TODO`
 
-### Connector
+### ConditionalActivator
 
 `TODO`
 
-### DelayInitializer
+### ConvertBinding
 
 `TODO`
 
-### ExclusiveInitializer
+### DelayActivator
 
 `TODO`
 
-### ManagedObject
+### ExclusiveActivator
 
 `TODO`
 
@@ -42,6 +42,6 @@
 
 `TODO`
 
-### Transformer
+### SourceTargetBinding
 
 `TODO`

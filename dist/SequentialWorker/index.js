@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SequentialWorker = void 0;
 const observable_1 = require("@anderjason/observable");
 const util_1 = require("@anderjason/util");
-const ManagedObject_1 = require("../ManagedObject");
-class SequentialWorker extends ManagedObject_1.ManagedObject {
+const Actor_1 = require("../Actor");
+class SequentialWorker extends Actor_1.Actor {
     constructor() {
         super(...arguments);
         this._jobs = [];

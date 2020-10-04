@@ -1,6 +1,6 @@
 import { Receipt, Observable } from "@anderjason/observable";
 import { ArrayUtil } from "@anderjason/util";
-import { ManagedObject } from "../ManagedObject";
+import { Actor } from "../Actor";
 
 export type JobState = "queued" | "running" | "finished" | "cancelled";
 
@@ -15,7 +15,7 @@ export type CancelledJobCallback = () => void;
 
 export interface SequentialWorkerProps {}
 
-export class SequentialWorker extends ManagedObject<SequentialWorkerProps> {
+export class SequentialWorker extends Actor<SequentialWorkerProps> {
   private _jobs: Job[] = [];
   private _callbackByJob = new Map<Job, JobCallback>();
   private _isBusy: boolean = false;

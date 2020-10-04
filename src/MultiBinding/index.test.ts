@@ -1,12 +1,12 @@
 import { Observable } from "@anderjason/observable";
 import { Test } from "@anderjason/tests";
 import { MultiBinding } from ".";
-import { ManagedObject } from "../ManagedObject";
+import { Actor } from "../Actor";
 
 Test.define(
   "MultiBinding invalidates each time all inputs in any group have changed at least once",
   () => {
-    const obj = new ManagedObject({});
+    const obj = new Actor({});
     obj.activate();
 
     const inputA1 = Observable.givenValue("a1");
@@ -19,7 +19,7 @@ Test.define(
     const inputC1 = Observable.givenValue("c1");
     const inputC2 = Observable.givenValue("c2");
 
-    const multiBinding = obj.addManagedObject(
+    const multiBinding = obj.addActor(
       MultiBinding.givenGroups([
         [inputA1, inputA2, inputA3, inputA4],
         [inputB1],

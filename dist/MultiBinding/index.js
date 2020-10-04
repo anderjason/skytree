@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MultiBinding = void 0;
 const observable_1 = require("@anderjason/observable");
-const ManagedObject_1 = require("../ManagedObject");
-class MultiBinding extends ManagedObject_1.ManagedObject {
+const Actor_1 = require("../Actor");
+class MultiBinding extends Actor_1.Actor {
     constructor() {
         super(...arguments);
         this.didInvalidate = new observable_1.TypedEvent();

@@ -1,4 +1,4 @@
-import { ManagedObject } from "../ManagedObject";
+import { Actor } from "../Actor";
 import { Duration } from "@anderjason/time";
 import { Receipt } from "@anderjason/observable";
 
@@ -8,7 +8,7 @@ export interface TimerProps {
   isRepeating: boolean;
 }
 
-export class Timer extends ManagedObject<TimerProps> {
+export class Timer extends Actor<TimerProps> {
   private _timeout: any;
 
   onActivate() {

@@ -1,10 +1,10 @@
 import { ObservableBase, TypedEvent } from "@anderjason/observable";
-import { ManagedObject } from "../ManagedObject";
+import { Actor } from "../Actor";
 export declare type MultiBindingGroup = ObservableBase<any>[];
 export interface MultiBindingProps {
     groups: MultiBindingGroup[];
 }
-export declare class MultiBinding extends ManagedObject<MultiBindingProps> {
+export declare class MultiBinding extends Actor<MultiBindingProps> {
     static givenGroups(groups: MultiBindingGroup[]): MultiBinding;
     static givenOneGroup(group: MultiBindingGroup): MultiBinding;
     static givenAnyChange(inputs: ObservableBase<any>[]): MultiBinding;

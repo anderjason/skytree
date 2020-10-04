@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PathBinding = void 0;
 const observable_1 = require("@anderjason/observable");
 const util_1 = require("@anderjason/util");
-const ManagedObject_1 = require("../ManagedObject");
-class PathBinding extends ManagedObject_1.ManagedObject {
+const Actor_1 = require("../Actor");
+class PathBinding extends Actor_1.Actor {
     constructor(props) {
         super(props);
         if (observable_1.Observable.isObservable(props.output)) {

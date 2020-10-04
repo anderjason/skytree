@@ -5,7 +5,7 @@ import {
   Receipt,
 } from "@anderjason/observable";
 import { ArrayUtil, ObjectUtil, ValuePath } from "@anderjason/util";
-import { ManagedObject } from "../ManagedObject";
+import { Actor } from "../Actor";
 
 export interface PathBindingProps<TI, TO> {
   input: ObservableBase<TI>;
@@ -19,7 +19,7 @@ interface BindingGroup {
   inputReceipt: Receipt;
 }
 
-export class PathBinding<TI, TO = unknown> extends ManagedObject<
+export class PathBinding<TI, TO = unknown> extends Actor<
   PathBindingProps<TI, TO>
 > {
   private static bindingGroupsByInput = new Map<unknown, BindingGroup>();
