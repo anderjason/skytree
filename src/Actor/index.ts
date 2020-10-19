@@ -15,7 +15,8 @@ export class Actor<T = any> {
     Actor._activeSet
   );
 
-  readonly managedObjectId: string;
+  readonly actorId: string;
+  actorDescription?: string;
 
   private _receipts = ObservableSet.ofEmpty<Receipt>();
   readonly receipts = ReadOnlyObservableSet.givenObservableSet(this._receipts);
@@ -40,11 +41,15 @@ export class Actor<T = any> {
   constructor(props: T) {
     this._props = props;
 
-    this.managedObjectId = StringUtil.stringOfRandomCharacters(8);
+    this.actorId = StringUtil.stringOfRandomCharacters(8);
   }
 
   get props(): T {
     return this._props;
+  }
+
+  get managedObjectId(): string {
+    return this.actorId; // for backwards compatibility in v9
   }
 
   activate(): Receipt {

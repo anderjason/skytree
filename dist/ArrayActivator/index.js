@@ -4,15 +4,20 @@ exports.ArrayActivator = void 0;
 const observable_1 = require("@anderjason/observable");
 const Actor_1 = require("../Actor");
 class ArrayActivator extends Actor_1.Actor {
-    constructor() {
-        super(...arguments);
+    constructor(props) {
+        super(props);
         this._output = observable_1.ObservableArray.ofEmpty();
         this.output = observable_1.ReadOnlyObservableArray.givenObservableArray(this._output);
         this._previousInput = [];
+        if (observable_1.ObservableArray.isObservableArray(props.input)) {
+            this._observableInput = props.input;
+        }
+        else {
+            this._observableInput = observable_1.ObservableArray.givenValues(props.input);
+        }
     }
     onActivate() {
-        this.cancelOnDeactivate(this.props.input.didChange.subscribe(() => {
-            const newInput = this.props.input.toValues();
+        this.cancelOnDeactivate(this._observableInput.didChange.subscribe((newInput) => {
             if (newInput == null) {
                 return;
             }

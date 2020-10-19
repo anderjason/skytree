@@ -8,7 +8,7 @@ import { Actor } from "../Actor";
 export interface ConditionalActivatorProps<TI, TO> {
   input: ObservableBase<TI>;
   fn: (input: TI) => boolean;
-  actor: TO;
+  actor: TO | (() => TO);
 }
 
 export class ConditionalActivator<TI, TO extends Actor> extends Actor<
@@ -18,19 +18,30 @@ export class ConditionalActivator<TI, TO extends Actor> extends Actor<
   readonly output = ReadOnlyObservable.givenObservable(this._output);
 
   onActivate() {
+    const isActive = Observable.ofEmpty<boolean>(Observable.isStrictEqual);
+
     this.cancelOnDeactivate(
       this.props.input.didChange.subscribe((input) => {
-        const isActive = this.props.fn(input);
+        isActive.setValue(this.props.fn(input));
+      }, true)
+    );
 
-        if (isActive) {
-          if (this._output.value == null) {
-            this._output.setValue(this.addActor(this.props.actor));
+    this.cancelOnDeactivate(
+      isActive.didChange.subscribe((value) => {
+        if (this._output.value != null) {
+          this.removeActor(this._output.value);
+          this._output.setValue(undefined);
+        }
+
+        if (value == true) {
+          let newActor: TO;
+          if (typeof this.props.actor === "function") {
+            newActor = this.props.actor();
+          } else {
+            newActor = this.props.actor;
           }
-        } else {
-          if (this._output.value != null) {
-            this.removeActor(this._output.value);
-            this._output.setValue(undefined);
-          }
+
+          this._output.setValue(this.addActor(newActor));
         }
       }, true)
     );

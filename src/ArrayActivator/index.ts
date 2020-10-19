@@ -13,7 +13,7 @@ export type ArrayActivatorCallback<TI, TO> = (
 ) => TO | undefined;
 
 export interface ArrayActivatorProps<TI, TO> {
-  input: ObservableArrayBase<TI>;
+  input: TI[] | ObservableArrayBase<TI>;
   fn: ArrayActivatorCallback<TI, TO>;
 }
 
@@ -24,12 +24,21 @@ export class ArrayActivator<TI, TO extends Actor> extends Actor<
   readonly output = ReadOnlyObservableArray.givenObservableArray(this._output);
 
   private _previousInput: TI[] = [];
+  private _observableInput: ObservableArrayBase<TI>;
+
+  constructor(props: ArrayActivatorProps<TI, TO>) {
+    super(props);
+
+    if (ObservableArray.isObservableArray(props.input)) {
+      this._observableInput = props.input;
+    } else {
+      this._observableInput = ObservableArray.givenValues(props.input);
+    }
+  }
 
   onActivate() {
     this.cancelOnDeactivate(
-      this.props.input.didChange.subscribe(() => {
-        const newInput = this.props.input.toValues();
-
+      this._observableInput.didChange.subscribe((newInput) => {
         if (newInput == null) {
           return;
         }

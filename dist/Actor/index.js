@@ -14,10 +14,13 @@ class Actor {
         this._isActive = observable_1.Observable.givenValue(false);
         this.isActive = observable_1.ReadOnlyObservable.givenObservable(this._isActive);
         this._props = props;
-        this.managedObjectId = util_1.StringUtil.stringOfRandomCharacters(8);
+        this.actorId = util_1.StringUtil.stringOfRandomCharacters(8);
     }
     get props() {
         return this._props;
+    }
+    get managedObjectId() {
+        return this.actorId; // for backwards compatibility in v9
     }
     activate() {
         if (this.isActive.value === false) {

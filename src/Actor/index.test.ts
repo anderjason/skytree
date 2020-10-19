@@ -6,13 +6,13 @@ Test.define("Actor has a unique id per actor", () => {
   const actor1 = new Actor({});
   const actor2 = new Actor({});
 
-  Test.assert(actor1.managedObjectId != null);
-  Test.assert(actor1.managedObjectId.length === 8);
+  Test.assert(actor1.actorId != null);
+  Test.assert(actor1.actorId.length === 8);
 
-  Test.assert(actor2.managedObjectId != null);
-  Test.assert(actor2.managedObjectId.length === 8);
+  Test.assert(actor2.actorId != null);
+  Test.assert(actor2.actorId.length === 8);
 
-  Test.assert(actor1.managedObjectId !== actor2.managedObjectId);
+  Test.assert(actor1.actorId !== actor2.actorId);
 });
 
 Test.define("Actor invokes onActivate when activate is called", () => {
@@ -219,7 +219,7 @@ Test.define(
   }
 );
 
-Test.define("Actor unactivates child objects when unactivate is called", () => {
+Test.define("Actor unactivates child objects when deactivate is called", () => {
   class MySubclass extends Actor {
     onActivate() {}
   }
@@ -244,7 +244,7 @@ Test.define("Actor activates child objects when activate is called", () => {
   const parentInstance1 = new MySubclass({});
   const childInstance = new MySubclass({});
   parentInstance1.addActor(childInstance);
-  Test.assert(childInstance.isActive.value === false); // parent is not activateialized yet
+  Test.assert(childInstance.isActive.value === false); // parent is not activated yet
 
   parentInstance1.activate();
 
@@ -253,7 +253,7 @@ Test.define("Actor activates child objects when activate is called", () => {
   parentInstance1.deactivate();
 });
 
-Test.define("Actor updates the static activateialized set", () => {
+Test.define("Actor updates the static active set", () => {
   class MySubclass extends Actor {
     onActivate() {}
   }

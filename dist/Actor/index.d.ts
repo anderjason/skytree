@@ -2,7 +2,8 @@ import { Receipt, ReadOnlyObservable, ReadOnlyObservableArray, ReadOnlyObservabl
 export declare class Actor<T = any> {
     private static _activeSet;
     static readonly activeSet: ReadOnlyObservableSet<Actor<any>>;
-    readonly managedObjectId: string;
+    readonly actorId: string;
+    actorDescription?: string;
     private _receipts;
     readonly receipts: ReadOnlyObservableSet<Receipt>;
     private _parentObject;
@@ -15,6 +16,7 @@ export declare class Actor<T = any> {
     private _props;
     constructor(props: T);
     get props(): T;
+    get managedObjectId(): string;
     activate(): Receipt;
     deactivate(): void;
     addActor<T extends Actor>(childObject: T): T;
