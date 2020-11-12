@@ -1,8 +1,8 @@
-import { ObservableBase, ReadOnlyObservable } from "@anderjason/observable";
+import { ObservableBase, ReadOnlyObservable, TypedEvent } from "@anderjason/observable";
 import { Actor } from "../Actor";
 export declare type ExclusiveActivatorCallback<T> = (newValue: T, oldValue: T, currentObject?: Actor) => Actor | undefined;
 export interface ExclusiveActivatorProps<T> {
-    input: ObservableBase<T>;
+    input: ObservableBase<T> | TypedEvent<T>;
     fn: ExclusiveActivatorCallback<T>;
 }
 export declare class ExclusiveActivator<T> extends Actor<ExclusiveActivatorProps<T>> {

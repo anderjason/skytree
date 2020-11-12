@@ -3,6 +3,7 @@ import {
   Observable,
   ObservableBase,
   ReadOnlyObservable,
+  TypedEvent,
 } from "@anderjason/observable";
 import { Actor } from "../Actor";
 
@@ -13,7 +14,7 @@ export type ExclusiveActivatorCallback<T> = (
 ) => Actor | undefined;
 
 export interface ExclusiveActivatorProps<T> {
-  input: ObservableBase<T>;
+  input: ObservableBase<T> | TypedEvent<T>;
   fn: ExclusiveActivatorCallback<T>;
 }
 
@@ -25,8 +26,19 @@ export class ExclusiveActivator<T> extends Actor<ExclusiveActivatorProps<T>> {
 
   onActivate() {
     if (this.props.input != null && this.props.fn != null) {
+      let event: TypedEvent<T>;
+      let includeLast: boolean;
+
+      if (Observable.isObservable(this.props.input)) {
+        event = this.props.input.didChange;
+        includeLast = true;
+      } else {
+        event = this.props.input;
+        includeLast = false;
+      }
+
       this.cancelOnDeactivate(
-        this.props.input.didChange.subscribe((newValue: any, oldValue: any) => {
+        event.subscribe((newValue: T, oldValue: T) => {
           const newObject = this.props.fn(
             newValue,
             oldValue,
@@ -48,7 +60,7 @@ export class ExclusiveActivator<T> extends Actor<ExclusiveActivatorProps<T>> {
           }
 
           this._output.setValue(this._lastObject);
-        }, true)
+        }, includeLast)
       );
     }
 
