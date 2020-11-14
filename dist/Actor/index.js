@@ -16,6 +16,10 @@ class Actor {
         this._props = props;
         this.actorId = util_1.StringUtil.stringOfRandomCharacters(8);
     }
+    static withDescription(description, actor) {
+        actor.actorDescription = description;
+        return actor;
+    }
     get props() {
         return this._props;
     }
@@ -27,6 +31,14 @@ class Actor {
             this._thisReceipt = new observable_1.Receipt(() => {
                 this.deactivate();
             });
+            this.cancelOnDeactivate(this.parentObject.didChange.subscribe((parent) => {
+                if (parent != null) {
+                    Actor._rootSet.removeValue(this);
+                }
+                else {
+                    Actor._rootSet.addValue(this);
+                }
+            }, true));
             Actor._activeSet.addValue(this);
             this._isActive.setValue(true);
             this._childObjects.toValues().forEach((child) => {
@@ -40,6 +52,7 @@ class Actor {
         if (this._thisReceipt == null) {
             return;
         }
+        Actor._rootSet.removeValue(this);
         Actor._activeSet.removeValue(this);
         this._isActive.setValue(false);
         this._receipts.toArray().forEach((receipt) => {
@@ -104,4 +117,6 @@ class Actor {
 exports.Actor = Actor;
 Actor._activeSet = observable_1.ObservableSet.ofEmpty();
 Actor.activeSet = observable_1.ReadOnlyObservableSet.givenObservableSet(Actor._activeSet);
+Actor._rootSet = observable_1.ObservableSet.ofEmpty();
+Actor.rootSet = observable_1.ReadOnlyObservableSet.givenObservableSet(Actor._rootSet);
 //# sourceMappingURL=index.js.map

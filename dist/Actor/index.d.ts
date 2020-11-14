@@ -1,7 +1,10 @@
 import { Receipt, ReadOnlyObservable, ReadOnlyObservableArray, ReadOnlyObservableSet } from "@anderjason/observable";
 export declare class Actor<T = any> {
+    static withDescription<T extends Actor>(description: string, actor: T): T;
     private static _activeSet;
     static readonly activeSet: ReadOnlyObservableSet<Actor<any>>;
+    private static _rootSet;
+    static readonly rootSet: ReadOnlyObservableSet<Actor<any>>;
     readonly actorId: string;
     actorDescription?: string;
     private _receipts;

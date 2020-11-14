@@ -10,9 +10,19 @@ import {
 } from "@anderjason/observable";
 
 export class Actor<T = any> {
+  static withDescription<T extends Actor>(description: string, actor: T): T {
+    actor.actorDescription = description;
+    return actor;
+  }
+
   private static _activeSet = ObservableSet.ofEmpty<Actor>();
   static readonly activeSet = ReadOnlyObservableSet.givenObservableSet(
     Actor._activeSet
+  );
+
+  private static _rootSet = ObservableSet.ofEmpty<Actor>();
+  static readonly rootSet = ReadOnlyObservableSet.givenObservableSet(
+    Actor._rootSet
   );
 
   readonly actorId: string;
@@ -58,6 +68,16 @@ export class Actor<T = any> {
         this.deactivate();
       });
 
+      this.cancelOnDeactivate(
+        this.parentObject.didChange.subscribe((parent) => {
+          if (parent != null) {
+            Actor._rootSet.removeValue(this);
+          } else {
+            Actor._rootSet.addValue(this);
+          }
+        }, true)
+      );
+
       Actor._activeSet.addValue(this);
       this._isActive.setValue(true);
 
@@ -76,6 +96,7 @@ export class Actor<T = any> {
       return;
     }
 
+    Actor._rootSet.removeValue(this);
     Actor._activeSet.removeValue(this);
     this._isActive.setValue(false);
 
