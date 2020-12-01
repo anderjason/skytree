@@ -37,6 +37,10 @@ Test.define("ExclusiveActivator can be created with a typed event", () => {
   const obj = new ExclusiveActivator({
     input,
     fn: (newString, oldString) => {
+      if (newString == null) {
+        return;
+      }
+
       receivedNewStrings.push(newString);
       receivedOldStrings.push(oldString);
 

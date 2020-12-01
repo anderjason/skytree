@@ -12,14 +12,11 @@ class ExclusiveActivator extends Actor_1.Actor {
     onActivate() {
         if (this.props.input != null && this.props.fn != null) {
             let event;
-            let includeLast;
             if (observable_1.Observable.isObservable(this.props.input)) {
                 event = this.props.input.didChange;
-                includeLast = true;
             }
             else {
                 event = this.props.input;
-                includeLast = false;
             }
             this.cancelOnDeactivate(event.subscribe((newValue, oldValue) => {
                 const newObject = this.props.fn(newValue, oldValue, this._output.value);
@@ -35,7 +32,7 @@ class ExclusiveActivator extends Actor_1.Actor {
                     this.addActor(newObject);
                 }
                 this._output.setValue(this._lastObject);
-            }, includeLast));
+            }, true));
         }
         this.cancelOnDeactivate(new observable_1.Receipt(() => {
             this._output.setValue(undefined);

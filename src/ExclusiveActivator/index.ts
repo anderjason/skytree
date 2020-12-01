@@ -27,14 +27,11 @@ export class ExclusiveActivator<T> extends Actor<ExclusiveActivatorProps<T>> {
   onActivate() {
     if (this.props.input != null && this.props.fn != null) {
       let event: TypedEvent<T>;
-      let includeLast: boolean;
 
       if (Observable.isObservable(this.props.input)) {
         event = this.props.input.didChange;
-        includeLast = true;
       } else {
         event = this.props.input;
-        includeLast = false;
       }
 
       this.cancelOnDeactivate(
@@ -60,7 +57,7 @@ export class ExclusiveActivator<T> extends Actor<ExclusiveActivatorProps<T>> {
           }
 
           this._output.setValue(this._lastObject);
-        }, includeLast)
+        }, true)
       );
     }
 
