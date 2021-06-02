@@ -1,6 +1,6 @@
 {
   "name": "skytree",
-  "version": "9.3.1",
+  "version": "9.4.0",
   "description": "",
   "main": "./dist/index.js",
   "repository": {
@@ -21,10 +21,10 @@
     "dist/**/*"
   ],
   "dependencies": {
-    "@anderjason/observable": "^3.2.0",
+    "@anderjason/observable": "^3.2.1",
     "@anderjason/tests": "^1.0.1",
     "@anderjason/time": "^2.0.2",
-    "@anderjason/util": "^2.0.3"
+    "@anderjason/util": "^2.0.6"
   },
   "devDependencies": {
     "@anderjason/example-tools": "git+https://github.com/anderjason/example-tools.git",

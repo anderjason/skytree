@@ -2,6 +2,7 @@ import { Actor } from "./Actor";
 import { ArrayActivator } from "./ArrayActivator";
 import { ConditionalActivator } from "./ConditionalActivator";
 import { ConvertBinding } from "./ConvertBinding";
+import { CountActivator } from "./CountActivator";
 import { SourceTargetBinding } from "./SourceTargetBinding";
 import { DelayActivator } from "./DelayActivator";
 import { ExclusiveActivator } from "./ExclusiveActivator";
@@ -15,6 +16,7 @@ export {
   ArrayActivator,
   ConditionalActivator,
   ConvertBinding,
+  CountActivator,
   SourceTargetBinding,
   DelayActivator,
   ExclusiveActivator,

@@ -22,6 +22,10 @@
 
 `TODO`
 
+### CountActivator
+
+`TODO`
+
 ### DelayActivator
 
 `TODO`

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Timer = exports.SequentialWorker = exports.PathBinding = exports.MultiBinding = exports.ExclusiveActivator = exports.DelayActivator = exports.SourceTargetBinding = exports.ConvertBinding = exports.ConditionalActivator = exports.ArrayActivator = exports.Actor = void 0;
+exports.Timer = exports.SequentialWorker = exports.PathBinding = exports.MultiBinding = exports.ExclusiveActivator = exports.DelayActivator = exports.SourceTargetBinding = exports.CountActivator = exports.ConvertBinding = exports.ConditionalActivator = exports.ArrayActivator = exports.Actor = void 0;
 const Actor_1 = require("./Actor");
 Object.defineProperty(exports, "Actor", { enumerable: true, get: function () { return Actor_1.Actor; } });
 const ArrayActivator_1 = require("./ArrayActivator");
@@ -9,6 +9,8 @@ const ConditionalActivator_1 = require("./ConditionalActivator");
 Object.defineProperty(exports, "ConditionalActivator", { enumerable: true, get: function () { return ConditionalActivator_1.ConditionalActivator; } });
 const ConvertBinding_1 = require("./ConvertBinding");
 Object.defineProperty(exports, "ConvertBinding", { enumerable: true, get: function () { return ConvertBinding_1.ConvertBinding; } });
+const CountActivator_1 = require("./CountActivator");
+Object.defineProperty(exports, "CountActivator", { enumerable: true, get: function () { return CountActivator_1.CountActivator; } });
 const SourceTargetBinding_1 = require("./SourceTargetBinding");
 Object.defineProperty(exports, "SourceTargetBinding", { enumerable: true, get: function () { return SourceTargetBinding_1.SourceTargetBinding; } });
 const DelayActivator_1 = require("./DelayActivator");
