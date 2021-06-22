@@ -1,13 +1,14 @@
-import { ObservableArray } from "@anderjason/observable";
+import { Observable, ObservableArray } from "@anderjason/observable";
 import { Test } from "@anderjason/tests";
 import { ArrayActivator } from ".";
 import { Actor } from "../Actor";
 
 class TestObject extends Actor {
+  id?: number;
   testValue: string;
 }
 
-Test.define("ArrayActivator returns the expected results", () => {
+Test.define("ArrayActivator supports ObservableArray input", () => {
   const input = ObservableArray.ofEmpty<string>();
   const arrayActivator = new ArrayActivator({
     input,
@@ -94,6 +95,110 @@ Test.define("ArrayActivator returns the expected results", () => {
   Test.assert(objects5[0].isActive.value);
   Test.assert(objects5[1].isActive.value);
   Test.assert(objects5[0] === originalFirstObject);
+
+  arrayActivator.deactivate();
+});
+
+Test.define("ArrayActivator supports plain array input", () => {
+  const input = ["red", "orange"];
+  const arrayActivator = new ArrayActivator({
+    input,
+    fn: (inputString: string, index: number, currentObject?: TestObject) => {
+      if (inputString === "skip") {
+        return undefined;
+      }
+
+      if (currentObject == null) {
+        // create an object if it doesn't exist for this value
+        currentObject = new TestObject({});
+      }
+
+      // set up the object for this value
+      currentObject.testValue = inputString;
+
+      return currentObject;
+    },
+  });
+  arrayActivator.activate();
+
+  const objects = arrayActivator.output.toValues();
+  Test.assert(objects.length === 2);
+  Test.assert(objects[0].testValue === "red");
+  Test.assert(objects[1].testValue === "orange");
+  Test.assert(objects[0].isActive.value);
+  Test.assert(objects[1].isActive.value);
+
+  arrayActivator.deactivate();
+});
+
+Test.define("ArrayActivator supports Observable<any[]> input", () => {
+  const input = Observable.givenValue<string[]>(["red", "orange"]);
+
+  let lastId = 0;
+  const arrayActivator = new ArrayActivator({
+    input,
+    fn: (inputString: string, index: number, currentObject?: TestObject) => {
+      if (inputString === "skip") {
+        return undefined;
+      }
+
+      if (currentObject == null) {
+        // create an object if it doesn't exist for this index
+        currentObject = new TestObject({});
+        currentObject.id = lastId;
+
+        lastId += 1;
+      }
+
+      // set up the object for this value
+      currentObject.testValue = inputString;
+
+      return currentObject;
+    },
+  });
+  arrayActivator.activate();
+
+  const objects = arrayActivator.output.toValues();
+  Test.assert(objects.length === 2);
+  Test.assert(objects[0].testValue === "red");
+  Test.assert(objects[0].id === 0);
+  Test.assert(objects[1].testValue === "orange");
+  Test.assert(objects[1].id === 1);
+  Test.assert(objects[0].isActive.value);
+  Test.assert(objects[1].isActive.value);
+
+  input.setValue(["red", "blue"]);
+
+  const objects2 = arrayActivator.output.toValues();
+  Test.assert(objects2.length === 2);
+  Test.assert(objects2[0].testValue === "red");
+  Test.assert(objects2[0].id === 0);
+  Test.assert(objects2[1].testValue === "blue");
+  Test.assert(objects2[1].id === 1);
+  Test.assert(objects2[0].isActive.value);
+  Test.assert(objects2[1].isActive.value);
+
+  input.setValue(["green", "orange", "purple"]);
+  
+  const objects3 = arrayActivator.output.toValues();
+  Test.assert(objects3.length === 3);
+  Test.assert(objects3[0].testValue === "green");
+  Test.assert(objects3[0].id === 0);
+  Test.assert(objects3[1].testValue === "orange");
+  Test.assert(objects3[1].id === 1);
+  Test.assert(objects3[2].testValue === "purple");
+  Test.assert(objects3[2].id === 2);
+  Test.assert(objects3[0].isActive.value);
+  Test.assert(objects3[1].isActive.value);
+  Test.assert(objects3[2].isActive.value);
+
+  input.setValue(["orange"]);
+
+  const objects4 = arrayActivator.output.toValues();
+  Test.assert(objects4.length === 1);
+  Test.assert(objects4[0].testValue === "orange");
+  Test.assert(objects4[0].id === 0);
+  Test.assert(objects4[0].isActive.value);
 
   arrayActivator.deactivate();
 });

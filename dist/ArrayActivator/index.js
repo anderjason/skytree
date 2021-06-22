@@ -9,15 +9,27 @@ class ArrayActivator extends Actor_1.Actor {
         this._output = observable_1.ObservableArray.ofEmpty();
         this.output = observable_1.ReadOnlyObservableArray.givenObservableArray(this._output);
         this._previousInput = [];
+        this._internalInput = observable_1.ObservableArray.ofEmpty();
         if (observable_1.ObservableArray.isObservableArray(props.input)) {
-            this._observableInput = props.input;
+            // input is ObservableArrayBase<TI>
+            this._observableInputArray = props.input;
         }
         else {
-            this._observableInput = observable_1.ObservableArray.givenValues(props.input);
+            this._observableInput = observable_1.Observable.givenValueOrObservable(props.input);
         }
     }
     onActivate() {
-        this.cancelOnDeactivate(this._observableInput.didChange.subscribe((newInput) => {
+        if (this._observableInput != null) {
+            this.cancelOnDeactivate(this._observableInput.didChange.subscribe(input => {
+                this._internalInput.sync(input);
+            }, true));
+        }
+        if (this._observableInputArray != null) {
+            this.cancelOnDeactivate(this._observableInputArray.didChange.subscribe(input => {
+                this._internalInput.sync(input);
+            }));
+        }
+        this.cancelOnDeactivate(this._internalInput.didChange.subscribe((newInput) => {
             if (newInput == null) {
                 return;
             }

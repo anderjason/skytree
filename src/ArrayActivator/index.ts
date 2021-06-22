@@ -3,6 +3,8 @@ import {
   ObservableArray,
   ObservableArrayBase,
   ReadOnlyObservableArray,
+  ObservableBase,
+  Observable,
 } from "@anderjason/observable";
 import { Actor } from "../Actor";
 
@@ -13,7 +15,7 @@ export type ArrayActivatorCallback<TI, TO> = (
 ) => TO | undefined;
 
 export interface ArrayActivatorProps<TI, TO> {
-  input: TI[] | ObservableArrayBase<TI>;
+  input: TI[] | ObservableBase<TI[]> | ObservableArrayBase<TI>;
   fn: ArrayActivatorCallback<TI, TO>;
 }
 
@@ -24,21 +26,41 @@ export class ArrayActivator<TI, TO extends Actor> extends Actor<
   readonly output = ReadOnlyObservableArray.givenObservableArray(this._output);
 
   private _previousInput: TI[] = [];
-  private _observableInput: ObservableArrayBase<TI>;
+  private _internalInput = ObservableArray.ofEmpty<TI>();
+
+  private _observableInputArray: ObservableArrayBase<TI>;
+  private _observableInput: ObservableBase<TI[]>;
 
   constructor(props: ArrayActivatorProps<TI, TO>) {
     super(props);
 
     if (ObservableArray.isObservableArray(props.input)) {
-      this._observableInput = props.input;
+      // input is ObservableArrayBase<TI>
+      this._observableInputArray = props.input;
     } else {
-      this._observableInput = ObservableArray.givenValues(props.input);
+      this._observableInput = Observable.givenValueOrObservable(props.input);
     }
   }
 
   onActivate() {
+    if (this._observableInput != null) {
+      this.cancelOnDeactivate(
+        this._observableInput.didChange.subscribe(input => {
+          this._internalInput.sync(input);
+        }, true)
+      )
+    }
+
+    if (this._observableInputArray != null) {
+      this.cancelOnDeactivate(
+        this._observableInputArray.didChange.subscribe(input => {
+          this._internalInput.sync(input);
+        })
+      )
+    }
+
     this.cancelOnDeactivate(
-      this._observableInput.didChange.subscribe((newInput) => {
+      this._internalInput.didChange.subscribe((newInput) => {
         if (newInput == null) {
           return;
         }
