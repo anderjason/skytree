@@ -55,7 +55,7 @@ export class ArrayActivator<TI, TO extends Actor> extends Actor<
       this.cancelOnDeactivate(
         this._observableInputArray.didChange.subscribe(input => {
           this._internalInput.sync(input);
-        })
+        }, true)
       )
     }
 

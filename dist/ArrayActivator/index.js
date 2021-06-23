@@ -27,7 +27,7 @@ class ArrayActivator extends Actor_1.Actor {
         if (this._observableInputArray != null) {
             this.cancelOnDeactivate(this._observableInputArray.didChange.subscribe(input => {
                 this._internalInput.sync(input);
-            }));
+            }, true));
         }
         this.cancelOnDeactivate(this._internalInput.didChange.subscribe((newInput) => {
             if (newInput == null) {
