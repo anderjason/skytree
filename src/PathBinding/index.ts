@@ -91,7 +91,7 @@ export class PathBinding<TI, TO = unknown> extends Actor<
       ObjectUtil.optionalValueAtPathGivenObject(
         this.props.input.value,
         this.props.path
-      )
+      ) as TO
     );
   }
 }
