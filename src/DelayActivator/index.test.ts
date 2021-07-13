@@ -43,13 +43,13 @@ Test.define(
 
     await Duration.givenMilliseconds(expectedDeactivateMs + 10).toDelay();
 
-    // within 5ms of the expected time
+    // within 25ms of the expected time
     Test.assert(
-      Math.abs(expectedActivateMs - activatedDuration.toMilliseconds()) < 5
+      Math.abs(expectedActivateMs - activatedDuration.toMilliseconds()) < 25
     );
 
     Test.assert(
-      Math.abs(expectedDeactivateMs - deactivatedDuration.toMilliseconds()) < 5
+      Math.abs(expectedDeactivateMs - deactivatedDuration.toMilliseconds()) < 25
     );
 
     delayInit.deactivate();
@@ -67,13 +67,13 @@ Test.define(
     });
     delayInit.activate();
 
-    Test.assert(actor.isActive.value == false);
+    Test.assert(actor.isActive == false);
 
     await Duration.givenMilliseconds(20).toDelay();
-    Test.assert(actor.isActive.value == true);
+    Test.assert(actor.isActive == true);
 
     await Duration.givenMilliseconds(100).toDelay();
-    Test.assert(actor.isActive.value == true);
+    Test.assert(actor.isActive == true);
 
     delayInit.deactivate();
   }

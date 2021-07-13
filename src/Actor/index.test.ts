@@ -2,19 +2,6 @@ import { Receipt } from "@anderjason/observable";
 import { Test } from "@anderjason/tests";
 import { Actor } from ".";
 
-Test.define("Actor has a unique id per actor", () => {
-  const actor1 = new Actor({});
-  const actor2 = new Actor({});
-
-  Test.assert(actor1.actorId != null);
-  Test.assert(actor1.actorId.length === 8);
-
-  Test.assert(actor2.actorId != null);
-  Test.assert(actor2.actorId.length === 8);
-
-  Test.assert(actor1.actorId !== actor2.actorId);
-});
-
 Test.define("Actor invokes onActivate when activate is called", () => {
   let didactivate = false as boolean;
 
@@ -28,7 +15,7 @@ Test.define("Actor invokes onActivate when activate is called", () => {
   actor.activate();
 
   Test.assert(didactivate === true);
-  Test.assert(actor.isActive.value === true);
+  Test.assert(actor.isActive === true);
 
   actor.deactivate();
 });
@@ -101,7 +88,7 @@ Test.define("Actor is deactivated when the receipt is cancelled", () => {
 
   const actor = new MySubclass({});
   const receipt1 = actor.activate();
-  Test.assert(actor.isActive.value === true);
+  Test.assert(actor.isActive === true);
 
   Test.assert(releaseCount === 0);
   receipt1.cancel();
@@ -110,10 +97,10 @@ Test.define("Actor is deactivated when the receipt is cancelled", () => {
   Test.assert(releaseCount === 1); // second release has no effect
 
   // @ts-ignore
-  Test.assert(actor.isActive.value === false);
+  Test.assert(actor.isActive === false);
 
   const receipt2 = actor.activate(); // activate again
-  Test.assert(actor.isActive.value === true);
+  Test.assert(actor.isActive === true);
 
   Test.assert(receipt2 != null);
   Test.assert(receipt1 !== receipt2); // different receipt from the first activate
@@ -121,7 +108,7 @@ Test.define("Actor is deactivated when the receipt is cancelled", () => {
   receipt2.cancel();
 
   Test.assert(releaseCount === 2);
-  Test.assert(actor.isActive.value === false);
+  Test.assert(actor.isActive === false);
 });
 
 Test.define("Actor has a list of child objects", () => {
@@ -132,8 +119,8 @@ Test.define("Actor has a list of child objects", () => {
   const parentInstance = new MySubclass({});
   parentInstance.activate();
 
-  Test.assert(parentInstance.childObjects.toValues() != null);
-  Test.assert(parentInstance.childObjects.toValues().length === 0);
+  Test.assert(parentInstance.childObjects != null);
+  Test.assert(Array.from(parentInstance.childObjects).length === 0);
 
   parentInstance.deactivate();
 });
@@ -147,11 +134,11 @@ Test.define("Actor activates objects when added as children", () => {
   parentInstance.activate();
 
   const childInstance = new MySubclass({});
-  Test.assert(childInstance.isActive.value === false);
+  Test.assert(childInstance.isActive === false);
 
   parentInstance.addActor(childInstance);
 
-  Test.assert(childInstance.isActive.value === true);
+  Test.assert(childInstance.isActive === true);
 
   parentInstance.deactivate();
 });
@@ -165,10 +152,10 @@ Test.define("Actor sets parent of objects when added as children", () => {
   parentInstance.activate();
 
   const childInstance = new MySubclass({});
-  Test.assert(childInstance.parentObject.value == null);
+  Test.assert(childInstance.parentObject == null);
 
   parentInstance.addActor(childInstance);
-  Test.assert(childInstance.parentObject.value === parentInstance);
+  Test.assert(childInstance.parentObject === parentInstance);
 
   parentInstance.deactivate();
 });
@@ -185,7 +172,7 @@ Test.define("Actor unsets parent of objects when removed as children", () => {
   parentInstance.addActor(childInstance);
   parentInstance.removeActor(childInstance);
 
-  Test.assert(childInstance.parentObject.value == null);
+  Test.assert(childInstance.parentObject == null);
 
   parentInstance.deactivate();
 });
@@ -205,14 +192,14 @@ Test.define(
 
     const childInstance = new MySubclass({});
     parentInstance1.addActor(childInstance);
-    Test.assert(childInstance.parentObject.value === parentInstance1);
-    Test.assert(parentInstance1.childObjects.hasValue(childInstance));
-    Test.assert(!parentInstance2.childObjects.hasValue(childInstance));
+    Test.assert(childInstance.parentObject === parentInstance1);
+    Test.assert(new Set(parentInstance1.childObjects).has(childInstance));
+    Test.assert(!new Set(parentInstance2.childObjects).has(childInstance));
 
     parentInstance2.addActor(childInstance);
-    Test.assert(childInstance.parentObject.value === parentInstance2);
-    Test.assert(parentInstance2.childObjects.hasValue(childInstance)); // added
-    Test.assert(!parentInstance1.childObjects.hasValue(childInstance)); // removed
+    Test.assert(childInstance.parentObject === parentInstance2);
+    Test.assert(new Set(parentInstance2.childObjects).has(childInstance)); // added
+    Test.assert(!new Set(parentInstance1.childObjects).has(childInstance)); // removed
 
     parentInstance1.deactivate();
     parentInstance2.deactivate();
@@ -229,11 +216,11 @@ Test.define("Actor unactivates child objects when deactivate is called", () => {
 
   const childInstance = new MySubclass({});
   parentInstance1.addActor(childInstance);
-  Test.assert(childInstance.isActive.value === true);
+  Test.assert(childInstance.isActive === true);
 
   parentInstance1.deactivate();
 
-  Test.assert(childInstance.isActive.value === false);
+  Test.assert(childInstance.isActive === false);
 });
 
 Test.define("Actor activates child objects when activate is called", () => {
@@ -244,30 +231,11 @@ Test.define("Actor activates child objects when activate is called", () => {
   const parentInstance1 = new MySubclass({});
   const childInstance = new MySubclass({});
   parentInstance1.addActor(childInstance);
-  Test.assert(childInstance.isActive.value === false); // parent is not activated yet
+  Test.assert(childInstance.isActive === false); // parent is not activated yet
 
   parentInstance1.activate();
 
-  Test.assert(childInstance.isActive.value === true);
+  Test.assert(childInstance.isActive === true);
 
   parentInstance1.deactivate();
-});
-
-Test.define("Actor updates the static active set", () => {
-  class MySubclass extends Actor {
-    onActivate() {}
-  }
-
-  const startValue = Actor.activeSet.count;
-
-  const parentInstance1 = new MySubclass({});
-  const childInstance = new MySubclass({});
-  parentInstance1.addActor(childInstance);
-  parentInstance1.activate();
-
-  Test.assert(Actor.activeSet.count === startValue + 2);
-
-  parentInstance1.deactivate();
-
-  Test.assert(Actor.activeSet.count === startValue);
 });

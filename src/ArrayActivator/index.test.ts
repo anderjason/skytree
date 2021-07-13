@@ -38,8 +38,8 @@ Test.define("ArrayActivator supports ObservableArray input", () => {
   Test.assert(objects.length === 2);
   Test.assert(objects[0].testValue === "red");
   Test.assert(objects[1].testValue === "orange");
-  Test.assert(objects[0].isActive.value);
-  Test.assert(objects[1].isActive.value);
+  Test.assert(objects[0].isActive);
+  Test.assert(objects[1].isActive);
 
   const originalFirstObject = objects[0];
   const originalSecondObject = objects[1];
@@ -52,9 +52,9 @@ Test.define("ArrayActivator supports ObservableArray input", () => {
   Test.assert(objects2[0].testValue === "green");
   Test.assert(objects2[1].testValue === "red");
   Test.assert(objects2[2].testValue === "orange");
-  Test.assert(objects2[0].isActive.value);
-  Test.assert(objects2[1].isActive.value);
-  Test.assert(objects2[2].isActive.value);
+  Test.assert(objects2[0].isActive);
+  Test.assert(objects2[1].isActive);
+  Test.assert(objects2[2].isActive);
   Test.assert(objects2[0] === originalFirstObject);
   Test.assert(objects2[1] === originalSecondObject);
 
@@ -65,8 +65,8 @@ Test.define("ArrayActivator supports ObservableArray input", () => {
   Test.assert(objects3.length === 2);
   Test.assert(objects3[0].testValue === "green");
   Test.assert(objects3[1].testValue === "orange");
-  Test.assert(objects3[0].isActive.value);
-  Test.assert(objects3[1].isActive.value);
+  Test.assert(objects3[0].isActive);
+  Test.assert(objects3[1].isActive);
   Test.assert(objects3[0] === originalFirstObject);
   Test.assert(objects3[1] === originalSecondObject);
 
@@ -81,8 +81,8 @@ Test.define("ArrayActivator supports ObservableArray input", () => {
     objects4[2].testValue === "orange",
     "Expected orange in objects4"
   );
-  Test.assert(objects4[0].isActive.value, "Expected 0 initialized in objects4");
-  Test.assert(objects4[2].isActive.value, "Expected 2 initialized in objects4");
+  Test.assert(objects4[0].isActive, "Expected 0 initialized in objects4");
+  Test.assert(objects4[2].isActive, "Expected 2 initialized in objects4");
   Test.assert(objects4[0] === originalFirstObject);
 
   input.removeValueAtIndex(1);
@@ -92,8 +92,8 @@ Test.define("ArrayActivator supports ObservableArray input", () => {
   Test.assert(objects5.length === 2);
   Test.assert(objects5[0].testValue === "green");
   Test.assert(objects5[1].testValue === "orange");
-  Test.assert(objects5[0].isActive.value);
-  Test.assert(objects5[1].isActive.value);
+  Test.assert(objects5[0].isActive);
+  Test.assert(objects5[1].isActive);
   Test.assert(objects5[0] === originalFirstObject);
 
   arrayActivator.deactivate();
@@ -125,8 +125,8 @@ Test.define("ArrayActivator supports plain array input", () => {
   Test.assert(objects.length === 2);
   Test.assert(objects[0].testValue === "red");
   Test.assert(objects[1].testValue === "orange");
-  Test.assert(objects[0].isActive.value);
-  Test.assert(objects[1].isActive.value);
+  Test.assert(objects[0].isActive);
+  Test.assert(objects[1].isActive);
 
   arrayActivator.deactivate();
 });
@@ -164,8 +164,8 @@ Test.define("ArrayActivator supports Observable<any[]> input", () => {
   Test.assert(objects[0].id === 0);
   Test.assert(objects[1].testValue === "orange");
   Test.assert(objects[1].id === 1);
-  Test.assert(objects[0].isActive.value);
-  Test.assert(objects[1].isActive.value);
+  Test.assert(objects[0].isActive);
+  Test.assert(objects[1].isActive);
 
   input.setValue(["red", "blue"]);
 
@@ -175,8 +175,8 @@ Test.define("ArrayActivator supports Observable<any[]> input", () => {
   Test.assert(objects2[0].id === 0);
   Test.assert(objects2[1].testValue === "blue");
   Test.assert(objects2[1].id === 1);
-  Test.assert(objects2[0].isActive.value);
-  Test.assert(objects2[1].isActive.value);
+  Test.assert(objects2[0].isActive);
+  Test.assert(objects2[1].isActive);
 
   input.setValue(["green", "orange", "purple"]);
   
@@ -188,9 +188,9 @@ Test.define("ArrayActivator supports Observable<any[]> input", () => {
   Test.assert(objects3[1].id === 1);
   Test.assert(objects3[2].testValue === "purple");
   Test.assert(objects3[2].id === 2);
-  Test.assert(objects3[0].isActive.value);
-  Test.assert(objects3[1].isActive.value);
-  Test.assert(objects3[2].isActive.value);
+  Test.assert(objects3[0].isActive);
+  Test.assert(objects3[1].isActive);
+  Test.assert(objects3[2].isActive);
 
   input.setValue(["orange"]);
 
@@ -198,7 +198,7 @@ Test.define("ArrayActivator supports Observable<any[]> input", () => {
   Test.assert(objects4.length === 1);
   Test.assert(objects4[0].testValue === "orange");
   Test.assert(objects4[0].id === 0);
-  Test.assert(objects4[0].isActive.value);
+  Test.assert(objects4[0].isActive);
 
   arrayActivator.deactivate();
 });

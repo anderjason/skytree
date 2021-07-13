@@ -47,7 +47,7 @@ class SequentialWorker extends Actor_1.Actor {
         if (this._isBusy) {
             return;
         }
-        if (this.isActive.value === false) {
+        if (this.isActive === false) {
             return;
         }
         const orderedJobs = util_1.ArrayUtil.arrayWithOrderFromValue(this._jobs, (job) => job.priority, "descending");

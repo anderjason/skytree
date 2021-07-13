@@ -1,87 +1,43 @@
-import { StringUtil } from "@anderjason/util";
-import {
-  Receipt,
-  Observable,
-  ObservableArray,
-  ObservableSet,
-  ReadOnlyObservable,
-  ReadOnlyObservableArray,
-  ReadOnlyObservableSet,
-} from "@anderjason/observable";
+import { Receipt } from "@anderjason/observable";
 
 export class Actor<T = any> {
-  static withDescription<T extends Actor>(description: string, actor: T): T {
-    actor.actorDescription = description;
-    return actor;
+  private _receipts: Set<Receipt> = new Set();
+  private _parentObject: Actor;
+  private _thisReceipt: Receipt | undefined;
+  private _childObjects: Actor[] = [];
+  private _isActive = false;
+  
+  private _props: T;
+
+  get isActive(): boolean {
+    return this._isActive;
+  }
+  
+  get parentObject(): Actor {
+    return this._parentObject;
   }
 
-  private static _activeSet = ObservableSet.ofEmpty<Actor>();
-  static readonly activeSet = ReadOnlyObservableSet.givenObservableSet(
-    Actor._activeSet
-  );
-
-  private static _rootSet = ObservableSet.ofEmpty<Actor>();
-  static readonly rootSet = ReadOnlyObservableSet.givenObservableSet(
-    Actor._rootSet
-  );
-
-  readonly actorId: string;
-  actorDescription?: string;
-
-  private _receipts = ObservableSet.ofEmpty<Receipt>();
-  readonly receipts = ReadOnlyObservableSet.givenObservableSet(this._receipts);
-
-  private _parentObject = Observable.ofEmpty<Actor>();
-  readonly parentObject = ReadOnlyObservable.givenObservable(
-    this._parentObject
-  );
-
-  private _thisReceipt: Receipt | undefined;
-
-  private _childObjects = ObservableArray.ofEmpty<Actor>();
-  readonly childObjects = ReadOnlyObservableArray.givenObservableArray(
-    this._childObjects
-  );
-
-  private _isActive = Observable.givenValue(false);
-  readonly isActive = ReadOnlyObservable.givenObservable(this._isActive);
-
-  private _props: T;
+  get childObjects(): Iterable<Actor> {
+    return this._childObjects;
+  }
 
   constructor(props: T) {
     this._props = props;
-
-    this.actorId = StringUtil.stringOfRandomCharacters(8);
   }
 
   get props(): T {
     return this._props;
   }
 
-  get managedObjectId(): string {
-    return this.actorId; // for backwards compatibility in v9
-  }
-
   activate(): Receipt {
-    if (this.isActive.value === false) {
+    if (this.isActive === false) {
       this._thisReceipt = new Receipt(() => {
         this.deactivate();
       });
 
-      this.cancelOnDeactivate(
-        this.parentObject.didChange.subscribe((parent) => {
-          if (parent != null) {
-            Actor._rootSet.removeValue(this);
-          } else {
-            Actor._rootSet.addValue(this);
-          }
-        }, true)
-      );
+      this._isActive = true;
 
-      Actor._activeSet.addValue(this);
-      this._isActive.setValue(true);
-
-      this._childObjects.toValues().forEach((child) => {
+      this._childObjects.forEach((child) => {
         child.activate();
       });
 
@@ -96,20 +52,18 @@ export class Actor<T = any> {
       return;
     }
 
-    Actor._rootSet.removeValue(this);
-    Actor._activeSet.removeValue(this);
-    this._isActive.setValue(false);
+    this._isActive = false;
 
-    this._receipts.toArray().forEach((receipt) => {
+    this._receipts.forEach((receipt) => {
       receipt.cancel();
     });
     this._receipts.clear();
 
-    this._childObjects.toValues().forEach((child) => {
+    this._childObjects.forEach((child) => {
       child.deactivate();
     });
 
-    this._childObjects.clear();
+    this._childObjects = [];
 
     const receipt = this._thisReceipt;
     this._thisReceipt = undefined;
@@ -124,14 +78,14 @@ export class Actor<T = any> {
       return undefined;
     }
 
-    if (childObject.parentObject.value != null) {
-      childObject.parentObject.value.removeActor(childObject);
+    if (childObject.parentObject != null) {
+      childObject.parentObject.removeActor(childObject);
     }
 
-    this._childObjects.addValue(childObject);
-    childObject._parentObject.setValue(this);
+    this._childObjects.push(childObject);
+    childObject._parentObject = this;
 
-    if (this.isActive.value === true) {
+    if (this.isActive === true) {
       childObject.activate();
     }
 
@@ -143,7 +97,7 @@ export class Actor<T = any> {
       return undefined;
     }
 
-    this._receipts.addValue(receipt);
+    this._receipts.add(receipt);
 
     return receipt;
   }
@@ -153,7 +107,7 @@ export class Actor<T = any> {
       return;
     }
 
-    this._receipts.removeValue(receipt);
+    this._receipts.delete(receipt);
   }
 
   removeActor(child: Actor): void {
@@ -161,7 +115,7 @@ export class Actor<T = any> {
       return;
     }
 
-    if (this._childObjects.toIndexOfValue(child) === -1) {
+    if (this._childObjects.indexOf(child) === -1) {
       return;
     }
 
@@ -171,8 +125,8 @@ export class Actor<T = any> {
       console.error(err);
     }
 
-    this._childObjects.removeValue(child);
-    child._parentObject.setValue(undefined);
+    this._childObjects = this._childObjects.filter(co => co !== child);
+    child._parentObject = undefined;
   }
 
   protected onActivate(): void {}

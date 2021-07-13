@@ -1,47 +1,33 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Actor = void 0;
-const util_1 = require("@anderjason/util");
 const observable_1 = require("@anderjason/observable");
 class Actor {
     constructor(props) {
-        this._receipts = observable_1.ObservableSet.ofEmpty();
-        this.receipts = observable_1.ReadOnlyObservableSet.givenObservableSet(this._receipts);
-        this._parentObject = observable_1.Observable.ofEmpty();
-        this.parentObject = observable_1.ReadOnlyObservable.givenObservable(this._parentObject);
-        this._childObjects = observable_1.ObservableArray.ofEmpty();
-        this.childObjects = observable_1.ReadOnlyObservableArray.givenObservableArray(this._childObjects);
-        this._isActive = observable_1.Observable.givenValue(false);
-        this.isActive = observable_1.ReadOnlyObservable.givenObservable(this._isActive);
+        this._receipts = new Set();
+        this._childObjects = [];
+        this._isActive = false;
         this._props = props;
-        this.actorId = util_1.StringUtil.stringOfRandomCharacters(8);
     }
-    static withDescription(description, actor) {
-        actor.actorDescription = description;
-        return actor;
+    get isActive() {
+        return this._isActive;
+    }
+    get parentObject() {
+        return this._parentObject;
+    }
+    get childObjects() {
+        return this._childObjects;
     }
     get props() {
         return this._props;
     }
-    get managedObjectId() {
-        return this.actorId; // for backwards compatibility in v9
-    }
     activate() {
-        if (this.isActive.value === false) {
+        if (this.isActive === false) {
             this._thisReceipt = new observable_1.Receipt(() => {
                 this.deactivate();
             });
-            this.cancelOnDeactivate(this.parentObject.didChange.subscribe((parent) => {
-                if (parent != null) {
-                    Actor._rootSet.removeValue(this);
-                }
-                else {
-                    Actor._rootSet.addValue(this);
-                }
-            }, true));
-            Actor._activeSet.addValue(this);
-            this._isActive.setValue(true);
-            this._childObjects.toValues().forEach((child) => {
+            this._isActive = true;
+            this._childObjects.forEach((child) => {
                 child.activate();
             });
             this.onActivate();
@@ -52,17 +38,15 @@ class Actor {
         if (this._thisReceipt == null) {
             return;
         }
-        Actor._rootSet.removeValue(this);
-        Actor._activeSet.removeValue(this);
-        this._isActive.setValue(false);
-        this._receipts.toArray().forEach((receipt) => {
+        this._isActive = false;
+        this._receipts.forEach((receipt) => {
             receipt.cancel();
         });
         this._receipts.clear();
-        this._childObjects.toValues().forEach((child) => {
+        this._childObjects.forEach((child) => {
             child.deactivate();
         });
-        this._childObjects.clear();
+        this._childObjects = [];
         const receipt = this._thisReceipt;
         this._thisReceipt = undefined;
         if (receipt != null) {
@@ -73,12 +57,12 @@ class Actor {
         if (childObject == null) {
             return undefined;
         }
-        if (childObject.parentObject.value != null) {
-            childObject.parentObject.value.removeActor(childObject);
+        if (childObject.parentObject != null) {
+            childObject.parentObject.removeActor(childObject);
         }
-        this._childObjects.addValue(childObject);
-        childObject._parentObject.setValue(this);
-        if (this.isActive.value === true) {
+        this._childObjects.push(childObject);
+        childObject._parentObject = this;
+        if (this.isActive === true) {
             childObject.activate();
         }
         return childObject;
@@ -87,20 +71,20 @@ class Actor {
         if (receipt == null) {
             return undefined;
         }
-        this._receipts.addValue(receipt);
+        this._receipts.add(receipt);
         return receipt;
     }
     removeCancelOnDeactivate(receipt) {
         if (receipt == null) {
             return;
         }
-        this._receipts.removeValue(receipt);
+        this._receipts.delete(receipt);
     }
     removeActor(child) {
         if (child == null) {
             return;
         }
-        if (this._childObjects.toIndexOfValue(child) === -1) {
+        if (this._childObjects.indexOf(child) === -1) {
             return;
         }
         try {
@@ -109,14 +93,10 @@ class Actor {
         catch (err) {
             console.error(err);
         }
-        this._childObjects.removeValue(child);
-        child._parentObject.setValue(undefined);
+        this._childObjects = this._childObjects.filter(co => co !== child);
+        child._parentObject = undefined;
     }
     onActivate() { }
 }
 exports.Actor = Actor;
-Actor._activeSet = observable_1.ObservableSet.ofEmpty();
-Actor.activeSet = observable_1.ReadOnlyObservableSet.givenObservableSet(Actor._activeSet);
-Actor._rootSet = observable_1.ObservableSet.ofEmpty();
-Actor.rootSet = observable_1.ReadOnlyObservableSet.givenObservableSet(Actor._rootSet);
 //# sourceMappingURL=index.js.map

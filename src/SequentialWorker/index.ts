@@ -71,7 +71,7 @@ export class SequentialWorker extends Actor<SequentialWorkerProps> {
       return;
     }
 
-    if (this.isActive.value === false) {
+    if (this.isActive === false) {
       return;
     }
 
