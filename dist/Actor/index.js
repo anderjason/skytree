@@ -2,12 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Actor = void 0;
 const observable_1 = require("@anderjason/observable");
-class Actor {
+const PropsObject_1 = require("../PropsObject");
+class Actor extends PropsObject_1.PropsObject {
     constructor(props) {
+        super(props);
         this._receipts = new Set();
         this._childObjects = [];
         this._isActive = false;
-        this._props = props;
     }
     get isActive() {
         return this._isActive;
@@ -17,9 +18,6 @@ class Actor {
     }
     get childObjects() {
         return this._childObjects;
-    }
-    get props() {
-        return this._props;
     }
     activate() {
         if (this.isActive === false) {

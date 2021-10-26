@@ -1,92 +1,26 @@
-import { ObservableBase, TypedEvent } from "@anderjason/observable";
+import { Observable, ObservableBase, TypedEvent } from "@anderjason/observable";
 import { Actor } from "../Actor";
 
 export type MultiBindingGroup = ObservableBase<any>[];
 
+export type MultiBindingInput = ObservableBase<any> | TypedEvent<any>;
+
 export interface MultiBindingProps {
-  groups: MultiBindingGroup[];
+  inputs: MultiBindingInput[];
 }
 
 export class MultiBinding extends Actor<MultiBindingProps> {
-  static givenGroups(groups: MultiBindingGroup[]): MultiBinding {
-    return new MultiBinding({
-      groups,
-    });
-  }
-
-  static givenOneGroup(group: MultiBindingGroup): MultiBinding {
-    return new MultiBinding({
-      groups: [group],
-    });
-  }
-
-  static givenAnyChange(inputs: ObservableBase<any>[]): MultiBinding {
-    const groups: MultiBindingGroup[] = inputs.map((input) => {
-      return [input];
-    });
-
-    return new MultiBinding({
-      groups,
-    });
-  }
-
   readonly didInvalidate = new TypedEvent();
 
-  private _willInvalidateLater: boolean = false;
-  private _invalidatedSetByGroup = new Map<
-    MultiBindingGroup,
-    Set<ObservableBase<any>>
-  >();
-
   onActivate() {
-    this.props.groups.forEach((group) => {
-      const invalidatedSet = new Set<ObservableBase<any>>();
-      this._invalidatedSetByGroup.set(group, invalidatedSet);
+    this.props.inputs.forEach((input) => {
+      const event = Observable.isObservable(input) ? input.didChange : input;
 
-      group.forEach((input) => {
-        this.cancelOnDeactivate(
-          input.didChange.subscribe(() => {
-            invalidatedSet.add(input);
-            this.onChange();
-          })
-        );
-      });
+      this.cancelOnDeactivate(
+        event.subscribe(() => {
+          this.didInvalidate.emit();
+        })
+      );
     });
-  }
-
-  private isAnyGroupInvalidated(): boolean {
-    return this.props.groups.some((group) => {
-      const invalidatedSet = this._invalidatedSetByGroup.get(group);
-      return invalidatedSet.size === group.length;
-    });
-  }
-
-  private onChange() {
-    if (this.isAnyGroupInvalidated()) {
-      this.invalidateNow();
-      return;
-    }
-
-    if (this._willInvalidateLater) {
-      return;
-    }
-
-    this._willInvalidateLater = true;
-
-    setTimeout(() => {
-      if (this._willInvalidateLater == true) {
-        this.invalidateNow();
-      }
-    }, 0);
-  }
-
-  private invalidateNow() {
-    this.didInvalidate.emit();
-
-    this._willInvalidateLater = false;
-
-    for (let [group, invalidatedSet] of this._invalidatedSetByGroup) {
-      invalidatedSet.clear();
-    }
   }
 }

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Timer = exports.SequentialWorker = exports.PathBinding = exports.MultiBinding = exports.ExclusiveActivator = exports.DelayActivator = exports.SourceTargetBinding = exports.CountActivator = exports.ConvertBinding = exports.ConditionalActivator = exports.ArrayActivator = exports.Actor = void 0;
+exports.Timer = exports.SequentialWorker = exports.PropsObject = exports.PathBinding = exports.MultiBinding = exports.ExclusiveActivator = exports.DelayActivator = exports.SourceTargetBinding = exports.CountActivator = exports.ConvertBinding = exports.ConditionalActivator = exports.ArrayActivator = exports.Actor = void 0;
 const Actor_1 = require("./Actor");
 Object.defineProperty(exports, "Actor", { enumerable: true, get: function () { return Actor_1.Actor; } });
 const ArrayActivator_1 = require("./ArrayActivator");
@@ -21,6 +21,8 @@ const MultiBinding_1 = require("./MultiBinding");
 Object.defineProperty(exports, "MultiBinding", { enumerable: true, get: function () { return MultiBinding_1.MultiBinding; } });
 const PathBinding_1 = require("./PathBinding");
 Object.defineProperty(exports, "PathBinding", { enumerable: true, get: function () { return PathBinding_1.PathBinding; } });
+const PropsObject_1 = require("./PropsObject");
+Object.defineProperty(exports, "PropsObject", { enumerable: true, get: function () { return PropsObject_1.PropsObject; } });
 const SequentialWorker_1 = require("./SequentialWorker");
 Object.defineProperty(exports, "SequentialWorker", { enumerable: true, get: function () { return SequentialWorker_1.SequentialWorker; } });
 const Timer_1 = require("./Timer");

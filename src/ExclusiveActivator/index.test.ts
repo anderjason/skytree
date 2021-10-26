@@ -22,8 +22,8 @@ Test.define("ExclusiveActivator can be created with an observable", () => {
   input.setValue("B");
   input.setValue("C");
 
-  Test.assertIsDeepEqual(receivedNewStrings, ["A", "B", "C"]);
-  Test.assertIsDeepEqual(receivedOldStrings, [undefined, "A", "B"]);
+  Test.assertIsDeepEqual(receivedNewStrings, ["A", "B", "C"], "receivedNewStrings");
+  Test.assertIsDeepEqual(receivedOldStrings, [undefined, "A", "B"], "receivedOldStrings");
 
   obj.deactivate();
 });
@@ -53,8 +53,8 @@ Test.define("ExclusiveActivator can be created with a typed event", () => {
   input.emit("B");
   input.emit("C");
 
-  Test.assertIsDeepEqual(receivedNewStrings, ["A", "B", "C"]);
-  Test.assertIsDeepEqual(receivedOldStrings, [undefined, "A", "B"]);
+  Test.assertIsDeepEqual(receivedNewStrings, ["A", "B", "C"], "receivedNewStrings");
+  Test.assertIsDeepEqual(receivedOldStrings, [undefined, "A", "B"], "receivedOldStrings");
 
   obj.deactivate();
 });

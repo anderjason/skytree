@@ -1,14 +1,13 @@
 import { Receipt } from "@anderjason/observable";
+import { PropsObject } from "../PropsObject";
 
-export class Actor<T = any> {
+export class Actor<T = any> extends PropsObject<T> {
   private _receipts: Set<Receipt> = new Set();
   private _parentObject: Actor;
   private _thisReceipt: Receipt | undefined;
   private _childObjects: Actor[] = [];
   private _isActive = false;
   
-  private _props: T;
-
   get isActive(): boolean {
     return this._isActive;
   }
@@ -22,11 +21,7 @@ export class Actor<T = any> {
   }
 
   constructor(props: T) {
-    this._props = props;
-  }
-
-  get props(): T {
-    return this._props;
+    super(props);
   }
 
   activate(): Receipt {

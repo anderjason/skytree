@@ -1,72 +1,86 @@
-import { Observable } from "@anderjason/observable";
+import { Observable, TypedEvent } from "@anderjason/observable";
 import { Test } from "@anderjason/tests";
 import { MultiBinding } from ".";
 import { Actor } from "../Actor";
 
 Test.define(
-  "MultiBinding invalidates each time all inputs in any group have changed at least once",
+  "MultiBinding invalidates whenever a provided observable changes",
   () => {
     const obj = new Actor({});
     obj.activate();
 
-    const inputA1 = Observable.givenValue("a1");
-    const inputA2 = Observable.givenValue("a2");
-    const inputA3 = Observable.givenValue("a3");
-    const inputA4 = Observable.givenValue("a4");
-
-    const inputB1 = Observable.givenValue("b1");
-
-    const inputC1 = Observable.givenValue("c1");
-    const inputC2 = Observable.givenValue("c2");
+    const inputA1 = Observable.givenValue("a1", Observable.isStrictEqual);
+    const inputA2 = Observable.givenValue("a2", Observable.isStrictEqual);
 
     const multiBinding = obj.addActor(
-      MultiBinding.givenGroups([
-        [inputA1, inputA2, inputA3, inputA4],
-        [inputB1],
-        [inputC1, inputC2],
-      ])
-    );
-
-    let didInvalidate: any = false;
-    obj.cancelOnDeactivate(
-      multiBinding.didInvalidate.subscribe(() => {
-        didInvalidate = true;
+      new MultiBinding({
+        inputs: [
+          inputA1, inputA2
+        ]
       })
     );
 
-    Test.assert(didInvalidate == false);
+    let invalidateCount: number = 0;
+    obj.cancelOnDeactivate(
+      multiBinding.didInvalidate.subscribe(() => {
+        invalidateCount += 1;
+      })
+    );
+
+    Test.assert(invalidateCount == 0, "invalidateCount should be 0");
 
     inputA1.setValue("X");
-    Test.assert(didInvalidate == false);
+    Test.assert(invalidateCount == 1, "invalidateCount should be 1");
 
     inputA2.setValue("X");
-    Test.assert(didInvalidate == false);
+    Test.assert(invalidateCount == 2, "invalidateCount should be 2");
 
-    inputA3.setValue("X");
-    Test.assert(didInvalidate == false);
+    inputA1.setValue("X");  // no change
+    Test.assert(invalidateCount == 2, "invalidateCount should still be 2");
 
-    inputA4.setValue("X");
-    Test.assert(didInvalidate == true);
-
-    didInvalidate = false;
-
-    inputB1.setValue("X");
-    Test.assert(didInvalidate == true);
-
-    didInvalidate = false;
-
-    inputA1.setValue("Y");
-    inputA1.setValue("Z");
-    inputA1.setValue("A");
-    inputA1.setValue("B");
-    Test.assert(didInvalidate == false);
-
-    inputC1.setValue("Y");
-    Test.assert(didInvalidate == false);
-
-    inputC2.setValue("Y");
-    Test.assert(didInvalidate == true);
+    inputA1.setValue("Z");  // no change
+    Test.assert(invalidateCount == 3, "invalidateCount should be 3");
 
     obj.deactivate();
   }
 );
+
+Test.define(
+  "MultiBinding invalidates whenever a provided event is emitted",
+  () => {
+    const obj = new Actor({});
+    obj.activate();
+
+    const event1 = new TypedEvent();
+    const event2 = new TypedEvent();
+
+    const multiBinding = obj.addActor(
+      new MultiBinding({
+        inputs: [
+          event1, event2
+        ]
+      })
+    );
+
+    let invalidateCount: number = 0;
+    obj.cancelOnDeactivate(
+      multiBinding.didInvalidate.subscribe(() => {
+        invalidateCount += 1;
+      })
+    );
+
+    Test.assert(invalidateCount == 0, "invalidateCount should be 0");
+
+    event1.emit();
+    Test.assert(invalidateCount == 1, "invalidateCount should be 1");
+
+    event2.emit();
+    Test.assert(invalidateCount == 2, "invalidateCount should be 2");
+
+    event1.emit();
+    Test.assert(invalidateCount == 3, "invalidateCount should be 3");
+
+    obj.deactivate();
+  }
+);
+

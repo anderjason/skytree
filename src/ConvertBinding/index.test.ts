@@ -64,6 +64,6 @@ Test.define(
     input.setValue("d");
     await delay(100);
 
-    Test.assertIsDeepEqual(outputs, ["B", "D"]);
+    Test.assertIsDeepEqual(outputs, ["B", "D"], "outputs should contain B and D");
   }
 );

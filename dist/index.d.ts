@@ -8,6 +8,7 @@ import { DelayActivator } from "./DelayActivator";
 import { ExclusiveActivator } from "./ExclusiveActivator";
 import { MultiBinding } from "./MultiBinding";
 import { PathBinding } from "./PathBinding";
+import { PropsObject } from "./PropsObject";
 import { SequentialWorker } from "./SequentialWorker";
 import { Timer } from "./Timer";
-export { Actor, ArrayActivator, ConditionalActivator, ConvertBinding, CountActivator, SourceTargetBinding, DelayActivator, ExclusiveActivator, MultiBinding, PathBinding, SequentialWorker, Timer, };
+export { Actor, ArrayActivator, ConditionalActivator, ConvertBinding, CountActivator, SourceTargetBinding, DelayActivator, ExclusiveActivator, MultiBinding, PathBinding, PropsObject, SequentialWorker, Timer, };

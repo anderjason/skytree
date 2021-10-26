@@ -21,16 +21,16 @@ Test.define("ConditionalActivator can be created with a condition", () => {
 
   const receipt = initializer.activate();
 
-  Test.assert(initializer.output.value == null);
+  Test.assert(initializer.output.value == null, "output is null");
 
   input.setValue("B");
-  Test.assert(initializer.output.value === expectedInstance);
+  Test.assert(initializer.output.value === expectedInstance, "output is set");
 
   input.setValue("C");
-  Test.assert(initializer.output.value == null);
+  Test.assert(initializer.output.value == null, "output is null");
 
   input.setValue("B");
-  Test.assert(initializer.output.value === expectedInstance);
+  Test.assert(initializer.output.value === expectedInstance, "output is set");
 
   receipt.cancel();
 });

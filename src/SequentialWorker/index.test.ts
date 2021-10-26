@@ -44,7 +44,8 @@ Test.define("SequentialWorker can run jobs in sequence", async () => {
   });
 
   Test.assert(
-    ObjectUtil.objectIsDeepEqual(order, ["A1", "A2", "B1", "B2", "C1", "C2"])
+    ObjectUtil.objectIsDeepEqual(order, ["A1", "A2", "B1", "B2", "C1", "C2"]),
+    "order is correct"
   );
 
   worker.deactivate();

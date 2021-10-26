@@ -17,7 +17,7 @@ Test.define("PathBinding can observe a simple value", () => {
   });
   binding.activate();
 
-  Test.assert(binding.output.value === "red");
+  Test.assert(binding.output.value === "red", "value should be red");
 
   input.setValue({
     design: {
@@ -25,17 +25,17 @@ Test.define("PathBinding can observe a simple value", () => {
     },
   });
 
-  Test.assert(binding.output.value === "green");
+  Test.assert(binding.output.value === "green", "value should be green");
 
   input.setValue({
     design: undefined,
   });
 
-  Test.assert(binding.output.value == null);
+  Test.assert(binding.output.value == null, "value should be null");
 
   input.setValue(undefined);
 
-  Test.assert(binding.output.value == null);
+  Test.assert(binding.output.value == null, "value should still be null");
 
   input.setValue({
     design: {
@@ -43,7 +43,7 @@ Test.define("PathBinding can observe a simple value", () => {
     },
   });
 
-  Test.assert(binding.output.value === "blue");
+  Test.assert(binding.output.value === "blue", "value should be blue");
 
   binding.deactivate();
 });
@@ -92,9 +92,18 @@ Test.define(
       })
     );
 
-    Test.assert(Array.isArray(artboards.output.value));
-    Test.assert(artboards.output.value.length === 2);
-    Test.assert(secondArtboardColor.output.value === "blue");
+    Test.assert(
+      Array.isArray(artboards.output.value),
+      "artboards should be an array"
+    );
+    Test.assert(
+      artboards.output.value.length === 2,
+      "artboards should have 2 items"
+    );
+    Test.assert(
+      secondArtboardColor.output.value === "blue",
+      "second artboard color should be blue"
+    );
 
     let changedPaths: string[] = [];
 
@@ -125,11 +134,11 @@ Test.define(
       ],
     });
 
-    Test.assertIsDeepEqual(changedPaths, [
-      "artboards",
-      "artboards.1.size",
-      "artboards.1.design.color",
-    ]);
+    Test.assertIsDeepEqual(
+      changedPaths,
+      ["artboards", "artboards.1.size", "artboards.1.design.color"],
+      "changed paths should be artboards, artboards.1.size, artboards.1.design.color"
+    );
 
     changedPaths = [];
 
@@ -150,7 +159,11 @@ Test.define(
       ],
     });
 
-    Test.assertIsDeepEqual(changedPaths, ["artboards", "artboards.1.size"]);
+    Test.assertIsDeepEqual(
+      changedPaths,
+      ["artboards", "artboards.1.size"],
+      "changed paths should be artboards, artboards.1.size"
+    );
 
     mo.deactivate();
 

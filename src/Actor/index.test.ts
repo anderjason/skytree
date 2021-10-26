@@ -3,19 +3,19 @@ import { Test } from "@anderjason/tests";
 import { Actor } from ".";
 
 Test.define("Actor invokes onActivate when activate is called", () => {
-  let didactivate = false as boolean;
+  let didActivate = false as boolean;
 
   class MySubclass extends Actor {
     onActivate() {
-      didactivate = true;
+      didActivate = true;
     }
   }
 
   const actor = new MySubclass({});
   actor.activate();
 
-  Test.assert(didactivate === true);
-  Test.assert(actor.isActive === true);
+  Test.assert(didActivate === true, "didActivate should be true");
+  Test.assert(actor.isActive === true, "isActive should be true");
 
   actor.deactivate();
 });
@@ -34,7 +34,7 @@ Test.define("Actor only invokes onActivate once", () => {
   actor.activate();
   actor.activate();
 
-  Test.assert(activateCount === 1);
+  Test.assert(activateCount === 1, "activateCount should be 1");
 
   actor.deactivate();
 });
@@ -47,8 +47,8 @@ Test.define("Actor returns a receipt from activate", () => {
   const actor = new MySubclass({});
   const receipt = actor.activate();
 
-  Test.assert(receipt != null);
-  Test.assert(receipt.isCancelled === false);
+  Test.assert(receipt != null, "receipt should not be null");
+  Test.assert(receipt.isCancelled === false, "receipt.isCancelled should be false");
 
   actor.deactivate();
 });
@@ -65,9 +65,9 @@ Test.define(
     const receipt2 = actor.activate();
     const receipt3 = actor.activate();
 
-    Test.assert(receipt1 != null);
-    Test.assert(receipt1 === receipt2);
-    Test.assert(receipt1 === receipt3);
+    Test.assert(receipt1 != null, "receipt1 should not be null");
+    Test.assert(receipt1 === receipt2, "receipt1 should be receipt2");
+    Test.assert(receipt1 === receipt3, "receipt1 should be receipt3");
 
     actor.deactivate();
   }
@@ -88,27 +88,27 @@ Test.define("Actor is deactivated when the receipt is cancelled", () => {
 
   const actor = new MySubclass({});
   const receipt1 = actor.activate();
-  Test.assert(actor.isActive === true);
+  Test.assert(actor.isActive === true, "actor.isActive should be true");
 
-  Test.assert(releaseCount === 0);
+  Test.assert(releaseCount === 0, "releaseCount should be 0");
   receipt1.cancel();
   receipt1.cancel();
 
-  Test.assert(releaseCount === 1); // second release has no effect
+  Test.assert(releaseCount === 1, "releaseCount should be 1" ); // second release has no effect
 
   // @ts-ignore
   Test.assert(actor.isActive === false);
 
   const receipt2 = actor.activate(); // activate again
-  Test.assert(actor.isActive === true);
+  Test.assert(actor.isActive === true, "actor.isActive should be true");
 
-  Test.assert(receipt2 != null);
-  Test.assert(receipt1 !== receipt2); // different receipt from the first activate
+  Test.assert(receipt2 != null, "receipt2 should not be null");
+  Test.assert(receipt1 !== receipt2, "receipt1 should not be receipt2"); // different receipt from the first activate
 
   receipt2.cancel();
 
-  Test.assert(releaseCount === 2);
-  Test.assert(actor.isActive === false);
+  Test.assert(releaseCount === 2, "releaseCount should be 2");
+  Test.assert(actor.isActive === false, "actor.isActive should be false");
 });
 
 Test.define("Actor has a list of child objects", () => {
@@ -119,8 +119,8 @@ Test.define("Actor has a list of child objects", () => {
   const parentInstance = new MySubclass({});
   parentInstance.activate();
 
-  Test.assert(parentInstance.childObjects != null);
-  Test.assert(Array.from(parentInstance.childObjects).length === 0);
+  Test.assert(parentInstance.childObjects != null, "parentInstance.childObjects should not be null");
+  Test.assert(Array.from(parentInstance.childObjects).length === 0, "parentInstance.childObjects should be empty");
 
   parentInstance.deactivate();
 });
@@ -134,11 +134,11 @@ Test.define("Actor activates objects when added as children", () => {
   parentInstance.activate();
 
   const childInstance = new MySubclass({});
-  Test.assert(childInstance.isActive === false);
+  Test.assert(childInstance.isActive === false, "childInstance.isActive should be false");
 
   parentInstance.addActor(childInstance);
 
-  Test.assert(childInstance.isActive === true);
+  Test.assert(childInstance.isActive === true, "childInstance.isActive should be true");
 
   parentInstance.deactivate();
 });
@@ -152,10 +152,10 @@ Test.define("Actor sets parent of objects when added as children", () => {
   parentInstance.activate();
 
   const childInstance = new MySubclass({});
-  Test.assert(childInstance.parentObject == null);
+  Test.assert(childInstance.parentObject == null, "childInstance.parentObject should be null");
 
   parentInstance.addActor(childInstance);
-  Test.assert(childInstance.parentObject === parentInstance);
+  Test.assert(childInstance.parentObject === parentInstance, "childInstance.parentObject should be parentInstance");
 
   parentInstance.deactivate();
 });
@@ -172,7 +172,7 @@ Test.define("Actor unsets parent of objects when removed as children", () => {
   parentInstance.addActor(childInstance);
   parentInstance.removeActor(childInstance);
 
-  Test.assert(childInstance.parentObject == null);
+  Test.assert(childInstance.parentObject == null, "childInstance.parentObject should be null");
 
   parentInstance.deactivate();
 });
@@ -192,14 +192,14 @@ Test.define(
 
     const childInstance = new MySubclass({});
     parentInstance1.addActor(childInstance);
-    Test.assert(childInstance.parentObject === parentInstance1);
-    Test.assert(new Set(parentInstance1.childObjects).has(childInstance));
-    Test.assert(!new Set(parentInstance2.childObjects).has(childInstance));
+    Test.assert(childInstance.parentObject === parentInstance1, "childInstance.parentObject should be parentInstance1");
+    Test.assert(new Set(parentInstance1.childObjects).has(childInstance), "parentInstance1.childObjects should contain childInstance");
+    Test.assert(!new Set(parentInstance2.childObjects).has(childInstance), "parentInstance2.childObjects should not contain childInstance");
 
     parentInstance2.addActor(childInstance);
-    Test.assert(childInstance.parentObject === parentInstance2);
-    Test.assert(new Set(parentInstance2.childObjects).has(childInstance)); // added
-    Test.assert(!new Set(parentInstance1.childObjects).has(childInstance)); // removed
+    Test.assert(childInstance.parentObject === parentInstance2, "childInstance.parentObject should be parentInstance2");
+    Test.assert(new Set(parentInstance2.childObjects).has(childInstance), "parentInstance2.childObjects should contain childInstance");
+    Test.assert(!new Set(parentInstance1.childObjects).has(childInstance), "parentInstance1.childObjects should not contain childInstance");
 
     parentInstance1.deactivate();
     parentInstance2.deactivate();
@@ -216,11 +216,11 @@ Test.define("Actor unactivates child objects when deactivate is called", () => {
 
   const childInstance = new MySubclass({});
   parentInstance1.addActor(childInstance);
-  Test.assert(childInstance.isActive === true);
+  Test.assert(childInstance.isActive === true, "childInstance.isActive should be true");
 
   parentInstance1.deactivate();
 
-  Test.assert(childInstance.isActive === false);
+  Test.assert(childInstance.isActive === false, "childInstance.isActive should be false");
 });
 
 Test.define("Actor activates child objects when activate is called", () => {
@@ -231,11 +231,12 @@ Test.define("Actor activates child objects when activate is called", () => {
   const parentInstance1 = new MySubclass({});
   const childInstance = new MySubclass({});
   parentInstance1.addActor(childInstance);
-  Test.assert(childInstance.isActive === false); // parent is not activated yet
+   // parent is not activated yet
+  Test.assert(childInstance.isActive === false, "childInstance.isActive should be false");
 
   parentInstance1.activate();
 
-  Test.assert(childInstance.isActive === true);
+  Test.assert(childInstance.isActive === true, "childInstance.isActive should be true");
 
   parentInstance1.deactivate();
 });
