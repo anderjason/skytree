@@ -1,11 +1,11 @@
 import { Receipt } from "@anderjason/observable";
 import { PropsObject } from "../PropsObject";
 export declare class Actor<T = any> extends PropsObject<T> {
-    private _receipts;
-    private _parentObject;
-    private _thisReceipt;
-    private _childObjects;
-    private _isActive;
+    protected _receipts: Set<Receipt>;
+    protected _parentObject: Actor;
+    protected _thisReceipt: Receipt | undefined;
+    protected _childObjects: Actor[];
+    protected _isActive: boolean;
     get isActive(): boolean;
     get parentObject(): Actor;
     get childObjects(): Iterable<Actor>;

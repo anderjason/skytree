@@ -2,11 +2,11 @@ import { Receipt } from "@anderjason/observable";
 import { PropsObject } from "../PropsObject";
 
 export class Actor<T = any> extends PropsObject<T> {
-  private _receipts: Set<Receipt> = new Set();
-  private _parentObject: Actor;
-  private _thisReceipt: Receipt | undefined;
-  private _childObjects: Actor[] = [];
-  private _isActive = false;
+  protected _receipts: Set<Receipt> = new Set();
+  protected _parentObject: Actor;
+  protected _thisReceipt: Receipt | undefined;
+  protected _childObjects: Actor[] = [];
+  protected _isActive = false;
   
   get isActive(): boolean {
     return this._isActive;
